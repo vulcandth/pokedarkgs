@@ -19,3 +19,5 @@ INCLUDE "macros/scripts/oam_anims.asm"
 INCLUDE "macros/scripts/pic_anims.asm"
 
 INCLUDE "macros/legacy.asm"
+
+INCLUDE "macros/wram_16bit.asm"
