@@ -2628,7 +2628,7 @@ wMoveSelectionMenuType:: db
 
 ; corresponds to the data/pokemon/base_stats/*.asm contents
 wCurBaseData::
-wBaseDexNo:: db
+wBaseSpecies:: db
 wBaseStats::
 wBaseHP:: db
 wBaseAttack:: db
