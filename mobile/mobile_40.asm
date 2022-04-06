@@ -1597,7 +1597,7 @@ _LinkBattleSendReceiveAction:
 
 	vc_hook Wireless_end_exchange
 	vc_patch Wireless_net_delay_3
-if DEF(_CRYSTAL_VC)
+if DEF(_VC)
 	ld b, 26
 else
 	ld b, 10
@@ -1611,7 +1611,7 @@ endc
 
 	vc_hook Wireless_start_send_zero_bytes
 	vc_patch Wireless_net_delay_4
-if DEF(_CRYSTAL_VC)
+if DEF(_VC)
 	ld b, 26
 else
 	ld b, 10

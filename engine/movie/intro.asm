@@ -1,63 +1,55 @@
-CrystalIntro:
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wGBCPalettes)
-	ldh [rSVBK], a
-	ldh a, [hInMenu]
-	push af
-	ldh a, [hVBlank]
-	push af
-	call .InitRAMAddrs
-.loop
+GoldSilverIntro:
+	call .Init
+.Loop:
+	call .PlayFrame
+	jr nc, .Loop
+	ret
+
+.Init:
+	farcall ClearSpriteAnims
+	xor a
+	ld [wIntroJumptableIndex], a
+	ldh [hBGMapMode], a
+	ret
+
+.PlayFrame:
 	call JoyTextDelay
 	ldh a, [hJoyLast]
 	and BUTTONS
-	jr nz, .ShutOffMusic
-	ld a, [wJumptableIndex]
+	jr nz, .Finish
+
+; check done flag
+	ld a, [wIntroJumptableIndex]
 	bit 7, a
-	jr nz, .done
-	call IntroSceneJumper
+	jr nz, .Finish
+
 	farcall PlaySpriteAnimations
+	call IntroSceneJumper
 	call DelayFrame
-	jp .loop
+	and a
+	ret
 
-.ShutOffMusic
-	ld de, MUSIC_NONE
-	call PlayMusic
-
-.done
-	call ClearBGPalettes
+.Finish:
+	callfar ClearSpriteAnims
 	call ClearSprites
-	call ClearTilemap
+	call DelayFrame
 	xor a
 	ldh [hSCX], a
 	ldh [hSCY], a
-	ld a, 7
-	ldh [hWX], a
-	ld a, SCREEN_HEIGHT_PX
-	ldh [hWY], a
-	pop af
-	ldh [hVBlank], a
-	pop af
-	ldh [hInMenu], a
-	pop af
-	ldh [rSVBK], a
-	ret
-
-.InitRAMAddrs:
-	xor a
-	ldh [hVBlank], a
-	ld a, $1
-	ldh [hInMenu], a
-	xor a
-	ldh [hMapAnims], a
-	ld [wJumptableIndex], a
+	ldh [hLCDCPointer], a
+	ldh [hLYOverrideStart], a
+	ldh [hLYOverrideEnd], a
+	ld a, %11100100
+	call DmgToCgbBGPals
+	depixel 28, 28, 4, 4
+	call DmgToCgbObjPals
+	scf
 	ret
 
 IntroSceneJumper:
-	jumptable IntroScenes, wJumptableIndex
+	jumptable .scenes, wIntroJumptableIndex
 
-IntroScenes:
+.scenes
 	dw IntroScene1
 	dw IntroScene2
 	dw IntroScene3
@@ -75,1703 +67,1214 @@ IntroScenes:
 	dw IntroScene15
 	dw IntroScene16
 	dw IntroScene17
-	dw IntroScene18
-	dw IntroScene19
-	dw IntroScene20
-	dw IntroScene21
-	dw IntroScene22
-	dw IntroScene23
-	dw IntroScene24
-	dw IntroScene25
-	dw IntroScene26
-	dw IntroScene27
-	dw IntroScene28
-
-NextIntroScene:
-	ld hl, wJumptableIndex
-	inc [hl]
-	ret
 
 IntroScene1:
-; Setup the next scene.
-	call Intro_ClearBGPals
-	call ClearSprites
+; Set up water cutscene (Shellders/Magikarp/Lapras)
+	call ClearBGPalettes
 	call ClearTilemap
+	ld hl, wIntroJumptableIndex
+	inc [hl] ; only run once
+	call DisableLCD
+
 	xor a
 	ldh [hBGMapMode], a
-	ld a, $1
+	callfar ClearSpriteAnims
+	ld a, 1
 	ldh [rVBK], a
-	ld hl, IntroUnownAAttrmap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ld a, $0
+	hlbgcoord 0, 0, vBGMap2
+	lb bc, 4, 0
+
+	xor a
+	call ByteFill
+	ld a, 0
 	ldh [rVBK], a
-	ld hl, IntroUnownsGFX
+	call Intro_ResetLYOverrides
 	ld de, vTiles2 tile $00
-	call Intro_DecompressRequest2bpp_128Tiles
-	ld hl, IntroPulseGFX
+	ld hl, Intro_WaterGFX1
+	call Decompress
+	ld a, LOW(Intro_WaterMeta)
+	ld [wIntroTilesPointer + 0], a
+	ld a, HIGH(Intro_WaterMeta)
+	ld [wIntroTilesPointer + 1], a
+	hlbgcoord 0, 0, vBGMap2
+	ld a, l
+	ld [wIntroBGMapPointer + 0], a
+	ld a, h
+	ld [wIntroBGMapPointer + 1], a
+	ld de, Intro_WaterTilemap + 15 tiles
+	ld a, e
+	ld [wIntroTilemapPointer + 0], a
+	ld a, d
+	ld [wIntroTilemapPointer + 1], a
+	call Intro_DrawBackground
+
 	ld de, vTiles0 tile $00
-	call Intro_DecompressRequest2bpp_128Tiles
-	ld hl, IntroUnownATilemap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wBGPals1)
-	ldh [rSVBK], a
-	ld hl, IntroUnownsPalette
-	ld de, wBGPals1
-	ld bc, 16 palettes
-	call CopyBytes
-	ld hl, IntroUnownsPalette
-	ld de, wBGPals2
-	ld bc, 16 palettes
-	call CopyBytes
-	pop af
-	ldh [rSVBK], a
+	ld hl, Intro_WaterGFX2
+	call Decompress
+	ld hl, wSpriteAnimDict
+	ld a, SPRITE_ANIM_DICT_DEFAULT
+	ld [hli], a
+	ld a, $00
+	ld [hli], a
 	xor a
-	ldh [hSCX], a
 	ldh [hSCY], a
-	ld a, 7
-	ldh [hWX], a
-	ld a, SCREEN_HEIGHT_PX
-	ldh [hWY], a
-	farcall ClearSpriteAnims
-	call Intro_SetCGBPalUpdate
+	ld [wGlobalAnimYOffset], a
+	ld [wGlobalAnimXOffset], a
+	ld a, $58
+	ldh [hSCX], a
 	xor a
-	ld [wIntroSceneFrameCounter], a
-	ld [wIntroSceneTimer], a
-	call NextIntroScene
+	ld [wIntroFrameCounter2], a
+	ld a, $80
+	ld [wIntroFrameCounter1], a
+	ld a, $42
+	ldh [hLCDCPointer], a
+	call Intro_InitSineLYOverrides
+
+	xor a ; FALSE
+	ld [wIntroSpriteStateFlag], a
+	call EnableLCD
+	call DelayFrame
+	ld b, SCGB_GS_INTRO
+	ld c, 0
+	call GetSGBLayout
+	ld a, %11100100
+	call DmgToCgbBGPals
+	depixel 28, 28
+	call DmgToCgbObjPals
+	call Intro_InitShellders
+	ld de, MUSIC_GS_OPENING
+	call PlayMusic
 	ret
 
 IntroScene2:
-; First Unown (A) fades in, pulses, then fades out.
-	ld hl, wIntroSceneFrameCounter
+; shellders underwater
+	call Intro_UpdateLYOverrides
+	ld hl, wIntroFrameCounter1
 	ld a, [hl]
+	and a
+	jr z, .skip_intro
+	dec [hl]
+	call Intro_InitBubble
+	ret
+
+.skip_intro
+	ld [hl], $10
+	ld hl, wIntroJumptableIndex
 	inc [hl]
-	cp $80
-	jr nc, .endscene
-	cp $60
-	jr nz, .nosound
-	push af
-	depixel 11, 11
-	call CrystalIntro_InitUnownAnim
-	ld de, SFX_INTRO_UNOWN_1
-	call PlaySFX
-	pop af
-.nosound
-	ld [wIntroSceneTimer], a
-	xor a
-	call CrystalIntro_UnownFade
-	ret
-.endscene
-	call NextIntroScene
-	ret
 
 IntroScene3:
-; More setup. Transition to the outdoor scene.
-	call Intro_ClearBGPals
-	call ClearSprites
-	call ClearTilemap
-	xor a
-	ldh [hBGMapMode], a
-	ld a, $1
-	ldh [rVBK], a
-	ld hl, IntroBackgroundAttrmap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ld a, $0
-	ldh [rVBK], a
-	ld hl, IntroBackgroundGFX
-	ld de, vTiles2 tile $00
-	call Intro_DecompressRequest2bpp_128Tiles
-	ld hl, IntroBackgroundTilemap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wBGPals1)
-	ldh [rSVBK], a
-	ld hl, IntroBackgroundPalette
-	ld de, wBGPals1
-	ld bc, 16 palettes
-	call CopyBytes
-	ld hl, IntroBackgroundPalette
-	ld de, wBGPals2
-	ld bc, 16 palettes
-	call CopyBytes
-	pop af
-	ldh [rSVBK], a
-	xor a
-	ldh [hSCX], a
-	ldh [hSCY], a
-	ld a, 7
-	ldh [hWX], a
-	ld a, SCREEN_HEIGHT_PX
-	ldh [hWY], a
+; rise towards the surface
+	call IntroScene3_Jumper
+	call IntroScene3_ScrollToSurface
+	ret nc
+; next scene if carry flag is set
 	call Intro_ResetLYOverrides
-	call Intro_SetCGBPalUpdate
-	xor a
-	ld [wIntroSceneFrameCounter], a
-	call NextIntroScene
-	ret
+	ld hl, hSCY
+	inc [hl]
+	ld hl, wIntroJumptableIndex
+	inc [hl]
 
 IntroScene4:
-; Scroll the outdoor panorama for a bit.
-	call Intro_PerspectiveScrollBG
-	ld hl, wIntroSceneFrameCounter
+; at surface; Lapras surfs to left of screen
+	ld a, [wIntroSpriteStateFlag]
+	and a
+	jr nz, .next
+	ld hl, wIntroFrameCounter2
+	inc [hl]
 	ld a, [hl]
-	cp $80
-	jr z, .endscene
+	and $f
+	jr nz, .skip_move_left
+	ld hl, hSCX
+	dec [hl]
+	dec [hl]
+
+.skip_move_left
+	call Intro_AnimateOceanWaves
+	ret
+
+.next
+	ld hl, wIntroJumptableIndex
+	inc [hl]
+	xor a
+	ld [wIntroFrameCounter1], a
+
+IntroScene5:
+; fade out
+	ld hl, wIntroFrameCounter1
+	ld a, [hl]
+	inc [hl]
+	swap a
+	and $f
+	ld e, a
+	ld d, 0
+	ld hl, .palettes
+	add hl, de
+	ld a, [hl]
+	cp -1
+	jr z, .next
+	call DmgToCgbBGPals
+	call Intro_AnimateOceanWaves
+	ld hl, hSCX
+	dec [hl]
+	dec [hl]
+	ret
+
+.next
+	ld hl, wIntroJumptableIndex
 	inc [hl]
 	ret
 
-.endscene
-	call NextIntroScene
+.palettes:
+	db %11100100
+	db %11100100
+	db %10010000
+	db %01000000
+	db %00000000
+	db -1
+
+IntroScene17:
+; delay a bit before leading into the title screen
+	ld c, 64
+.loop
+	call DelayFrame
+	dec c
+	jr nz, .loop
+; set done flag
+	ld hl, wIntroJumptableIndex
+	set 7, [hl]
 	ret
 
-IntroScene5:
-; Go back to the Unown.
-	call Intro_ClearBGPals
-	call ClearSprites
-	call ClearTilemap
+IntroScene3_ScrollToSurface:
+	ld hl, wIntroFrameCounter2
+	inc [hl]
+	ld a, [hl]
+	and 3
+	jr nz, .skip_move_left
+	ld hl, hSCX
+	dec [hl]
+
+.skip_move_left
+	and 1
+	jr nz, .no_carry
+	ld hl, wGlobalAnimYOffset
+	inc [hl]
+	ld hl, hSCY
+	ld a, [hl]
+	dec [hl]
+	and $f
+	call z, Intro_UpdateTilemapAndBGMap
+	ld a, [wIntroFrameCounter1]
+	and a
+	jr z, .carry
+
+.no_carry
+	and a
+	ret
+
+.carry
+	scf
+	ret
+
+IntroScene3_Jumper:
+	jumptable .dw, wIntroFrameCounter1
+
+.dw
+	dw .scene3_2
+	dw .scene3_2
+	dw .scene3_2
+	dw .scene3_1
+	dw .scene3_2
+	dw .scene3_2
+	dw .scene3_3
+	dw .scene3_3
+	dw .scene3_3
+	dw .scene3_4
+	dw .scene3_5
+	dw .scene3_6
+	dw .scene3_6
+	dw .scene3_6
+	dw .scene3_6
+	dw .scene3_6
+	dw .scene3_6
+
+.scene3_1:
+	call Intro_InitLapras
+	depixel 28, 28, 4, 4
+	call DmgToCgbObjPals
+; fallthrough
+
+.scene3_2:
+	call Intro_AnimateOceanWaves
+	ret
+
+.scene3_3:
+	call Intro_InitMagikarps
+	call Intro_AnimateOceanWaves
+	ret
+
+.scene3_4:
+	ld hl, wIntroFrameCounter2
+	ld a, [hl]
+	and %00011111
+	jr z, .load_palettes
+	call Intro_InitMagikarps
+	ret
+
+.load_palettes
+	callfar Intro_LoadMagikarpPalettes
+	ret
+
+.scene3_5:
 	xor a
-	ldh [hBGMapMode], a
 	ldh [hLCDCPointer], a
-	ld a, $1
-	ldh [rVBK], a
-	ld hl, IntroUnownHIAttrmap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ld a, $0
-	ldh [rVBK], a
-	ld hl, IntroUnownsGFX
-	ld de, vTiles2 tile $00
-	call Intro_DecompressRequest2bpp_128Tiles
-	ld hl, IntroPulseGFX
-	ld de, vTiles0 tile $00
-	call Intro_DecompressRequest2bpp_128Tiles
-	ld hl, IntroUnownHITilemap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ldh a, [rSVBK]
+	ret
+
+.scene3_6:
+	call Intro_UpdateLYOverrides
+	ret
+
+Intro_InitBubble:
+	ld hl, wIntroFrameCounter1
+	ld a, [hl]
+	and $f
+	ret nz
+	ld a, [hl]
+	and $70
+	swap a
+	ld e, a
+	ld d, 0
+	ld hl, .pixel_table
+	add hl, de
+	add hl, de
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	ld a, SPRITE_ANIM_INDEX_GS_INTRO_BUBBLE
+	call InitSpriteAnimStruct
+	ret
+
+.pixel_table
+	db  6 * 8, 14 * 8 + 4
+	db 14 * 8, 18 * 8 + 4
+	db 10 * 8, 16 * 8 + 4
+	db 12 * 8, 15 * 8
+	db  4 * 8, 13 * 8
+	db  8 * 8, 17 * 8
+
+Intro_InitMagikarps:
+	depixel 8, 7, 0, 7
+	ldh a, [hSGB]
+	and a
+	jr z, .ok
+	depixel 4, 3, 0, 7
+
+.ok
+	ld hl, wIntroFrameCounter2
+	ld a, [hl]
+	and e
+	ret nz
+	ld a, [hl]
+	and d
+	jr nz, .alternate_frame
+	depixel 29, 28
+	call .InitAnim
+	depixel 26, 0
+	call .InitAnim
+	depixel 0, 24
+	call .InitAnim
+	ret
+
+.alternate_frame
+	depixel 28, 30
+	call .InitAnim
+	depixel 31, 24
+	call .InitAnim
+	depixel 2, 28
+	call .InitAnim
+	ret
+
+.InitAnim:
+	ld a, SPRITE_ANIM_INDEX_GS_INTRO_MAGIKARP
+	call InitSpriteAnimStruct
+	ret
+
+Intro_InitShellders:
+	depixel 18, 7
+	call .InitAnim
+	depixel 14, 10
+	call .InitAnim
+	depixel 16, 15
+
+.InitAnim:
+	ld a, SPRITE_ANIM_INDEX_GS_INTRO_SHELLDER
+	call InitSpriteAnimStruct
+	ret
+
+Intro_InitLapras:
+	ld a, [wIntroFrameCounter2]
+	and %00011111
+	ret nz
+	depixel 16, 24
+	ld a, SPRITE_ANIM_INDEX_GS_INTRO_LAPRAS
+	call InitSpriteAnimStruct
+	ret
+
+Intro_UnusedInitAerodactyl: ; unreferenced
+	depixel 2, 0
+	ld a, SPRITE_ANIM_INDEX_UNUSED_INTRO_AERODACTYL
+	call InitSpriteAnimStruct
+	ret
+
+Intro_UpdateTilemapAndBGMap:
+; add new tiles to top as water scene scrolls up to surface
+	push hl
+	push de
+
+	ld a, [wIntroTilemapPointer + 0]
+	ld e, a
+	ld a, [wIntroTilemapPointer + 1]
+	ld d, a
+	ld hl, -$10
+	add hl, de
+	ld a, l
+	ld e, l
+	ld [wIntroTilemapPointer + 0], a
+	ld a, h
+	ld d, h
+	ld [wIntroTilemapPointer + 1], a
+
+	hlcoord 0, 0
+	ld c, BG_MAP_WIDTH / 2
+.loop
+	call Intro_Draw2x2Tiles
+	dec c
+	jr nz, .loop
+
+	ld a, [wIntroBGMapPointer + 0]
+	ld e, a
+	ld a, [wIntroBGMapPointer + 1]
+	ld d, a
+; The next line was originally set to hCurSpriteYCoord,
+; however, this caused graphical issues. Not sure why
+; this needs to be set to hCurSpriteYPixel instead.
+	ld hl, hCurSpriteYPixel
+	add hl, de
+	ld a, l
+	ld [wIntroBGMapPointer + 0], a
+	ld [wRequested2bppDest + 0], a
+	ld a, h
+	and %11111011
+	or %00001000
+	ld [wIntroBGMapPointer + 1], a
+	ld [wRequested2bppDest + 1], a
+	ld a, LOW(wTilemap)
+	ld [wRequested2bppSource + 0], a
+	ld a, HIGH(wTilemap)
+	ld [wRequested2bppSource + 1], a
+	ld a, 4
+	ld [wRequested2bppSize], a
+	ld hl, wIntroFrameCounter1
+	dec [hl]
+
+	pop de
+	pop hl
+	ret
+
+Intro_AnimateOceanWaves:
+; uses a 2bpp request to copy tile IDs to the BG map
+	ld hl, wIntroFrameCounter2
+	ld a, [hl]
+	and 3
+	cp 3
+	ret z
+	ld a, [wRequested2bppSize]
+	and a
+	ret nz
+	ld a, [hl]
+	and $30
+	swap a
+	ld l, a
+	ld h, 0
+rept 5
+	add hl, hl
+endr
+	ld de, .wave_tiles
+	add hl, de
+	ld a, l
+	ld [wRequested2bppSource + 0], a
+	ld a, h
+	ld [wRequested2bppSource + 1], a
+	ld a, LOW(vBGMap0 tile $1e)
+	ld [wRequested2bppDest + 0], a
+	ld a, HIGH(vBGMap0 tile $1e)
+	ld [wRequested2bppDest + 1], a
+	ld a, 2
+	ld [wRequested2bppSize], a
+	ret
+
+.wave_tiles:
+rept 8
+	db $70, $71, $72, $73
+endr
+rept 8
+	db $74, $75, $76, $77
+endr
+rept 8
+	db $78, $79, $7a, $7b
+endr
+rept 8
+	db $7c, $7d, $7e, $7f
+endr
+
+Intro_InitSineLYOverrides:
+	ld bc, wLYOverrides2
+	ld a, wLYOverrides2End - wLYOverrides2
+	ld de, vBGMap1 - vBGMap0
+
+.loop
 	push af
-	ld a, BANK(wBGPals1)
-	ldh [rSVBK], a
-	ld hl, IntroUnownsPalette
-	ld de, wBGPals1
-	ld bc, 16 palettes
-	call CopyBytes
-	ld hl, IntroUnownsPalette
-	ld de, wBGPals2
-	ld bc, 16 palettes
-	call CopyBytes
+	push de
+	farcall BattleAnim_Sine_e
+	ld a, e
+	ld [bc], a
+	inc bc
+	pop de
+	inc e
 	pop af
-	ldh [rSVBK], a
-	xor a
-	ldh [hSCX], a
-	ldh [hSCY], a
-	ld a, 7
-	ldh [hWX], a
-	ld a, SCREEN_HEIGHT_PX
-	ldh [hWY], a
-	farcall ClearSpriteAnims
-	call Intro_SetCGBPalUpdate
-	xor a
-	ld [wIntroSceneFrameCounter], a
-	ld [wIntroSceneTimer], a
-	call NextIntroScene
+	dec a
+	jr nz, .loop
+	ret
+
+Intro_UpdateLYOverrides:
+	ld bc, wLYOverrides
+	ld e, $10
+
+.loop1
+	ldh a, [hSCY]
+	ld [bc], a
+	inc bc
+	dec e
+	jr nz, .loop1
+
+	ld hl, wLYOverrides2
+	ld de, wLYOverrides2 + 1
+	ld a, [hl]
+	push af
+	ld a, $80
+
+.loop2
+	push af
+	ld a, [de]
+	inc de
+	ld [hli], a
+	push hl
+	ld hl, hSCY
+	add [hl]
+	ld [bc], a
+	inc bc
+	pop hl
+	pop af
+	dec a
+	jr nz, .loop2
+
+	pop af
+	ld [hl], a
 	ret
 
 IntroScene6:
-; Two more Unown (I, H) fade in.
-	ld hl, wIntroSceneFrameCounter
-	ld a, [hl]
-	inc [hl]
-	cp $80
-	jr nc, .endscene
-	cp $60
-	jr z, .SecondUnown
-	cp $40
-	jr nc, .StopUnown
-	cp $20
-	jr z, .FirstUnown
-	jr .NoUnown
+; Set up grass cutscene (Pikachu/Jigglypuff)
+	ld hl, wIntroJumptableIndex
+	inc [hl] ; only run once
+	call DisableLCD
+	callfar ClearSpriteAnims
+	call Intro_ResetLYOverrides
 
-.FirstUnown:
-	push af
-	depixel 7, 15
-	call CrystalIntro_InitUnownAnim
-	ld de, SFX_INTRO_UNOWN_2
-	call PlaySFX
-	pop af
-.NoUnown:
-	ld [wIntroSceneTimer], a
+	ld de, vTiles2
+	ld hl, Intro_GrassGFX1
+	call Decompress
+	ld a, LOW(Intro_GrassMeta)
+	ld [wIntroTilesPointer + 0], a
+	ld a, HIGH(Intro_GrassMeta)
+	ld [wIntroTilesPointer + 1], a
+	hlbgcoord 0, 0
+	ld a, l
+	ld [wIntroBGMapPointer + 0], a
+	ld a, h
+	ld [wIntroBGMapPointer + 1], a
+	ld de, Intro_GrassTilemap
+	ld a, e
+	ld [wIntroTilemapPointer + 0], a
+	ld a, d
+	ld [wIntroTilemapPointer + 1], a
+	call Intro_DrawBackground
+
+	ld de, vTiles0
+	ld hl, Intro_GrassGFX2
+	call Decompress
+	ld hl, wSpriteAnimDict
+	ld a, SPRITE_ANIM_DICT_GS_INTRO
+	ld [hli], a
+	ld a, $00
+	ld [hli], a
 	xor a
-	call CrystalIntro_UnownFade
-	ret
+	ldh [hSCY], a
+	ld [wGlobalAnimYOffset], a
+	ld a, $60
+	ldh [hSCX], a
+	ld a, $a0
+	ld [wGlobalAnimXOffset], a
 
-.SecondUnown:
-	push af
-	depixel 14, 6
-	call CrystalIntro_InitUnownAnim
-	ld de, SFX_INTRO_UNOWN_1
-	call PlaySFX
-	pop af
-.StopUnown:
-	ld [wIntroSceneTimer], a
-	ld a, $1
-	call CrystalIntro_UnownFade
-	ret
-
-.endscene
-	call NextIntroScene
+	xor a
+	ld [wIntroFrameCounter2], a
+	call EnableLCD
+	ld b, SCGB_GS_INTRO
+	ld c, 1
+	call GetSGBLayout
+	ld a, %11100100
+	call DmgToCgbBGPals
+	depixel 28, 28, 4, 4
+	call DmgToCgbObjPals
+	call Intro_InitJigglypuff
+	xor a ; FALSE
+	ld [wIntroSpriteStateFlag], a
 	ret
 
 IntroScene7:
-; Back to the outdoor scene.
-	call Intro_ClearBGPals
-	call ClearSprites
-	call ClearTilemap
-	xor a
-	ldh [hBGMapMode], a
+; scroll left to Jigglypuff
+	call Intro_InitNote
+	ld hl, wIntroFrameCounter2
+	ld a, [hl]
+	inc [hl]
+	and 3
+	ret z
+	ld hl, hSCX
+	ld a, [hl]
+	and a
+	jr z, .next
+	dec [hl]
+	ld hl, wGlobalAnimXOffset
+	inc [hl]
+	ret
 
-	ld a, $1
-	ldh [rVBK], a
-	ld hl, IntroBackgroundAttrmap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-
-	ld hl, IntroPichuWooperGFX
-	ld de, vTiles0 tile $00
-	call Intro_DecompressRequest2bpp_128Tiles
-
-	ld a, $0
-	ldh [rVBK], a
-	ld hl, IntroSuicuneRunGFX
-	ld de, vTiles0 tile $00
-	call Intro_DecompressRequest2bpp_255Tiles
-
-	ld hl, IntroBackgroundGFX
-	ld de, vTiles2 tile $00
-	call Intro_DecompressRequest2bpp_128Tiles
-
-	ld hl, IntroBackgroundTilemap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wBGPals1)
-	ldh [rSVBK], a
-
-	ld hl, IntroBackgroundPalette
-	ld de, wBGPals1
-	ld bc, 16 palettes
-	call CopyBytes
-
-	ld hl, IntroBackgroundPalette
-	ld de, wBGPals2
-	ld bc, 16 palettes
-	call CopyBytes
-
-	pop af
-	ldh [rSVBK], a
-
-	xor a
-	ldh [hSCX], a
-	ldh [hSCY], a
-	ld a, 7
-	ldh [hWX], a
-	ld a, SCREEN_HEIGHT_PX
-	ldh [hWY], a
-	call Intro_ResetLYOverrides
-	farcall ClearSpriteAnims
-	depixel 13, 27, 4, 0
-	ld a, SPRITE_ANIM_INDEX_INTRO_SUICUNE
-	call InitSpriteAnimStruct
-	ld a, $f0
-	ld [wGlobalAnimXOffset], a
-	call Intro_SetCGBPalUpdate
-	xor a
-	ld [wIntroSceneFrameCounter], a
-	ld [wIntroSceneTimer], a
-	call NextIntroScene
+.next
+	ld a, -1
+	ld [wIntroFrameCounter1], a
+	call Intro_InitPikachu
+	ld hl, wIntroJumptableIndex
+	inc [hl]
 	ret
 
 IntroScene8:
-; Scroll the scene, then show Suicune running across the screen.
-	ld hl, wIntroSceneFrameCounter
+; stop scrolling, Pikachu attacks
+	ld hl, wIntroFrameCounter1
 	ld a, [hl]
-	inc [hl]
-	cp $40
-	jr z, .suicune_sound
-	jr nc, .animate_suicune
-	call Intro_PerspectiveScrollBG
-	ret
-
-.suicune_sound
-	ld de, SFX_INTRO_SUICUNE_3
-	call PlaySFX
-.animate_suicune
-	ld a, [wGlobalAnimXOffset]
 	and a
-	jr z, .finish
-	sub $8
-	ld [wGlobalAnimXOffset], a
+	jr z, .next
+	dec [hl]
+	call Intro_InitNote
+	ld hl, wIntroFrameCounter2
+	inc [hl]
 	ret
 
-.finish
-	ld de, SFX_INTRO_SUICUNE_2
-	call PlaySFX
-	farcall DeinitializeAllSprites
-	call NextIntroScene
+.next
+	xor a
+	ld [wIntroFrameCounter1], a
+	ld hl, wIntroJumptableIndex
+	inc [hl]
+	callfar Intro_LoadAllPal0
 	ret
 
 IntroScene9:
-; Set up the next scene (same bg).
-	xor a
-	ldh [hLCDCPointer], a
-	call ClearSprites
-	hlcoord 0, 0, wAttrmap
-	; first 12 rows have palette 1
-	ld bc, 12 * SCREEN_WIDTH
-	ld a, $1
-	call ByteFill
-	; middle 3 rows have palette 2
-	ld bc, 3 * SCREEN_WIDTH
-	ld a, $2
-	call ByteFill
-	; last three rows have palette 3
-	ld bc, 3 * SCREEN_WIDTH
-	ld a, $3
-	call ByteFill
-	ld a, $2
-	ldh [hBGMapMode], a
-	call DelayFrame
-	call DelayFrame
-	call DelayFrame
-	ld a, LOW(vBGMap0 + $c) ; $c
-	ldh [hBGMapAddress], a
-	call DelayFrame
-	call DelayFrame
-	call DelayFrame
-	xor a
-	ldh [hBGMapMode], a
-	ldh [hBGMapAddress], a
-	ld [wGlobalAnimXOffset], a
-	xor a
-	ld [wIntroSceneFrameCounter], a
-	call NextIntroScene
+; scroll down and fade out
+	ld hl, wIntroFrameCounter1
+	ld a, [hl]
+	inc [hl]
+	srl a
+	srl a
+	srl a
+	ld e, a
+	ld d, 0
+	ld hl, .palettes
+	add hl, de
+	ld a, [hl]
+	cp -1
+	jr z, .next
+	call DmgToCgbBGPals
+	ld hl, hSCY
+	inc [hl]
+	ld hl, wGlobalAnimYOffset
+	dec [hl]
+	ret
+
+.next
+	ld hl, wIntroJumptableIndex
+	inc [hl]
+	ret
+
+.palettes:
+	db %11100100
+	db %11100100
+	db %11100100
+	db %11100100
+	db %11100100
+	db %10010000
+	db %01000000
+	db %00000000
+	db -1
+
+Intro_DummyFunction: ; unreferenced
+	ret
+
+Intro_InitNote:
+	ld a, [wIntroSpriteStateFlag]
+	and a
+	ret nz
+	ld hl, wIntroFrameCounter2
+	ld a, [hl]
+	and %00111111
+	ret nz
+	ld a, [hl]
+	and %01111111
+	jr z, .invisible
+	depixel 11, 6, 4, 0
+	ld a, SPRITE_ANIM_INDEX_GS_INTRO_NOTE
+	call InitSpriteAnimStruct
+	ret
+
+.invisible
+	depixel 10, 6, 4, 0
+	ld a, SPRITE_ANIM_INDEX_GS_INTRO_INVISIBLE_NOTE
+	call InitSpriteAnimStruct
+	ret
+
+Intro_InitJigglypuff:
+	depixel 14, 6
+	ld a, SPRITE_ANIM_INDEX_GS_INTRO_JIGGLYPUFF
+	call InitSpriteAnimStruct
+	ret
+
+Intro_InitPikachu:
+	depixel 14, 24
+	ld a, SPRITE_ANIM_INDEX_GS_INTRO_PIKACHU
+	call InitSpriteAnimStruct
+	depixel 14, 24
+	ld a, SPRITE_ANIM_INDEX_GS_INTRO_PIKACHU_TAIL
+	call InitSpriteAnimStruct
 	ret
 
 IntroScene10:
-; Wooper and Pichu enter.
-	call Intro_RustleGrass
-	ld hl, wIntroSceneFrameCounter
-	ld a, [hl]
-	inc [hl]
-	cp $c0
-	jr z, .done
-	cp $20
-	jr z, .wooper
-	cp $40
-	jr z, .pichu
-	ret
+; Set up fireball cutscene (Charizard, Johto starters)
+	ld hl, wIntroJumptableIndex
+	inc [hl] ; only run once
+	call DisableLCD
+	callfar ClearSpriteAnims
+	call Intro_ResetLYOverrides
+	call Intro_BlankTilemapAndBGMap
 
-.pichu
-	depixel 21, 16, 1, 0
-	ld a, SPRITE_ANIM_INDEX_INTRO_PICHU
-	call InitSpriteAnimStruct
-	ld de, SFX_INTRO_PICHU
-	call PlaySFX
-	ret
+	ld de, vTiles2
+	ld hl, Intro_FireGFX1
+	call Decompress
+	ld de, vTiles1
+	ld hl, Intro_FireGFX2
+	call Decompress
+	ld de, vTiles0
+	ld hl, Intro_FireGFX3
+	ld bc, vTiles1 - vTiles0
+	call Decompress
 
-.wooper
-	depixel 22, 6
-	ld a, SPRITE_ANIM_INDEX_INTRO_WOOPER
-	call InitSpriteAnimStruct
-	ld de, SFX_INTRO_PICHU
-	call PlaySFX
-	ret
-.done
-	call NextIntroScene
+	ld c, CHIKORITA
+	ld de, vTiles0 tile $10
+	farcall Intro_GetMonFrontpic
+	ld c, CYNDAQUIL
+	ld de, vTiles0 tile $29
+	farcall Intro_GetMonFrontpic
+	ld c, TOTODILE
+	ld de, vTiles0 tile $42
+	farcall Intro_GetMonFrontpic
+
+	ld hl, wSpriteAnimDict
+	ld a, SPRITE_ANIM_DICT_GS_INTRO
+	ld [hli], a
+	ld a, $00
+	ld [hli], a
+	call EnableLCD
+	ld a, 0
+	call DrawIntroCharizardGraphic
+
+	ld a, $80
+	ldh [hSCY], a
+	xor a
+	ldh [hSCX], a
+	ld [wGlobalAnimYOffset], a
+	ld [wGlobalAnimXOffset], a
+
+	xor a
+	ld [wIntroFrameCounter2], a
+	ld b, SCGB_GS_INTRO
+	ld c, 2
+	call GetSGBLayout
+	ld a, %00111111
+	call DmgToCgbBGPals
+	lb de, %11111111, %11111111
+	call DmgToCgbObjPals
+	ld de, MUSIC_NONE
+	call PlayMusic
+	call DelayFrame
+	ld de, MUSIC_GS_OPENING_2
+	call PlayMusic
 	ret
 
 IntroScene11:
-; Back to Unown again.
-	call Intro_ClearBGPals
-	call ClearSprites
-	call ClearTilemap
-	xor a
-	ldh [hBGMapMode], a
-	ldh [hLCDCPointer], a
-	ld a, $1
-	ldh [rVBK], a
-	ld hl, IntroUnownsAttrmap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ld a, $0
-	ldh [rVBK], a
-	ld hl, IntroUnownsGFX
-	ld de, vTiles2 tile $00
-	call Intro_DecompressRequest2bpp_128Tiles
-	ld hl, IntroUnownsTilemap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wBGPals1)
-	ldh [rSVBK], a
-	ld hl, IntroUnownsPalette
-	ld de, wBGPals1
-	ld bc, 16 palettes
-	call CopyBytes
-	ld hl, IntroUnownsPalette
-	ld de, wBGPals2
-	ld bc, 16 palettes
-	call CopyBytes
-	pop af
-	ldh [rSVBK], a
-	xor a
-	ldh [hSCX], a
-	ldh [hSCY], a
-	ld a, 7
-	ldh [hWX], a
-	ld a, SCREEN_HEIGHT_PX
-	ldh [hWY], a
-	farcall ClearSpriteAnims
-	call Intro_SetCGBPalUpdate
-	xor a
-	ld [wIntroSceneFrameCounter], a
-	ld [wIntroSceneTimer], a
-	call NextIntroScene
-	ret
-
-IntroScene12:
-; Even more Unown.
-	call .PlayUnownSound
-	ld hl, wIntroSceneFrameCounter
+; scroll up to Charizard silhoutte, flash Johto starters
+	ld hl, wIntroFrameCounter2
 	ld a, [hl]
 	inc [hl]
-	cp $c0
-	jr nc, .done
-	cp $80
-	jr nc, .second_half
-; first half
-	ld c, a
-	and $1f
-	sla a
-	ld [wIntroSceneTimer], a
-	ld a, c
-	and $e0
+	and 1
+	ret z
+	call Intro_CheckSCYEvent
+	ld hl, hSCY
+	ld a, [hl]
+	and a
+	jr z, .next
+	inc [hl]
+	ret
+
+.next
+	ld hl, wIntroJumptableIndex
+	inc [hl]
+	xor a
+	ld [wIntroFrameCounter1], a
+; fallthrough
+
+IntroScene12:
+; load Charizard palettes
+	ld hl, wIntroFrameCounter1
+	ld a, [hl]
+	inc [hl]
 	srl a
+	srl a
+	and 3
+	ld e, a
+	ld d, 0
+	ld hl, .palettes
+	add hl, de
+	ld a, [hl]
+	and a
+	jr z, .next
+	call DmgToCgbBGPals
+	ld e, a
+	ld d, a
+	call DmgToCgbObjPals
+	ret
+
+.next
+	ld hl, wIntroJumptableIndex
+	inc [hl]
+	ld a, $80
+	ld [wIntroFrameCounter1], a
+	ret
+
+.palettes:
+	db %01101010
+	db %10100101
+	db %11100100
+	db %00000000
+
+IntroScene13:
+; Charizard mouth open
+	ld hl, wIntroFrameCounter1
+	ld a, [hl]
+	and a
+	jr z, .next
+	dec [hl]
+	ret
+
+.next
+	ld hl, wIntroJumptableIndex
+	inc [hl]
+	ld a, 1
+	call DrawIntroCharizardGraphic
+	ld a, 4
+	ld [wIntroFrameCounter1], a
+	ret
+
+IntroScene14:
+; Charizard breathing fire
+	ld hl, wIntroFrameCounter1
+	ld a, [hl]
+	and a
+	jr z, .next
+	dec [hl]
+	ret
+
+.next
+	ld hl, wIntroJumptableIndex
+	inc [hl]
+	ld a, 2
+	call DrawIntroCharizardGraphic
+	ld a, 64
+	ld [wIntroFrameCounter1], a
+	xor a
+	ld [wIntroFrameCounter2], a
+	ld de, SFX_GS_INTRO_CHARIZARD_FIREBALL
+	call PlaySFX
+; fallthrough
+
+IntroScene15:
+; Charizard mouth wide open / fireball starts
+	call Intro_AnimateFireball
+	ld hl, wIntroFrameCounter1
+	ld a, [hl]
+	and a
+	jr z, .next
+	dec [hl]
+	ret
+
+.next
+	ld hl, wIntroJumptableIndex
+	inc [hl]
+	xor a
+	ld [wIntroFrameCounter1], a
+	ret
+
+IntroScene16:
+; continue fireball / fade out palettes
+	call Intro_AnimateFireball
+	ld hl, wIntroFrameCounter1
+	ld a, [hl]
+	inc [hl]
 	swap a
-	call CrystalIntro_UnownFade
+	and 7
+	ld e, a
+	ld d, 0
+	ld hl, .palettes
+	add hl, de
+	ld a, [hl]
+	cp -1
+	jr z, .next
+	call DmgToCgbBGPals
+	ld e, a
+	ld d, a
+	call DmgToCgbObjPals
 	ret
 
-.second_half
-; double speed
+.next
+	ld hl, wIntroJumptableIndex
+	inc [hl]
+	ret
+
+.palettes:
+	db %11100100
+	db %10010000
+	db %01000000
+	db %00000000
+	db -1
+
+Intro_BlankTilemapAndBGMap:
+	hlcoord 0, 0
+	ld bc, wTilemapEnd - wTilemap
+	xor a
+	call ByteFill
+	hlbgcoord 0, 0
+	ld bc, vBGMap1 - vBGMap0
+	xor a
+	call ByteFill
+	ret
+
+Intro_CheckSCYEvent:
+	ldh a, [hSCY]
 	ld c, a
-	and $f
-	sla a
-	sla a
-	ld [wIntroSceneTimer], a
-	ld a, c
-	and $70
-	or $40
-	swap a
-	call CrystalIntro_UnownFade
-	ret
+	ld hl, .scy_jumptable
 
-.done
-	call NextIntroScene
-	ret
-
-.PlayUnownSound:
-	ld a, [wIntroSceneFrameCounter]
-	ld c, a
-	ld hl, .UnownSounds
 .loop
 	ld a, [hli]
 	cp -1
 	ret z
 	cp c
-	jr z, .playsound
+	jr z, .value_found
 	inc hl
 	inc hl
 	jr .loop
-.playsound
-	ld a, [hli]
-	ld d, [hl]
-	ld e, a
-	push de
-	call SFXChannelsOff
-	pop de
-	call PlaySFX
-	ret
 
-.UnownSounds:
-	dbw $00, SFX_INTRO_UNOWN_3
-	dbw $20, SFX_INTRO_UNOWN_2
-	dbw $40, SFX_INTRO_UNOWN_1
-	dbw $60, SFX_INTRO_UNOWN_2
-	dbw $80, SFX_INTRO_UNOWN_3
-	dbw $90, SFX_INTRO_UNOWN_2
-	dbw $a0, SFX_INTRO_UNOWN_1
-	dbw $b0, SFX_INTRO_UNOWN_2
+.value_found
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	jp hl
+
+.scy_jumptable
+	dbw $86, Intro_LoadChikoritaPalette
+	dbw $87, Intro_ChikoritaAppears
+	dbw $88, Intro_FlashMonPalette
+	dbw $98, Intro_FlashSilhouette
+	dbw $99, Intro_LoadCyndaquilPalette
+	dbw $af, Intro_CyndaquilAppears
+	dbw $b0, Intro_FlashMonPalette
+	dbw $c0, Intro_FlashSilhouette
+	dbw $c1, Intro_LoadTotodilePalette
+	dbw $d7, Intro_TotodileAppears
+	dbw $d8, Intro_FlashMonPalette
+	dbw $e8, Intro_FlashSilhouette
+	dbw $e9, Intro_LoadCharizardPalette
 	db -1
 
-IntroScene13:
-; Switch scenes again.
-	call Intro_ClearBGPals
-	call ClearSprites
-	call ClearTilemap
-	xor a
-	ldh [hBGMapMode], a
-	ld a, $1
-	ldh [rVBK], a
-	ld hl, IntroBackgroundAttrmap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ld a, $0
-	ldh [rVBK], a
-	ld hl, IntroSuicuneRunGFX
-	ld de, vTiles0 tile $00
-	call Intro_DecompressRequest2bpp_255Tiles
-	ld hl, IntroBackgroundGFX
-	ld de, vTiles2 tile $00
-	call Intro_DecompressRequest2bpp_128Tiles
-	ld hl, IntroBackgroundTilemap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wBGPals1)
-	ldh [rSVBK], a
-	ld hl, IntroBackgroundPalette
-	ld de, wBGPals1
-	ld bc, 16 palettes
-	call CopyBytes
-	ld hl, IntroBackgroundPalette
-	ld de, wBGPals2
-	ld bc, 16 palettes
-	call CopyBytes
-	pop af
-	ldh [rSVBK], a
-	xor a
-	ldh [hSCX], a
-	ldh [hSCY], a
-	ld a, 7
-	ldh [hWX], a
-	ld a, SCREEN_HEIGHT_PX
-	ldh [hWY], a
-	farcall ClearSpriteAnims
-	depixel 13, 11, 4, 0
-	ld a, SPRITE_ANIM_INDEX_INTRO_SUICUNE
-	call InitSpriteAnimStruct
-	ld de, MUSIC_CRYSTAL_OPENING
-	call PlayMusic
-	xor a
-	ld [wGlobalAnimXOffset], a
-	call Intro_SetCGBPalUpdate
-	xor a
-	ld [wIntroSceneFrameCounter], a
-	ld [wIntroSceneTimer], a
-	call NextIntroScene
-	ret
-
-IntroScene14:
-; Suicune runs then jumps.
-	ldh a, [hSCX]
-	sub 10
-	ldh [hSCX], a
-	ld hl, wIntroSceneFrameCounter
-	ld a, [hl]
-	inc [hl]
-	cp $80
-	jr z, .done
-	cp $60
-	jr z, .jump
-	jr nc, .run_after_jump
-	cp $40
-	jr nc, .run
-	ret
-
-.jump
-	ld de, SFX_INTRO_SUICUNE_4
+Intro_ChikoritaAppears:
+	ld de, SFX_GS_INTRO_POKEMON_APPEARS
 	call PlaySFX
-
-.run_after_jump
-	ld a, $1
-	ld [wIntroSceneTimer], a
-	ld a, [wGlobalAnimXOffset]
-	cp $88
-	jr c, .disappear
-	sub $8
-	ld [wGlobalAnimXOffset], a
-	ret
-
-.disappear
-	farcall DeinitializeAllSprites
-	ret
-
-.run
-	ld a, [wGlobalAnimXOffset]
-	sub $2
-	ld [wGlobalAnimXOffset], a
-	ret
-
-.done
-	call NextIntroScene
-	ret
-
-IntroScene15:
-; Transition to a new scene.
-	call Intro_ClearBGPals
-	call ClearSprites
-	call ClearTilemap
-	xor a
-	ldh [hBGMapMode], a
-	ld a, $1
-	ldh [rVBK], a
-	ld hl, IntroSuicuneJumpAttrmap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ld a, $0
-	ldh [rVBK], a
-	ld hl, IntroSuicuneJumpGFX
-	ld de, vTiles2 tile $00
-	call Intro_DecompressRequest2bpp_128Tiles
-	ld hl, IntroUnownBackGFX
-	ld de, vTiles0 tile $00
-	call Intro_DecompressRequest2bpp_128Tiles
-	ld de, IntroGrass4GFX
-	ld hl, vTiles1 tile $00
-	lb bc, BANK(IntroGrass4GFX), 1
-	call Request2bpp
-	ld hl, IntroSuicuneJumpTilemap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	call Intro_LoadTilemap
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wBGPals1)
-	ldh [rSVBK], a
-	ld hl, IntroSuicunePalette
-	ld de, wBGPals1
-	ld bc, 16 palettes
-	call CopyBytes
-	ld hl, IntroSuicunePalette
-	ld de, wBGPals2
-	ld bc, 16 palettes
-	call CopyBytes
-	pop af
-	ldh [rSVBK], a
-	xor a
-	ldh [hSCX], a
-	ld a, SCREEN_HEIGHT_PX
-	ldh [hSCY], a
-	ld a, 7
-	ldh [hWX], a
-	ld a, SCREEN_HEIGHT_PX
-	ldh [hWY], a
-	farcall ClearSpriteAnims
-	call Intro_SetCGBPalUpdate
-	depixel 8, 5
-	ld a, SPRITE_ANIM_INDEX_INTRO_UNOWN_F
+	depixel 22, 1
+	ld a, SPRITE_ANIM_INDEX_GS_INTRO_CHIKORITA
 	call InitSpriteAnimStruct
-	depixel 12, 0
-	ld a, SPRITE_ANIM_INDEX_INTRO_SUICUNE_AWAY
-	call InitSpriteAnimStruct
-	xor a
-	ld [wIntroSceneFrameCounter], a
-	ld [wIntroSceneTimer], a
-	call NextIntroScene
 	ret
 
-IntroScene16:
-; Suicune shows its face. An Unown appears in front.
-	ld hl, wIntroSceneFrameCounter
-	ld a, [hl]
-	inc [hl]
-	cp $80
-	jr nc, .done
-	call Intro_Scene16_AnimateSuicune
-	ldh a, [hSCY]
-	and a
-	ret z
-	add 8
-	ldh [hSCY], a
-	ret
-.done
-	call NextIntroScene
-	ret
-
-IntroScene17:
-; ...
-	call Intro_ClearBGPals
-	call ClearSprites
-	call ClearTilemap
-	xor a
-	ldh [hBGMapMode], a
-	ld a, $1
-	ldh [rVBK], a
-	ld hl, IntroSuicuneCloseAttrmap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ld a, $0
-	ldh [rVBK], a
-	ld hl, IntroSuicuneCloseGFX
-	ld de, vTiles1 tile $00
-	call Intro_DecompressRequest2bpp_255Tiles
-	ld hl, IntroSuicuneCloseTilemap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wBGPals1)
-	ldh [rSVBK], a
-	ld hl, IntroSuicuneClosePalette
-	ld de, wBGPals1
-	ld bc, 16 palettes
-	call CopyBytes
-	ld hl, IntroSuicuneClosePalette
-	ld de, wBGPals2
-	ld bc, 16 palettes
-	call CopyBytes
-	pop af
-	ldh [rSVBK], a
-	xor a
-	ldh [hSCX], a
-	ldh [hSCY], a
-	ld a, 7
-	ldh [hWX], a
-	ld a, SCREEN_HEIGHT_PX
-	ldh [hWY], a
-	farcall ClearSpriteAnims
-	call Intro_SetCGBPalUpdate
-	xor a
-	ld [wIntroSceneFrameCounter], a
-	ld [wIntroSceneTimer], a
-	call NextIntroScene
-	ret
-
-IntroScene18:
-; Suicune close up.
-	ld hl, wIntroSceneFrameCounter
-	ld a, [hl]
-	inc [hl]
-	cp $60
-	jr nc, .done
-	ldh a, [hSCX]
-	cp $60
-	ret z
-	add 8
-	ldh [hSCX], a
-	ret
-.done
-	call NextIntroScene
-	ret
-
-IntroScene19:
-; More setup.
-	call Intro_ClearBGPals
-	call ClearSprites
-	call ClearTilemap
-	xor a
-	ldh [hBGMapMode], a
-	ld a, $1
-	ldh [rVBK], a
-	ld hl, IntroSuicuneBackAttrmap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ld a, $0
-	ldh [rVBK], a
-	ld hl, IntroSuicuneBackGFX
-	ld de, vTiles2 tile $00
-	call Intro_DecompressRequest2bpp_128Tiles
-	ld hl, IntroUnownsGFX
-	ld de, vTiles1 tile $00
-	call Intro_DecompressRequest2bpp_128Tiles
-	ld de, IntroGrass4GFX
-	ld hl, vTiles1 tile $7f
-	lb bc, BANK(IntroGrass4GFX), 1
-	call Request2bpp
-	ld hl, IntroSuicuneBackTilemap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	call Intro_LoadTilemap
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wBGPals1)
-	ldh [rSVBK], a
-	ld hl, IntroSuicunePalette
-	ld de, wBGPals1
-	ld bc, 16 palettes
-	call CopyBytes
-	ld hl, IntroSuicunePalette
-	ld de, wBGPals2
-	ld bc, 16 palettes
-	call CopyBytes
-	pop af
-	ldh [rSVBK], a
-	xor a
-	ldh [hSCX], a
-	ld a, -5 * TILE_WIDTH
-	ldh [hSCY], a
-	ld a, 7
-	ldh [hWX], a
-	ld a, SCREEN_HEIGHT_PX
-	ldh [hWY], a
-	farcall ClearSpriteAnims
-	ld hl, wSpriteAnimDict
-	xor a ; SPRITE_ANIM_DICT_DEFAULT
-	ld [hli], a
-	ld [hl], $7f
-	call Intro_SetCGBPalUpdate
-	depixel 12, 0
-	ld a, SPRITE_ANIM_INDEX_INTRO_SUICUNE_AWAY
-	call InitSpriteAnimStruct
-	xor a
-	ld [wIntroSceneFrameCounter], a
-	ld [wIntroSceneTimer], a
-	call NextIntroScene
-	ret
-
-IntroScene20:
-; Suicune running away. A bunch of Unown appear.
-	ld hl, wIntroSceneFrameCounter
-	ld a, [hl]
-	inc [hl]
-	cp $98
-	jr nc, .finished
-	cp $58
-	ret nc
-	cp $40
-	jr nc, .AppearUnown
-	cp $28
-	ret nc
-	ldh a, [hSCY]
-	inc a
-	ldh [hSCY], a
-	ret
-
-.AppearUnown:
-	sub $18
-	ld c, a
-	and $3
-	cp $3
-	ret nz
-	ld a, c
-	and $1c
-	srl a
-	srl a
-	ld [wIntroSceneTimer], a
-	xor a
-	call Intro_Scene20_AppearUnown
-	ret
-
-.AppearUnownPal2: ; unreferenced
-	ld a, c
-	and $1c
-	srl a
-	srl a
-	ld [wIntroSceneTimer], a
-	ld a, 1
-	call Intro_Scene20_AppearUnown
-	ret
-
-.finished:
-	call NextIntroScene
-	ret
-
-IntroScene21:
-; Suicune gets more distant and turns black.
-	call Intro_ColoredSuicuneFrameSwap
-	ld c, 3
-	call DelayFrames
-	xor a
-	ldh [hBGMapMode], a
-	ld [wIntroSceneFrameCounter], a
-	ld [wIntroSceneTimer], a
-	call NextIntroScene
-	ret
-
-IntroScene22:
-	ld hl, wIntroSceneFrameCounter
-	ld a, [hl]
-	inc [hl]
-	cp $8
-	jr nc, .done
-	ret
-.done
-	farcall DeinitializeAllSprites
-	call NextIntroScene
-	ret
-
-IntroScene23:
-	xor a
-	ld [wIntroSceneFrameCounter], a
-	call NextIntroScene
-	ret
-
-IntroScene24:
-; Fade to white.
-	ld hl, wIntroSceneFrameCounter
-	ld a, [hl]
-	inc [hl]
-	cp $20
-	jr nc, .done
-
-	ld c, a
-	and $3
-	ret nz
-
-	ld a, c
-	and $1c
-	sla a
-	call Intro_Scene24_ApplyPaletteFade
-	ret
-
-.done
-	ld a, $40
-	ld [wIntroSceneFrameCounter], a
-	call NextIntroScene
-	ret
-
-IntroScene25:
-; Wait around a bit.
-	ld a, [wIntroSceneFrameCounter]
-	dec a
-	jr z, .done
-	ld [wIntroSceneFrameCounter], a
-	ret
-
-.done
-	call NextIntroScene
-	ret
-
-IntroScene26:
-; Load the final scene.
-	call ClearBGPalettes
-	call ClearSprites
-	call ClearTilemap
-	xor a
-	ldh [hBGMapMode], a
-	ld a, $1
-	ldh [rVBK], a
-	ld hl, IntroCrystalUnownsAttrmap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ld a, $0
-	ldh [rVBK], a
-	ld hl, IntroCrystalUnownsGFX
-	ld de, vTiles2 tile $00
-	call Intro_DecompressRequest2bpp_128Tiles
-	ld hl, IntroCrystalUnownsTilemap
-	debgcoord 0, 0
-	call Intro_DecompressRequest2bpp_64Tiles
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wBGPals1)
-	ldh [rSVBK], a
-	ld hl, IntroCrystalUnownsPalette
-	ld de, wBGPals1
-	ld bc, 16 palettes
-	call CopyBytes
-	ld hl, IntroCrystalUnownsPalette
-	ld de, wBGPals2
-	ld bc, 16 palettes
-	call CopyBytes
-	pop af
-	ldh [rSVBK], a
-	xor a
-	ldh [hSCX], a
-	ldh [hSCY], a
-	ld a, 7
-	ldh [hWX], a
-	ld a, SCREEN_HEIGHT_PX
-	ldh [hWY], a
-	farcall ClearSpriteAnims
-	call Intro_SetCGBPalUpdate
-	xor a
-	ld [wIntroSceneFrameCounter], a
-	ld [wIntroSceneTimer], a
-	call NextIntroScene
-	ret
-
-IntroScene27:
-; Spell out C R Y S T A L with Unown.
-	ld hl, wIntroSceneTimer
-	inc [hl]
-	ld hl, wIntroSceneFrameCounter
-	ld a, [hl]
-	inc [hl]
-	cp $80
-	jr nc, .done
-
-	ld c, a
-	and $f
-	ld [wIntroSceneTimer], a
-	ld a, c
-	and $70
-	swap a
-	call Intro_FadeUnownWordPals
-	ret
-
-.done
-	call NextIntroScene
-	ld a, $80
-	ld [wIntroSceneFrameCounter], a
-	ret
-
-IntroScene28:
-; Cut out when the music ends, and lead into the title screen.
-	ld hl, wIntroSceneFrameCounter
-	ld a, [hl]
-	and a
-	jr z, .done
-	dec [hl]
-	cp $18
-	jr z, .clear
-	cp $8
-	ret nz
-
-	ld de, SFX_INTRO_WHOOSH
+Intro_CyndaquilAppears:
+	ld de, SFX_GS_INTRO_POKEMON_APPEARS
 	call PlaySFX
+	depixel 22, 20
+	ld a, SPRITE_ANIM_INDEX_GS_INTRO_CYNDAQUIL
+	call InitSpriteAnimStruct
 	ret
 
-.clear
-	call ClearBGPalettes
+Intro_TotodileAppears:
+	ld de, SFX_GS_INTRO_POKEMON_APPEARS
+	call PlaySFX
+	depixel 22, 1
+	ld a, SPRITE_ANIM_INDEX_GS_INTRO_TOTODILE
+	call InitSpriteAnimStruct
 	ret
 
-.done
-	ld hl, wJumptableIndex
-	set 7, [hl]
+Intro_FlashMonPalette:
+	lb de, %11100100, %11100100
+	call DmgToCgbObjPals
+	xor a
+	call DmgToCgbBGPals
 	ret
 
-Intro_Scene24_ApplyPaletteFade:
-; load the (a)th palette from .FadePals to all wBGPals2
-	ld hl, .FadePals
-	add l
-	ld l, a
-	ld a, $0
-	adc h
-	ld h, a
+Intro_FlashSilhouette:
+	lb de, %11111111, %11111111
+	call DmgToCgbObjPals
+	ld a, %00111111
+	call DmgToCgbBGPals
+	ret
 
-	ldh a, [rSVBK]
+Intro_LoadChikoritaPalette:
+	ld c, CHIKORITA
+	farcall Intro_LoadMonPalette
+	ret
+
+Intro_LoadCyndaquilPalette:
+	ld c, CYNDAQUIL
+	farcall Intro_LoadMonPalette
+	ret
+
+Intro_LoadTotodilePalette:
+	ld c, TOTODILE
+	farcall Intro_LoadMonPalette
+	ret
+
+Intro_LoadCharizardPalette:
+	ldh a, [hCGB]
+	and a
+	ld c, CYNDAQUIL
+	jr nz, .got_mon
+	ld c, CHARIZARD
+.got_mon
+	farcall Intro_LoadMonPalette
+	ret
+
+DrawIntroCharizardGraphic:
 	push af
-	ld a, BANK(wBGPals2)
-	ldh [rSVBK], a
-	ld de, wBGPals2
-	ld b, 8 ; number of BG pals
+	hlcoord 0, 6
+	ld c, SCREEN_WIDTH * 8
+	xor a
 .loop1
-	push hl
-	ld c, 1 palettes
-.loop2
-	ld a, [hli]
-	ld [de], a
-	inc de
+	ld [hli], a
 	dec c
-	jr nz, .loop2
-	pop hl
-	dec b
 	jr nz, .loop1
+
 	pop af
-	ldh [rSVBK], a
-	ld a, TRUE
-	ldh [hCGBPalUpdate], a
-	ret
-
-.FadePals:
-INCLUDE "gfx/intro/fade.pal"
-
-CrystalIntro_InitUnownAnim:
-	push de
-	ld a, SPRITE_ANIM_INDEX_INTRO_UNOWN
-	call InitSpriteAnimStruct
-	ld hl, SPRITEANIMSTRUCT_VAR1
-	add hl, bc
-	ld [hl], $8
-	ld a, SPRITE_ANIM_FRAMESET_INTRO_UNOWN_4
-	call ReinitSpriteAnimFrame
-	pop de
-
-	push de
-	ld a, SPRITE_ANIM_INDEX_INTRO_UNOWN
-	call InitSpriteAnimStruct
-	ld hl, SPRITEANIMSTRUCT_VAR1
-	add hl, bc
-	ld [hl], $18
-	ld a, SPRITE_ANIM_FRAMESET_INTRO_UNOWN_3
-	call ReinitSpriteAnimFrame
-	pop de
-
-	push de
-	ld a, SPRITE_ANIM_INDEX_INTRO_UNOWN
-	call InitSpriteAnimStruct
-	ld hl, SPRITEANIMSTRUCT_VAR1
-	add hl, bc
-	ld [hl], $28
-	ld a, SPRITE_ANIM_FRAMESET_INTRO_UNOWN_1
-	call ReinitSpriteAnimFrame
-	pop de
-
-	ld a, SPRITE_ANIM_INDEX_INTRO_UNOWN
-	call InitSpriteAnimStruct
-	ld hl, SPRITEANIMSTRUCT_VAR1
-	add hl, bc
-	ld [hl], $38
-	ld a, SPRITE_ANIM_FRAMESET_INTRO_UNOWN_2
-	call ReinitSpriteAnimFrame
-	ret
-
-CrystalIntro_UnownFade:
-	add a
-	add a
-	add a
 	ld e, a
 	ld d, 0
-	ld hl, wBGPals2
+	ld hl, .charizard_data
+rept 5
 	add hl, de
+endr
+	ld e, [hl]
 	inc hl
+	ld c, [hl]
 	inc hl
-	ld a, [wIntroSceneTimer]
-	and %111111
-	cp %011111
-	jr z, .okay
-	jr c, .okay
-	ld c, a
-	ld a, %111111
-	sub c
-.okay
-
-	ld c, a
-	ld b, 0
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wBGPals2)
-	ldh [rSVBK], a
-
-	push hl
-	push bc
-	ld hl, wBGPals2
-	ld bc, 8 palettes
-	xor a
-	call ByteFill
-	pop bc
-	pop hl
-
-	push hl
-	ld hl, .BWFade
-	add hl, bc
-	add hl, bc
-	ld a, [hli]
-	ld d, [hl]
-	ld e, a
-	pop hl
-	ld a, e
-	ld [hli], a
-	ld a, d
-	ld [hli], a
-
-	push hl
-	ld hl, .BlackLBlueFade
-	add hl, bc
-	add hl, bc
-	ld a, [hli]
-	ld d, [hl]
-	ld e, a
-	pop hl
-	ld a, e
-	ld [hli], a
-	ld a, d
-	ld [hli], a
-
-	push hl
-	ld hl, .BlackBlueFade
-	add hl, bc
-	add hl, bc
-	ld a, [hli]
-	ld d, [hl]
-	ld e, a
-	pop hl
-	ld a, e
-	ld [hli], a
-	ld a, d
-	ld [hli], a
-
-	pop af
-	ldh [rSVBK], a
-	ld a, TRUE
-	ldh [hCGBPalUpdate], a
-	ret
-
-.BWFade:
-; Fade between black and white.
-for hue, 32
-	RGB hue, hue, hue
-endr
-
-.BlackLBlueFade:
-; Fade between black and light blue.
-for hue, 32
-	RGB 0, hue / 2, hue
-endr
-
-.BlackBlueFade:
-; Fade between black and blue.
-for hue, 32
-	RGB 0, 0, hue
-endr
-
-Intro_Scene20_AppearUnown:
-; Spawn the palette for the nth Unown
-	and a
-	jr nz, .load_pal_2
-
-	ld hl, .pal1
-	jr .got_pointer
-
-.load_pal_2
-	ld hl, .pal2
-
-.got_pointer
-	ld a, [wIntroSceneTimer]
-	and $7
-	add a
-	add a
-	add a
-	ld c, a
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wBGPals2)
-	ldh [rSVBK], a
-
-	push bc
-	ld de, wBGPals2
-
-	ld a, c
-	add e
-	ld e, a
-	ld a, $0
-	adc d
-	ld d, a
-
-	ld bc, 1 palettes
-	call CopyBytes
-	pop bc
-
-	ld de, wBGPals1
-	ld a, c
-	add e
-	ld e, a
-	ld a, $0
-	adc d
-	ld d, a
-
-	ld bc, 1 palettes
-	call CopyBytes
-
-	pop af
-	ldh [rSVBK], a
-	ld a, TRUE
-	ldh [hCGBPalUpdate], a
-	ret
-
-.pal1:
-INCLUDE "gfx/intro/unown_1.pal"
-
-.pal2:
-INCLUDE "gfx/intro/unown_2.pal"
-
-Intro_FadeUnownWordPals:
-	add a
-	add a
-	add a
-	ld e, a
-	ld d, 0
-	ld hl, wBGPals2
-	add hl, de
-rept 4
+	ld b, [hl]
 	inc hl
-endr
-	ld a, [wIntroSceneTimer]
-	add a
-	ld c, a
-	ld b, 0
-
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wBGPals2)
-	ldh [rSVBK], a
-
-	push hl
-	ld hl, .FastFadePalettes
-	add hl, bc
 	ld a, [hli]
-	ld d, [hl]
-	ld e, a
-	pop hl
-	ld a, e
-	ld [hli], a
-	ld a, d
-	ld [hli], a
-
-	push hl
-	ld hl, .SlowFadePalettes
-	add hl, bc
-	ld a, [hli]
-	ld d, [hl]
-	ld e, a
-	pop hl
-	ld a, e
-	ld [hli], a
-	ld a, d
-	ld [hli], a
-
-	pop af
-	ldh [rSVBK], a
-	ld a, TRUE
-	ldh [hCGBPalUpdate], a
-	ret
-
-.FastFadePalettes:
-DEF hue = 31
-rept 8
-	RGB hue, hue, hue
-	DEF hue -= 1
-	RGB hue, hue, hue
-	DEF hue -= 2
-endr
-
-.SlowFadePalettes:
-DEF hue = 31
-rept 16
-	RGB hue, hue, hue
-	DEF hue -= 1
-endr
-
-Intro_LoadTilemap:
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wDecompressScratch)
-	ldh [rSVBK], a
-
-	ld hl, wDecompressScratch
-	decoord 0, 0
-	ld b, SCREEN_HEIGHT
-.row
-	ld c, SCREEN_WIDTH
-.col
-	ld a, [hli]
-	ld [de], a
-	inc de
-	dec c
-	jr nz, .col
-	ld a, BG_MAP_WIDTH - SCREEN_WIDTH
-	add l
+	ld h, [hl]
 	ld l, a
-	ld a, 0
-	adc h
-	ld h, a
+	ld a, e
+
+.loop2_outer
+	push bc
+	push hl
+.loop2_inner
+	ld [hli], a
+	inc a
+	dec c
+	jr nz, .loop2_inner
+
+	pop hl
+	ld bc, SCREEN_WIDTH
+	add hl, bc
+	pop bc
 	dec b
-	jr nz, .row
+	jr nz, .loop2_outer
 
-	pop af
-	ldh [rSVBK], a
-	ret
-
-Intro_Scene16_AnimateSuicune:
-	ld a, [wIntroSceneFrameCounter]
-	and $3
-	jr z, Intro_ColoredSuicuneFrameSwap
-	cp $3
-	jr z, .PrepareForSuicuneSwap
-	ret
-
-.PrepareForSuicuneSwap:
+	ld a, 1
+	ldh [hBGMapMode], a
+	call DelayFrame
+	call DelayFrame
+	call DelayFrame
 	xor a
 	ldh [hBGMapMode], a
 	ret
 
-Intro_ColoredSuicuneFrameSwap:
-	hlcoord 0, 0
-	ld bc, SCREEN_HEIGHT * SCREEN_WIDTH
-.loop
+.charizard_data
+; db vtile offset, width, height; dwcoord x, y
+; mouth closed
+	db $00, 8, 8
+	dwcoord 10, 6
+; mouth open
+	db $40, 9, 8
+	dwcoord 9, 6
+; breathing fire
+	db $88, 9, 8
+	dwcoord 8, 6
+
+Intro_AnimateFireball:
+	ld hl, wIntroFrameCounter2
 	ld a, [hl]
-	and a
-	jr z, .skip
-	cp $80
-	jr nc, .skip
-	xor $8
-	ld [hl], a
-.skip
-	inc hl
+	inc [hl]
+	and 3
+	ret nz
+	depixel 12, 10, 4, 4
+	ld a, SPRITE_ANIM_INDEX_GS_INTRO_FIREBALL
+	call InitSpriteAnimStruct
+	ld hl, hSCX
+	dec [hl]
+	ld hl, wGlobalAnimXOffset
+	inc [hl]
+	ret
+
+Copy128Tiles: ; unreferenced
+	ld bc, 128 tiles
+.loop
+	ld a, [de]
+	inc de
+	ld [hli], a
 	dec bc
 	ld a, c
 	or b
 	jr nz, .loop
-	ld a, $1
-	ldh [hBGMapMode], a
 	ret
 
-Intro_RustleGrass:
-	ld a, [wIntroSceneFrameCounter]
-	cp 36
-	ret nc
-	and $c
-	srl a
+Intro_DrawBackground:
+	ld b, BG_MAP_WIDTH / 2
+.outer_loop
+	push hl
+	ld c, BG_MAP_HEIGHT / 2
+.inner_loop
+	call Intro_Draw2x2Tiles
+	dec c
+	jr nz, .inner_loop
+	pop hl
+	push bc
+	ld bc, 2 * BG_MAP_WIDTH
+	add hl, bc
+	pop bc
+	dec b
+	jr nz, .outer_loop
+	ret
+
+Intro_Draw2x2Tiles:
+; load tile data into a 2x2 section of the bgmap or tilemap
+	push bc
+	push de
+	push hl
+	push hl
+	push hl
+
+	ld a, [de]
+	ld l, a
+	ld h, 0
+	ld a, [wIntroTilesPointer + 0]
 	ld e, a
-	ld d, 0
-	ld hl, .RustlingGrassPointers
+	ld a, [wIntroTilesPointer + 1]
+	ld d, a
+	add hl, hl
+	add hl, hl
 	add hl, de
-	ld a, [hli]
-	ld [wRequested2bppSource], a
-	ld a, [hli]
-	ld [wRequested2bppSource + 1], a
-	ld a, LOW(vTiles2 tile $09)
-	ld [wRequested2bppDest], a
-	ld a, HIGH(vTiles2 tile $09)
-	ld [wRequested2bppDest + 1], a
-	ld a, 4
-	ld [wRequested2bppSize], a
-	ret
-
-.RustlingGrassPointers:
-	dw IntroGrass1GFX
-	dw IntroGrass2GFX
-	dw IntroGrass3GFX
-	dw IntroGrass2GFX
-
-Intro_SetCGBPalUpdate:
-	ld a, TRUE
-	ldh [hCGBPalUpdate], a
-	ret
-
-Intro_ClearBGPals:
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wBGPals2)
-	ldh [rSVBK], a
-
-	ld hl, wBGPals2
-	ld bc, 16 palettes
-	xor a
-	call ByteFill
-
-	pop af
-	ldh [rSVBK], a
-	ld a, TRUE
-	ldh [hCGBPalUpdate], a
-	call DelayFrame
-	call DelayFrame
-	ret
-
-Intro_DecompressRequest2bpp_128Tiles:
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wDecompressScratch)
-	ldh [rSVBK], a
-
-	push de
-	ld de, wDecompressScratch
-	call Decompress
+	ld e, l
+	ld d, h
 	pop hl
-
-	ld de, wDecompressScratch
-	lb bc, $01, $80
-	call Request2bpp
-
-	pop af
-	ldh [rSVBK], a
-	ret
-
-Intro_DecompressRequest2bpp_255Tiles:
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wDecompressScratch)
-	ldh [rSVBK], a
-
-	push de
-	ld de, wDecompressScratch
-	call Decompress
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld a, [de]
+	inc de
+	ld [hli], a
 	pop hl
+	ld bc, BG_MAP_WIDTH
+	add hl, bc
+	ld a, [de]
+	inc de
+	ld [hli], a
+	ld a, [de]
+	inc de
+	ld [hli], a
 
-	ld de, wDecompressScratch
-	lb bc, $01, $ff
-	call Request2bpp
-
-	pop af
-	ldh [rSVBK], a
-	ret
-
-Intro_DecompressRequest2bpp_64Tiles:
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wDecompressScratch)
-	ldh [rSVBK], a
-
-	push de
-	ld de, wDecompressScratch
-	call Decompress
 	pop hl
-
-	ld de, wDecompressScratch
-	lb bc, $01, $40
-	call Request2bpp
-
-	pop af
-	ldh [rSVBK], a
+	inc hl
+	inc hl
+	pop de
+	inc de
+	pop bc
 	ret
 
 Intro_ResetLYOverrides:
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wLYOverrides)
-	ldh [rSVBK], a
-
 	ld hl, wLYOverrides
-	ld bc, wLYOverridesEnd - wLYOverrides
 	xor a
-	call ByteFill
-
-	pop af
-	ldh [rSVBK], a
-	ld a, LOW(rSCX)
-	ldh [hLCDCPointer], a
+	ld c, wLYOverrides2 - wLYOverrides
+.loop
+	ld [hli], a
+	dec c
+	jr nz, .loop
 	ret
 
-Intro_PerspectiveScrollBG:
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wLYOverrides)
-	ldh [rSVBK], a
-	; Scroll the grass every frame.
-	; Scroll the trees every other frame and at half speed.
-	; This creates an illusion of perspective.
-	ld a, [wIntroSceneFrameCounter]
-	and $1
-	jr z, .skip
-	; trees in the back
-	ld hl, wLYOverrides
-	ld a, [hl]
-	inc a
-	ld bc, $5f
-	call ByteFill
-.skip
-	; grass in the front
-	ld hl, wLYOverrides + $5f
-	ld a, [hl]
-	inc a
-	inc a
-	ld bc, $31
-	call ByteFill
-	ld a, [wLYOverrides + 0]
-	ldh [hSCX], a
-	pop af
-	ldh [rSVBK], a
-	ret
+Intro_WaterGFX1:
+INCBIN "gfx/intro/water1.2bpp.lz"
 
-IntroSuicuneRunGFX:
-INCBIN "gfx/intro/suicune_run.2bpp.lz"
+Intro_WaterTilemap:
+INCBIN "gfx/intro/water.tilemap"
 
-IntroPichuWooperGFX:
-INCBIN "gfx/intro/pichu_wooper.2bpp.lz"
+Intro_WaterMeta:
+INCBIN "gfx/intro/water.bin"
 
-IntroBackgroundGFX:
-INCBIN "gfx/intro/background.2bpp.lz"
+Intro_WaterGFX2:
+INCBIN "gfx/intro/water2.2bpp.lz"
 
-IntroBackgroundTilemap:
-INCBIN "gfx/intro/background.tilemap.lz"
+Intro_GrassGFX1:
+INCBIN "gfx/intro/grass1.2bpp.lz"
 
-IntroBackgroundAttrmap:
-INCBIN "gfx/intro/background.attrmap.lz"
+Intro_GrassTilemap:
+INCBIN "gfx/intro/grass.tilemap"
 
-IntroBackgroundPalette:
-INCLUDE "gfx/intro/background.pal"
+Intro_GrassMeta:
+INCBIN "gfx/intro/grass.bin"
 
-IntroUnownsGFX:
-INCBIN "gfx/intro/unowns.2bpp.lz"
+Intro_GrassGFX2:
+INCBIN "gfx/intro/grass2.2bpp.lz"
 
-IntroPulseGFX:
-INCBIN "gfx/intro/pulse.2bpp.lz"
+Intro_FireGFX1:
+INCBIN "gfx/intro/fire1.2bpp.lz"
 
-IntroUnownATilemap:
-INCBIN "gfx/intro/unown_a.tilemap.lz"
+Intro_FireGFX2:
+INCBIN "gfx/intro/fire2.2bpp.lz"
 
-IntroUnownAAttrmap:
-INCBIN "gfx/intro/unown_a.attrmap.lz"
-
-IntroUnownHITilemap:
-INCBIN "gfx/intro/unown_hi.tilemap.lz"
-
-IntroUnownHIAttrmap:
-INCBIN "gfx/intro/unown_hi.attrmap.lz"
-
-IntroUnownsTilemap:
-INCBIN "gfx/intro/unowns.tilemap.lz"
-
-IntroUnownsAttrmap:
-INCBIN "gfx/intro/unowns.attrmap.lz"
-
-IntroUnownsPalette:
-INCLUDE "gfx/intro/unowns.pal"
-
-IntroCrystalUnownsGFX:
-INCBIN "gfx/intro/crystal_unowns.2bpp.lz"
-
-IntroCrystalUnownsTilemap:
-INCBIN "gfx/intro/crystal_unowns.tilemap.lz"
-
-IntroCrystalUnownsAttrmap:
-INCBIN "gfx/intro/crystal_unowns.attrmap.lz"
-
-IntroCrystalUnownsPalette:
-INCLUDE "gfx/intro/crystal_unowns.pal"
-
-IntroSuicuneCloseGFX:
-INCBIN "gfx/intro/suicune_close.2bpp.lz"
-
-IntroSuicuneCloseTilemap:
-INCBIN "gfx/intro/suicune_close.tilemap.lz"
-
-IntroSuicuneCloseAttrmap:
-INCBIN "gfx/intro/suicune_close.attrmap.lz"
-
-IntroSuicuneClosePalette:
-INCLUDE "gfx/intro/suicune_close.pal"
-
-IntroSuicuneJumpGFX:
-INCBIN "gfx/intro/suicune_jump.2bpp.lz"
-
-IntroSuicuneBackGFX:
-INCBIN "gfx/intro/suicune_back.2bpp.lz"
-
-IntroSuicuneJumpTilemap:
-INCBIN "gfx/intro/suicune_jump.tilemap.lz"
-
-IntroSuicuneJumpAttrmap:
-INCBIN "gfx/intro/suicune_jump.attrmap.lz"
-
-IntroSuicuneBackTilemap:
-INCBIN "gfx/intro/suicune_back.tilemap.lz"
-
-IntroSuicuneBackAttrmap:
-INCBIN "gfx/intro/suicune_back.attrmap.lz"
-
-IntroSuicunePalette:
-INCLUDE "gfx/intro/suicune.pal"
-
-IntroUnownBackGFX:
-INCBIN "gfx/intro/unown_back.2bpp.lz"
-
-IntroGrass1GFX:
-INCBIN "gfx/intro/grass1.2bpp"
-IntroGrass2GFX:
-INCBIN "gfx/intro/grass2.2bpp"
-IntroGrass3GFX:
-INCBIN "gfx/intro/grass3.2bpp"
-IntroGrass4GFX:
-INCBIN "gfx/intro/grass4.2bpp"
+Intro_FireGFX3:
+INCBIN "gfx/intro/fire3.2bpp.lz"
