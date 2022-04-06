@@ -43,12 +43,19 @@ DoAnimFrame:
 	dw AnimSeq_EZChatCursor
 	dw AnimSeq_MobileTradeSentPulse
 	dw AnimSeq_MobileTradeOTPulse
-	dw AnimSeq_IntroSuicune
-	dw AnimSeq_IntroPichuWooper
+	dw AnimSeq_GSIntroBubble
+	dw AnimSeq_GSIntroShellder
 	dw AnimSeq_Celebi
-	dw AnimSeq_IntroUnown
-	dw AnimSeq_IntroUnownF
-	dw AnimSeq_IntroSuicuneAway
+	dw AnimSeq_GSIntroMagikarp
+	dw AnimSeq_UnusedIntroAerodactyl
+	dw AnimSeq_GSIntroLapras
+	dw AnimSeq_GSIntroNote
+	dw AnimSeq_GSIntroJigglypuff
+	dw AnimSeq_GSIntroPikachu
+	dw AnimSeq_GSIntroPikachuTail
+	dw AnimSeq_GSIntroFireball
+	dw AnimSeq_GSIntroChikoritaTotodile
+	dw AnimSeq_GSIntroCyndaquil
 	assert_table_length NUM_SPRITE_ANIM_SEQS
 
 AnimSeq_Null:
@@ -139,6 +146,7 @@ AnimSeq_GSTitleTrail:
 	dw .zero
 	dw .one
 
+IF DEF(_GOLD)
 .zero
 	call AnimSeqs_IncAnonJumptableIndex
 
@@ -195,6 +203,38 @@ AnimSeq_GSTitleTrail:
 	ld [hl], a
 	ret
 
+ELIF DEF(_SILVER)
+.zero
+	ld a, [wIntroSceneTimer]
+	and $30
+	swap a
+	add 3
+	ld d, a
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	ld a, [wIntroSceneTimer]
+	and $30
+	swap a
+	add 7
+	add [hl]
+	ld [hl], a
+	call AnimSeqs_Sine
+
+	ld hl, SPRITEANIMSTRUCT_YOFFSET
+	add hl, bc
+	ld [hl], a
+
+.one
+	ld hl, SPRITEANIMSTRUCT_XCOORD
+	add hl, bc
+	ld a, [hl]
+	cp $a4
+	jr nc, .delete
+	add 4
+	ld [hl], a
+	ret
+ENDC
+
 .delete
 	call DeinitializeSprite
 	ret
@@ -203,9 +243,15 @@ AnimSeq_GSIntroHoOhLugia:
 	ld hl, SPRITEANIMSTRUCT_VAR1
 	add hl, bc
 	ld a, [hl]
+IF DEF(_GOLD)
 	inc a
 	ld [hl], a
 	ld d, 2
+ELIF DEF(_SILVER)
+	dec a
+	ld [hl], a
+	ld d, 8
+ENDC
 	call AnimSeqs_Sine
 
 	ld hl, SPRITEANIMSTRUCT_YOFFSET
@@ -747,60 +793,475 @@ AnimSeq_MobileTradeOTPulse:
 	farcall MobileTradeAnim_AnimateOTPulse
 	ret
 
-AnimSeq_IntroSuicune:
-	ld a, [wIntroSceneTimer]
-	and a
-	jr nz, .continue
-	ret
+AnimSeq_GSIntroBubble:
+	ld hl, SPRITEANIMSTRUCT_VAR2
+	add hl, bc
+	ld a, [hl]
+	inc [hl]
+	cp $40
+	jr nc, .delete
 
-.continue
 	ld hl, SPRITEANIMSTRUCT_YOFFSET
 	add hl, bc
-	ld [hl], $0
+	dec [hl]
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	ld a, [hl]
+	add 2
+	ld [hl], a
+	ld d, 8
+	call AnimSeqs_Sine
+	ld hl, SPRITEANIMSTRUCT_XOFFSET
+	add hl, bc
+	ld [hl], a
+	ret
+
+.delete
+	call DeinitializeSprite
+	ret
+
+AnimSeq_GSIntroShellder:
+	ld a, [wGlobalAnimYOffset]
+	ld hl, SPRITEANIMSTRUCT_YCOORD
+	add hl, bc
+	add [hl]
+	cp $b0
+	ret c
+	call DeinitializeSprite
+	ret
+
+AnimSeq_GSIntroMagikarp:
+	call AnimSeqs_AnonJumptable
+	jp hl
+.anon_dw
+	dw .zero
+	dw .one
+
+.zero
+	call AnimSeqs_IncAnonJumptableIndex
+
+	ld hl, SPRITEANIMSTRUCT_INDEX
+	add hl, bc
+	ld a, [hl]
+
+	and $3
+	swap a
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	ld [hl], a
+
+.one
+	lb de, 2, 1
+	ldh a, [hSGB]
+	and a
+	jr z, .sgb
+	lb de, 4, 2
+.sgb
+	ld hl, SPRITEANIMSTRUCT_XOFFSET
+	add hl, bc
+	ld a, [hl]
+	cp $f0
+	jr nc, .delete
+
+	add d
+	ld [hl], a
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	ld a, [hl]
+	add e
+	ld [hl], a
+	ld d, 8
+	call AnimSeqs_Sine
+	ld hl, SPRITEANIMSTRUCT_YOFFSET
+	add hl, bc
+	ld [hl], a
+	ret
+
+.delete
+	call DeinitializeSprite
+	ret
+
+AnimSeq_UnusedIntroAerodactyl:
+	ld hl, SPRITEANIMSTRUCT_XCOORD
+	add hl, bc
+	ld a, [hl]
+	cp $b0
+	jr nc, .delete
+
+	inc [hl]
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	ld a, [hl]
+	inc [hl]
+	and $1
+	ret z
+
+	ld hl, SPRITEANIMSTRUCT_YCOORD
+	add hl, bc
+	inc [hl]
+	ret
+
+.delete
+	call DeinitializeSprite
+	ret
+
+AnimSeq_GSIntroLapras:
+	call AnimSeqs_AnonJumptable
+	jp hl
+.anon_dw
+	dw .zero
+	dw .one
+	dw .two
+
+.zero
+	call .update_y_offset
+	ret z
+
+	ld hl, SPRITEANIMSTRUCT_XCOORD
+	add hl, bc
+	ld a, [hl]
+	cp $58
+	jr c, .next1
+
+	dec [hl]
+	ret
+
+.next1
+	call AnimSeqs_IncAnonJumptableIndex
+	ld hl, SPRITEANIMSTRUCT_VAR2
+	add hl, bc
+	ld [hl], $b0
+	ret
+
+.one
+	call .update_y_offset
+	ld hl, SPRITEANIMSTRUCT_VAR2
+	add hl, bc
+	ld a, [hl]
+	and a
+	jr z, .next2
+
+	dec [hl]
+	ret
+
+.next2
+	call AnimSeqs_IncAnonJumptableIndex
+	ret
+
+.two
+	call .update_y_offset
+	ret z
+	ld hl, SPRITEANIMSTRUCT_XCOORD
+	add hl, bc
+	ld a, [hl]
+	cp $d0
+	jr z, .delete
+	dec [hl]
+	ret
+
+.delete
+	call DeinitializeSprite
+	ld a, TRUE
+	ld [wIntroSpriteStateFlag], a
+	ret
+
+.update_y_offset
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	ld a, [hl]
+	inc [hl]
+	ld d, 4
+	call AnimSeqs_Sine
+	ld hl, SPRITEANIMSTRUCT_YOFFSET
+	add hl, bc
+	ld [hl], a
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	ld a, [hl]
+	and $1
+	ret
+
+AnimSeq_GSIntroNote:
+	call AnimSeqs_AnonJumptable
+	jp hl
+.anon_dw
+	dw .zero
+	dw .one
+
+.zero
+	call AnimSeqs_IncAnonJumptableIndex
+	ld hl, 0
+	add hl, bc
+	ld a, [hl]
+	and $1
+	swap a
+	sla a
+
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	ld [hl], a
+
+.one
+	ld hl, SPRITEANIMSTRUCT_XOFFSET
+	add hl, bc
+	ld a, [hl]
+	cp $80
+	jr nc, .delete
+	inc [hl]
+
+	ld d, 4
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	ld a, [hl]
+	add 2
+	ld [hl], a
+	call AnimSeqs_Sine
+
+	ld hl, SPRITEANIMSTRUCT_YOFFSET
+	add hl, bc
+	ld [hl], a
+
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	and $2
+	ret z
+
+	ld hl, SPRITEANIMSTRUCT_YCOORD
+	add hl, bc
+	dec [hl]
+	ret
+
+.delete
+	call DeinitializeSprite
+	ret
+
+AnimSeq_GSIntroJigglypuff:
+	call AnimSeqs_AnonJumptable
+	jp hl
+.anon_dw
+	dw .zero
+	dw .one
+
+.zero
+	ld a, [wIntroSpriteStateFlag]
+	and a
+	ret z
+	call AnimSeqs_IncAnonJumptableIndex
+	ld a, SPRITE_ANIM_FRAMESET_GS_INTRO_JIGGLYPUFF_2
+	call _ReinitSpriteAnimFrame
+
+.one
+	ld hl, SPRITEANIMSTRUCT_XCOORD
+	add hl, bc
+	ld a, [hl]
+	cp $d0
+	jr z, .delete
+	dec [hl]
+	dec [hl]
+	ret
+
+.delete
+	call DeinitializeSprite
+	ret
+
+AnimSeq_GSIntroPikachu:
+	call AnimSeqs_AnonJumptable
+	jp hl
+.anon_dw
+	dw .zero
+	dw .one
+	dw .two
+	dw .three
+
+.zero
+	ld hl, SPRITEANIMSTRUCT_XCOORD
+	add hl, bc
+	ld a, [hl]
+	cp $80
+	jr z, .next1
+	dec [hl]
+	ret
+
+.next1
+	call AnimSeqs_IncAnonJumptableIndex
+	ld hl, SPRITEANIMSTRUCT_VAR2
+	add hl, bc
+	ld [hl], $30
+	ld a, SPRITE_ANIM_FRAMESET_GS_INTRO_PIKACHU_2
+	call _ReinitSpriteAnimFrame
+	ret
+
+.one
+	ld hl, SPRITEANIMSTRUCT_VAR2
+	add hl, bc
+	ld a, [hl]
+	and a
+	jr z, .next2
+	dec [hl]
+	ret
+
+.next2
+	call AnimSeqs_IncAnonJumptableIndex
+	ld a, SPRITE_ANIM_FRAMESET_GS_INTRO_PIKACHU_3
+	call _ReinitSpriteAnimFrame
+	ret
+
+.two
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	ld a, [hl]
+	add 4
+	ld [hl], a
+	ld d, 4
+	call AnimSeqs_Sine
+	ld hl, SPRITEANIMSTRUCT_YOFFSET
+	add hl, bc
+	ld [hl], a
+	ld hl, SPRITEANIMSTRUCT_XCOORD
+	add hl, bc
+	ld a, [hl]
+	cp $50
+	jr z, .next3
+	dec [hl]
+	dec [hl]
+	dec [hl]
+	dec [hl]
+	ret
+
+.next3
+	ld a, TRUE
+	ld [wIntroSpriteStateFlag], a
+	call AnimSeqs_IncAnonJumptableIndex
+	ret
+
+.three
+	ld hl, SPRITEANIMSTRUCT_XCOORD
+	add hl, bc
+	ld a, [hl]
+	cp $d0
+	jr z, .delete
+	dec [hl]
+	dec [hl]
+	ret
+
+.delete
+	call DeinitializeSprite
+	ret
+
+AnimSeq_GSIntroPikachuTail:
+	call AnimSeqs_AnonJumptable
+	jp hl
+.anon_dw
+	dw .zero
+	dw .one
+	dw .two
+
+.zero
+	ld hl, SPRITEANIMSTRUCT_XCOORD
+	add hl, bc
+	ld a, [hl]
+	cp $80
+	jr z, .next1
+	dec [hl]
+	ret
+
+.next1
+	call AnimSeqs_IncAnonJumptableIndex
+
+	ld hl, SPRITEANIMSTRUCT_VAR2
+	add hl, bc
+	ld [hl], $30
+	ld a, SPRITE_ANIM_FRAMESET_GS_INTRO_PIKACHU_TAIL_2
+	call _ReinitSpriteAnimFrame
+	ret
+
+.one
+	ld hl, SPRITEANIMSTRUCT_VAR2
+	add hl, bc
+	ld a, [hl]
+	and a
+	jr z, .next2
+	dec [hl]
+	cp $20
+	ret nz
+	ld a, SPRITE_ANIM_FRAMESET_GS_INTRO_PIKACHU_TAIL
+	call _ReinitSpriteAnimFrame
+	ret
+
+.next2
+	call AnimSeqs_IncAnonJumptableIndex
+	ret
+
+.two
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	ld a, [hl]
+	add 4
+	ld [hl], a
+	ld d, 4
+	call AnimSeqs_Sine
+
+	ld hl, SPRITEANIMSTRUCT_YOFFSET
+	add hl, bc
+	ld [hl], a
+
+	ld hl, SPRITEANIMSTRUCT_XCOORD
+	add hl, bc
+	ld a, [hl]
+	cp $d0
+	jr z, .delete
+	dec [hl]
+	dec [hl]
+	ld a, [wIntroSpriteStateFlag]
+	and a
+	ret nz
+	dec [hl]
+	dec [hl]
+	ret
+
+.delete
+	call DeinitializeSprite
+	ret
+
+AnimSeq_GSIntroFireball:
+	call AnimSeqs_AnonJumptable
+	jp hl
+.anon_dw
+	dw .zero
+	dw .one
+
+.zero
+	call AnimSeqs_IncAnonJumptableIndex
+	ld hl, 0
+	add hl, bc
+	ld a, [hl]
+	and $4
+	sla a
+	ld e, a
+	ld a, [hl]
+	and $3
+	swap a
+	add e
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	ld [hl], a
+	ret
+
+.one
+	ld hl, SPRITEANIMSTRUCT_XCOORD
+	add hl, bc
+	dec [hl]
+	dec [hl]
+	dec [hl]
+	dec [hl]
 
 	ld hl, SPRITEANIMSTRUCT_VAR2
 	add hl, bc
 	ld a, [hl]
-	add 2
+	ld d, a
+	add 8
 	ld [hl], a
-	xor $ff
-	inc a
-	ld d, 32
-	call AnimSeqs_Sine
 
-	ld hl, SPRITEANIMSTRUCT_YOFFSET
-	add hl, bc
-	ld [hl], a
-	ld a, SPRITE_ANIM_FRAMESET_INTRO_SUICUNE_2
-	call _ReinitSpriteAnimFrame
-	ret
-
-AnimSeq_IntroPichuWooper:
-	ld hl, SPRITEANIMSTRUCT_VAR1
-	add hl, bc
-	ld a, [hl]
-	cp 20
-	jr nc, .done
-	add 2
-	ld [hl], a
-	xor $ff
-	inc a
-	ld d, 32
-	call AnimSeqs_Sine
-
-	ld hl, SPRITEANIMSTRUCT_YOFFSET
-	add hl, bc
-	ld [hl], a
-.done
-	ret
-
-AnimSeq_IntroUnown:
-	ld hl, SPRITEANIMSTRUCT_JUMPTABLE_INDEX
-	add hl, bc
-	ld d, [hl]
-	inc [hl]
-	inc [hl]
-	inc [hl]
 	ld hl, SPRITEANIMSTRUCT_VAR1
 	add hl, bc
 	ld a, [hl]
@@ -820,19 +1281,93 @@ AnimSeq_IntroUnown:
 	ld [hl], a
 	ret
 
-AnimSeq_IntroUnownF:
-	ld a, [wSlotsDelay]
-	cp $40
-	ret nz
-	ld a, SPRITE_ANIM_FRAMESET_INTRO_UNOWN_F_2
-	call _ReinitSpriteAnimFrame
+AnimSeq_GSIntroChikoritaTotodile:
+	call AnimSeqs_AnonJumptable
+	jp hl
+.anon_dw
+	dw .zero
+	dw .one
+
+.zero
+	call AnimSeqs_IncAnonJumptableIndex
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	ld [hl], $30
+	ld hl, SPRITEANIMSTRUCT_VAR2
+	add hl, bc
+	ld [hl], $30
 	ret
 
-AnimSeq_IntroSuicuneAway:
-	ld hl, SPRITEANIMSTRUCT_YCOORD
+.one
+; flash down/right
+	ld hl, SPRITEANIMSTRUCT_VAR1
 	add hl, bc
 	ld a, [hl]
-	add 16
+	cp $3c
+	ret nc
+
+	inc [hl]
+	inc [hl]
+	ld d, $90
+	call AnimSeqs_Sine
+
+	ld hl, SPRITEANIMSTRUCT_YOFFSET
+	add hl, bc
+	ld [hl], a
+
+	ld hl, SPRITEANIMSTRUCT_VAR2
+	add hl, bc
+	ld a, [hl]
+	inc [hl]
+	inc [hl]
+	ld d, $90
+	call AnimSeqs_Cosine
+
+	ld hl, SPRITEANIMSTRUCT_XOFFSET
+	add hl, bc
+	ld [hl], a
+	ret
+
+AnimSeq_GSIntroCyndaquil:
+	call AnimSeqs_AnonJumptable
+	jp hl
+.anon_dw
+	dw .zero
+	dw .one
+
+.zero
+	call AnimSeqs_IncAnonJumptableIndex
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	ld [hl], $30
+	ld hl, SPRITEANIMSTRUCT_VAR2
+	add hl, bc
+	ld [hl], $10
+	ret
+
+.one
+; flash down/left
+	ld hl, SPRITEANIMSTRUCT_VAR1
+	add hl, bc
+	ld a, [hl]
+	cp $3c
+	ret nc
+	inc [hl]
+	inc [hl]
+	ld d, $90
+	call AnimSeqs_Sine
+	ld hl, SPRITEANIMSTRUCT_YOFFSET
+	add hl, bc
+	ld [hl], a
+	ld hl, SPRITEANIMSTRUCT_VAR2
+	add hl, bc
+	ld a, [hl]
+	inc [hl]
+	inc [hl]
+	ld d, $90
+	call AnimSeqs_Cosine
+	ld hl, SPRITEANIMSTRUCT_XOFFSET
+	add hl, bc
 	ld [hl], a
 	ret
 

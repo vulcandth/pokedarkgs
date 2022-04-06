@@ -7,6 +7,7 @@ ENDM
 SpriteAnimOAMData:
 ; entries correspond to SPRITE_ANIM_OAMSET_* constants (see constants/sprite_anim_constants.asm)
 	table_width 3, SpriteAnimOAMData
+	; vtile offset, data pointer
 	spriteanimoam $00, .OAMData_RedWalk                  ; SPRITE_ANIM_OAMSET_RED_WALK_1
 	spriteanimoam $04, .OAMData_RedWalk                  ; SPRITE_ANIM_OAMSET_RED_WALK_2
 	spriteanimoam $4c, .OAMData_1x1_Palette0             ; SPRITE_ANIM_OAMSET_GS_INTRO_BUBBLE_1
@@ -93,11 +94,19 @@ SpriteAnimOAMData:
 	spriteanimoam $00, .OAMData_CutTree4                 ; SPRITE_ANIM_OAMSET_CUT_TREE_4
 	spriteanimoam $00, .OAMData_1x1_Palette0             ; SPRITE_ANIM_OAMSET_EGG_CRACK
 	spriteanimoam $01, .OAMData_1x1_Palette0             ; SPRITE_ANIM_OAMSET_EGG_HATCH
-	spriteanimoam $00, .OAMData_GSIntroHoOhLugia1        ; SPRITE_ANIM_OAMSET_GS_INTRO_HO_OH_LUGIA_1
-	spriteanimoam $00, .OAMData_GSIntroHoOhLugia2        ; SPRITE_ANIM_OAMSET_GS_INTRO_HO_OH_LUGIA_2
-	spriteanimoam $00, .OAMData_GSIntroHoOhLugia3        ; SPRITE_ANIM_OAMSET_GS_INTRO_HO_OH_LUGIA_3
-	spriteanimoam $00, .OAMData_GSIntroHoOhLugia4        ; SPRITE_ANIM_OAMSET_GS_INTRO_HO_OH_LUGIA_4
-	spriteanimoam $00, .OAMData_GSIntroHoOhLugia5        ; SPRITE_ANIM_OAMSET_GS_INTRO_HO_OH_LUGIA_5
+IF DEF(_GOLD)
+	spriteanimoam $00, .OAMData_GSIntroHoOh1             ; SPRITE_ANIM_OAMSET_GS_INTRO_HO_OH_1
+	spriteanimoam $00, .OAMData_GSIntroHoOh2             ; SPRITE_ANIM_OAMSET_GS_INTRO_HO_OH_2
+	spriteanimoam $00, .OAMData_GSIntroHoOh3             ; SPRITE_ANIM_OAMSET_GS_INTRO_HO_OH_3
+	spriteanimoam $00, .OAMData_GSIntroHoOh4             ; SPRITE_ANIM_OAMSET_GS_INTRO_HO_OH_4
+	spriteanimoam $00, .OAMData_GSIntroHoOh5             ; SPRITE_ANIM_OAMSET_GS_INTRO_HO_OH_5
+ELIF DEF(_SILVER)
+	spriteanimoam $00, .OAMData_GSIntroLugia1            ; SPRITE_ANIM_OAMSET_GS_INTRO_HO_OH_1
+	spriteanimoam $20, .OAMData_GSIntroLugia1            ; SPRITE_ANIM_OAMSET_GS_INTRO_HO_OH_2
+	spriteanimoam $40, .OAMData_GSIntroLugia2            ; SPRITE_ANIM_OAMSET_GS_INTRO_HO_OH_3
+	spriteanimoam $60, .OAMData_GSIntroLugia2            ; SPRITE_ANIM_OAMSET_GS_INTRO_HO_OH_4
+	spriteanimoam $00, .OAMData_GSIntroLugia1            ; SPRITE_ANIM_OAMSET_GS_INTRO_HO_OH_5
+ENDC
 	spriteanimoam $04, .OAMData_Tree                     ; SPRITE_ANIM_OAMSET_HEADBUTT_TREE_2
 	spriteanimoam $00, .OAMData_EZChatCursor1            ; SPRITE_ANIM_OAMSET_EZCHAT_CURSOR_1
 	spriteanimoam $00, .OAMData_EZChatCursor2            ; SPRITE_ANIM_OAMSET_EZCHAT_CURSOR_2
@@ -593,7 +602,8 @@ SpriteAnimOAMData:
 	dbsprite -2,  0,  0,  0, $02, PAL_OW_TREE
 	dbsprite  1,  0,  0,  0, $03, PAL_OW_TREE
 
-.OAMData_GSIntroHoOhLugia1:
+IF DEF(_GOLD)
+.OAMData_GSIntroHoOh1:
 	db 19
 	dbsprite -4, -1,  0,  0, $00, 0
 	dbsprite -3, -2,  0,  0, $02, 0
@@ -615,7 +625,7 @@ SpriteAnimOAMData:
 	dbsprite  3, -2,  0,  0, $22, 0
 	dbsprite  3,  0,  0,  0, $24, 0
 
-.OAMData_GSIntroHoOhLugia2:
+.OAMData_GSIntroHoOh2:
 	db 16
 	dbsprite -4, -1,  0,  0, $00, 0
 	dbsprite -3, -2,  0,  0, $02, 0
@@ -634,7 +644,7 @@ SpriteAnimOAMData:
 	dbsprite  3, -2,  0,  0, $22, 0
 	dbsprite  3,  0,  0,  0, $24, 0
 
-.OAMData_GSIntroHoOhLugia3:
+.OAMData_GSIntroHoOh3:
 	db 15
 	dbsprite -4, -1,  0,  0, $00, 0
 	dbsprite -3, -2,  0,  0, $02, 0
@@ -652,7 +662,7 @@ SpriteAnimOAMData:
 	dbsprite  3, -2,  0,  0, $22, 0
 	dbsprite  3,  0,  0,  0, $24, 0
 
-.OAMData_GSIntroHoOhLugia4:
+.OAMData_GSIntroHoOh4:
 	db 17
 	dbsprite -4, -1,  0,  0, $00, 0
 	dbsprite -3, -2,  0,  0, $02, 0
@@ -672,7 +682,7 @@ SpriteAnimOAMData:
 	dbsprite  3, -2,  0,  0, $22, 0
 	dbsprite  3,  0,  0,  0, $24, 0
 
-.OAMData_GSIntroHoOhLugia5:
+.OAMData_GSIntroHoOh5:
 	db 17
 	dbsprite -4, -1,  0,  0, $00, 0
 	dbsprite -3, -2,  0,  0, $02, 0
@@ -695,6 +705,111 @@ SpriteAnimOAMData:
 .OAMData_GSTitleTrail:
 	db 1
 	dbsprite -1, -1,  4,  4, $00, 1 | OBP_NUM
+
+ELIF DEF(_SILVER)
+.OAMData_GSIntroLugia1:
+	db 16
+	dbsprite -5, -2,  0,  0, $00, 0
+	dbsprite -5,  0,  0,  0, $02, 0
+	dbsprite -4, -2,  0,  0, $04, 0
+	dbsprite -4,  0,  0,  0, $06, 0
+	dbsprite -3, -1,  0,  0, $08, 0
+	dbsprite -2, -1,  0,  0, $0a, 0
+	dbsprite -1, -2,  0,  0, $0c, 0
+	dbsprite -1,  0,  0,  0, $0e, 0
+	dbsprite  0, -2,  0,  0, $10, 0
+	dbsprite  0,  0,  0,  0, $12, 0
+	dbsprite  1, -2,  0,  0, $14, 0
+	dbsprite  1,  0,  0,  0, $16, 0
+	dbsprite  2, -2,  0,  0, $18, 0
+	dbsprite  2,  0,  0,  0, $1a, 0
+	dbsprite  3, -1,  0,  0, $1c, 0
+	dbsprite  4, -1,  0,  0, $1e, 0
+
+.OAMData_GSIntroLugia2:
+	db 16
+	dbsprite -5, -2,  0,  0, $00, 0
+	dbsprite -5,  0,  0,  0, $02, 0
+	dbsprite -4, -2,  0,  0, $04, 0
+	dbsprite -4,  0,  0,  0, $06, 0
+	dbsprite -3, -1,  0,  0, $08, 0
+	dbsprite -2, -1,  0,  0, $0a, 0
+	dbsprite -1, -2,  0,  0, $0c, 0
+	dbsprite -1,  0,  0,  0, $0e, 0
+	dbsprite  0, -2,  0,  0, $10, 0
+	dbsprite  0,  0,  0,  0, $12, 0
+	dbsprite  1, -2,  0,  0, $14, 0
+	dbsprite  1,  0,  0,  0, $16, 0
+	dbsprite  2, -2,  0,  0, $18, 0
+	dbsprite  2,  0,  0,  0, $1a, 0
+	dbsprite  3, -2,  0,  0, $1c, 0
+	dbsprite  4, -2,  0,  0, $1e, 0
+
+.OAMData_GSIntroLugia3: ; unreferenced
+	db 17
+	dbsprite -5, -2,  0,  0, $3c, 0
+	dbsprite -5,  0,  0,  0, $3e, 0
+	dbsprite -4, -2,  0,  0, $40, 0
+	dbsprite -4,  0,  0,  0, $42, 0
+	dbsprite -3, -1,  0,  0, $44, 0
+	dbsprite -2, -2,  0,  0, $46, 0
+	dbsprite -2,  0,  0,  0, $48, 0
+	dbsprite -1, -2,  0,  0, $4a, 0
+	dbsprite -1,  0,  0,  0, $78, 0
+	dbsprite  0, -2,  0,  0, $4c, 0
+	dbsprite  0,  0,  0,  0, $7a, 0
+	dbsprite  1, -2,  0,  0, $4e, 0
+	dbsprite  1,  0,  0,  0, $50, 0
+	dbsprite  2, -2,  0,  0, $52, 0
+	dbsprite  2,  0,  0,  0, $54, 0
+	dbsprite  3, -1,  0,  0, $56, 0
+	dbsprite  4, -1,  0,  0, $58, 0
+
+.OAMData_GSIntroLugia4: ; unreferenced
+	db 17
+	dbsprite -5, -2,  0,  0, $5a, 0
+	dbsprite -5,  0,  0,  0, $5c, 0
+	dbsprite -4, -2,  0,  0, $5e, 0
+	dbsprite -4,  0,  0,  0, $60, 0
+	dbsprite -3, -1,  0,  0, $62, 0
+	dbsprite -2, -2,  0,  0, $64, 0
+	dbsprite -2,  0,  0,  0, $66, 0
+	dbsprite -1, -2,  0,  0, $68, 0
+	dbsprite -1,  0,  0,  0, $78, 0
+	dbsprite  0, -2,  0,  0, $6a, 0
+	dbsprite  0,  0,  0,  0, $7a, 0
+	dbsprite  1, -2,  0,  0, $6c, 0
+	dbsprite  1,  0,  0,  0, $6e, 0
+	dbsprite  2, -2,  0,  0, $70, 0
+	dbsprite  2,  0,  0,  0, $72, 0
+	dbsprite  3, -1,  0,  0, $74, 0
+	dbsprite  4, -1,  0,  0, $76, 0
+
+.OAMData_GSIntroLugia5: ; unreferenced
+	db 17
+	dbsprite -5, -2,  0,  0, $5a, 0
+	dbsprite -5,  0,  0,  0, $5c, 0
+	dbsprite -4, -2,  0,  0, $5e, 0
+	dbsprite -4,  0,  0,  0, $60, 0
+	dbsprite -3, -1,  0,  0, $62, 0
+	dbsprite -2, -2,  0,  0, $64, 0
+	dbsprite -2,  0,  0,  0, $66, 0
+	dbsprite -1, -2,  0,  0, $68, 0
+	dbsprite -1,  0,  0,  0, $78, 0
+	dbsprite  0, -2,  0,  0, $6a, 0
+	dbsprite  0,  0,  0,  0, $7a, 0
+	dbsprite  1, -2,  0,  0, $6c, 0
+	dbsprite  1,  0,  0,  0, $6e, 0
+	dbsprite  2, -2,  0,  0, $70, 0
+	dbsprite  2,  0,  0,  0, $72, 0
+	dbsprite  3, -1,  0,  0, $74, 0
+	dbsprite  4, -1,  0,  0, $76, 0
+
+.OAMData_GSTitleTrail:
+	db 2
+	dbsprite -1, -1,  0,  0, $00, 0
+	dbsprite  0, -1,  0,  0, $02, 0
+ENDC
 
 .OAMData_EZChatCursor1:
 	db 12
