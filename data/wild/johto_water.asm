@@ -38,7 +38,11 @@ JohtoWaterWildMons:
 	end_water_wildmons
 
 	def_water_wildmons SLOWPOKE_WELL_B2F
+	IF DEF(_GOLD)
+	db 4 percent ; encounter rate
+	ELIF DEF(_SILVER)
 	db 2 percent ; encounter rate
+	ENDC
 	dbw 15, SLOWPOKE
 	dbw 20, SLOWPOKE
 	dbw 20, SLOWBRO
@@ -53,22 +57,22 @@ JohtoWaterWildMons:
 
 	def_water_wildmons MOUNT_MORTAR_1F_OUTSIDE
 	db 4 percent ; encounter rate
+	dbw 20, GOLDEEN
 	dbw 15, GOLDEEN
-	dbw 20, MARILL
 	dbw 20, SEAKING
 	end_water_wildmons
 
 	def_water_wildmons MOUNT_MORTAR_2F_INSIDE
 	db 2 percent ; encounter rate
 	dbw 20, GOLDEEN
-	dbw 25, MARILL
+	dbw 25, GOLDEEN
 	dbw 25, SEAKING
 	end_water_wildmons
 
 	def_water_wildmons MOUNT_MORTAR_B1F
 	db 2 percent ; encounter rate
+	dbw 20, GOLDEEN
 	dbw 15, GOLDEEN
-	dbw 20, MARILL
 	dbw 20, SEAKING
 	end_water_wildmons
 
@@ -96,7 +100,7 @@ JohtoWaterWildMons:
 	def_water_wildmons SILVER_CAVE_ROOM_2
 	db 2 percent ; encounter rate
 	dbw 35, SEAKING
-	dbw 35, GOLDUCK
+	dbw 40, SEAKING
 	dbw 35, GOLDEEN
 	end_water_wildmons
 
@@ -119,13 +123,6 @@ JohtoWaterWildMons:
 	dbw 15, MAGIKARP
 	dbw 10, MAGIKARP
 	dbw 10, DRATINI
-	end_water_wildmons
-
-	def_water_wildmons OLIVINE_PORT
-	db 2 percent ; encounter rate
-	dbw 20, TENTACOOL
-	dbw 15, TENTACOOL
-	dbw 20, TENTACRUEL
 	end_water_wildmons
 
 	def_water_wildmons ROUTE_30
@@ -172,9 +169,15 @@ JohtoWaterWildMons:
 
 	def_water_wildmons ROUTE_41
 	db 6 percent ; encounter rate
+	IF DEF(_GOLD)
 	dbw 20, TENTACOOL
 	dbw 20, TENTACRUEL
 	dbw 20, MANTINE
+	ELIF DEF(_SILVER)
+	dbw 20, TENTACOOL
+	dbw 20, TENTACRUEL
+	dbw 15, TENTACOOL
+	ENDC
 	end_water_wildmons
 
 	def_water_wildmons ROUTE_42
@@ -248,7 +251,11 @@ JohtoWaterWildMons:
 	end_water_wildmons
 
 	def_water_wildmons LAKE_OF_RAGE
+	IF DEF(_GOLD)
+	db 4 percent ; encounter rate
+	ELIF DEF(_SILVER)
 	db 6 percent ; encounter rate
+	ENDC
 	dbw 15, MAGIKARP
 	dbw 10, MAGIKARP
 	dbw 15, GYARADOS
@@ -266,6 +273,13 @@ JohtoWaterWildMons:
 	dbw 35, POLIWHIRL
 	dbw 40, POLIWHIRL
 	dbw 35, POLIWAG
+	end_water_wildmons
+
+	def_water_wildmons OLIVINE_PORT
+	db 2 percent ; encounter rate
+	dbw 20, TENTACOOL
+	dbw 15, TENTACOOL
+	dbw 20, TENTACRUEL
 	end_water_wildmons
 
 	db -1 ; end

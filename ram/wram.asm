@@ -3213,8 +3213,11 @@ wYanmaMapNumber:: db
 wPlayerMonSelection:: ds 3
 wdc5f:: db
 wdc60:: db
-
-	ds 18
+wMarillMapNumber:: db
+wMarillMapGroup:: db
+wSnubbullMapNumber:: db
+wSnubbullMapGroup:: db
+	ds 14
 
 wStepCount:: db
 wPoisonStepCount:: db

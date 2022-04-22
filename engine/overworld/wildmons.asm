@@ -415,7 +415,7 @@ _GrassWildmonLookup:
 	ld de, KantoGrassWildMons
 	call _JohtoWildmonCheck
 	ld bc, GRASS_WILDDATA_LENGTH
-	jr _NormalWildmonOK
+	jp _NormalWildmonOK
 
 _WaterWildmonLookup:
 	ld hl, SwarmWaterWildMons
@@ -459,11 +459,45 @@ _SwarmWildmonCheck:
 	ld hl, wSwarmFlags
 	bit SWARMFLAGS_YANMA_SWARM_F, [hl]
 	pop hl
-	jr z, _NoSwarmWildmon
+	jr z, .CheckSnubbull
 	ld a, [wYanmaMapGroup]
 	cp d
-	jr nz, _NoSwarmWildmon
+	jr nz, .CheckSnubbull
 	ld a, [wYanmaMapNumber]
+	cp e
+	jr nz, .CheckSnubbull
+	call LookUpWildmonsForMapDE
+	jr nc, _NoSwarmWildmon
+	scf
+	ret
+
+.CheckSnubbull:
+	push hl
+	ld hl, wSwarmFlags
+	bit SWARMFLAGS_SNUBBULL_SWARM_F, [hl]
+	pop hl
+	jr z, .CheckMarill
+	ld a, [wSnubbullMapGroup]
+	cp d
+	jr nz, .CheckMarill
+	ld a, [wSnubbullMapNumber]
+	cp e
+	jr nz, .CheckMarill
+	call LookUpWildmonsForMapDE
+	jr nc, _NoSwarmWildmon
+	scf
+	ret
+
+.CheckMarill:
+	push hl
+	ld hl, wSwarmFlags
+	bit SWARMFLAGS_MARILL_SWARM_F, [hl]
+	pop hl
+	jr z, _NoSwarmWildmon
+	ld a, [wMarillMapGroup]
+	cp d
+	jr nz, _NoSwarmWildmon
+	ld a, [wMarillMapNumber]
 	cp e
 	jr nz, _NoSwarmWildmon
 	call LookUpWildmonsForMapDE
