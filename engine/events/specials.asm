@@ -286,8 +286,12 @@ ActivateFishingSwarm:
 
 StoreSwarmMapIndices::
 	ld a, c
-	and a
-	jr nz, .yanma
+	cp SWARM_YANMA
+	jr z, .yanma
+	cp SWARM_SNUBBULL
+	jr z, .snubbull
+	cp SWARM_MARILL
+	jr z, .marill
 ; swarm dark cave violet entrance
 	ld a, d
 	ld [wDunsparceMapGroup], a
@@ -300,6 +304,20 @@ StoreSwarmMapIndices::
 	ld [wYanmaMapGroup], a
 	ld a, e
 	ld [wYanmaMapNumber], a
+	ret
+
+.snubbull
+	ld a, d
+	ld [wSnubbullMapGroup], a
+	ld a, e
+	ld [wSnubbullMapNumber], a
+	ret
+
+.marill
+	ld a, d
+	ld [wMarillMapGroup], a
+	ld a, e
+	ld [wMarillMapNumber], a
 	ret
 
 CheckPokerus:

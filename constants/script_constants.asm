@@ -253,8 +253,10 @@ DEF NUM_DECODESCS EQU const_value
 ; swarm arguments
 ; StoreSwarmMapIndices arguments
 	const_def
-	const SWARM_DUNSPARCE ; 0
-	const SWARM_YANMA     ; 1
+	const SWARM_YANMA     ; 0
+	const SWARM_SNUBBULL  ; 1
+	const SWARM_DUNSPARCE ; 2
+	const SWARM_MARILL    ; 3
 
 ; ActivateFishingSwarm setval arguments
 	const_def

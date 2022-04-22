@@ -884,6 +884,16 @@ ArnieSwarmScript:
 	promptbutton
 	sjump PhoneScript_HangUpText_Male
 
+ChadSwarmScript:
+	farwritetext ChadSwarmText
+	promptbutton
+	sjump PhoneScript_HangUpText_Male
+
+ParrySwarmScript:
+	farwritetext ParrySwarmText
+	promptbutton
+	sjump PhoneScript_HangUpText_Male
+
 RalphItemScript:
 	farwritetext RalphItemText
 	promptbutton

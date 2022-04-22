@@ -69,6 +69,24 @@ ChadHangUpText:
 	text "See you later!"
 	done
 
+ChadSwarmText:
+	text "Boy, am I glad I"
+	line "caught you!"
+
+	para "A whole bunch of"
+	line "@"
+	text_ram wStringBuffer4
+	text " have"
+
+	para "appeared around"
+	line "@"
+	text_ram wStringBuffer5
+	text "!"
+
+	para "You have to see"
+	line "this!"
+	done
+
 ChadBlueGossipText:
 	text "Do you know BLUE?"
 
@@ -242,4 +260,17 @@ ChadReminderText:
 
 	para "Hurry over--I'm"
 	line "waiting."
+	done
+
+ChadHurryText:
+	text "Hello? Are you"
+	line "coming or what?"
+
+	para "You're missing out"
+	line "on seeing all the"
+
+	para "SNUBBULL!"
+
+	para "Get down to ROUTE"
+	line "38 right now!"
 	done
