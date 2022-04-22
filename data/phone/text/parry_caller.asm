@@ -47,6 +47,24 @@ ParryBattleRematchText:
 	text "!"
 	done
 
+ParrySwarmText:
+	text "Boy, am I glad I"
+	line "caught you!"
+
+	para "A whole bunch of"
+	line "@"
+	text_ram wStringBuffer4
+	text " have"
+
+	para "appeared around"
+	line "@"
+	text_ram wStringBuffer5
+	text "!"
+
+	para "You have to see"
+	line "this!"
+	done
+
 ParryHangUpText:
 	text "OK, give me a call"
 	line "again!"
@@ -66,4 +84,17 @@ ParryHaventYouGottenToText:
 	para "Waiting here isn't"
 	line "bad, but I'd sure"
 	cont "like to battle!"
+	done
+
+ParryHurryText:
+	text "Hello? Are you"
+	line "coming or what?"
+
+	para "You're missing out"
+	line "on seeing all the"
+
+	para "MARILL!"
+
+	para "Get down to ROUTE"
+	line "45 right now!"
 	done
