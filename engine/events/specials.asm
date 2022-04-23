@@ -90,7 +90,11 @@ NameRival:
 	ret
 
 .DefaultName:
+IF DEF(_GOLD)
 	db "SILVER@"
+ELIF DEF(_SILVER)
+	db "GOLD@"
+ENDC
 
 NameRater:
 	farcall _NameRater
