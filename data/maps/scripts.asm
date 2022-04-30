@@ -192,7 +192,7 @@ INCLUDE "maps/Route12SuperRodHouse.asm"
 SECTION "Map Scripts 11", ROMX
 
 INCLUDE "maps/EcruteakTinTowerEntrance.asm"
-INCLUDE "maps/WiseTriosRoom.asm"
+INCLUDE "maps/EcruteakTinTowerBackEntrance.asm"
 INCLUDE "maps/EcruteakPokecenter1F.asm"
 INCLUDE "maps/EcruteakLugiaSpeechHouse.asm"
 INCLUDE "maps/DanceTheater.asm"

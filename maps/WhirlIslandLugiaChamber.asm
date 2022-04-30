@@ -30,12 +30,23 @@ Lugia:
 	pause 15
 	closetext
 	setevent EVENT_FOUGHT_LUGIA
+	checkver
+	iftrue .Silver
 	loadvar VAR_BATTLETYPE, BATTLETYPE_FORCEITEM
-	loadwildmon LUGIA, 60
+	loadwildmon LUGIA, 70
 	startbattle
 	disappear WHIRLISLANDLUGIACHAMBER_LUGIA
 	reloadmapafterbattle
 	end
+
+.Silver:
+	loadvar VAR_BATTLETYPE, BATTLETYPE_FORCEITEM
+	loadwildmon LUGIA, 40
+	startbattle
+	disappear WHIRLISLANDLUGIACHAMBER_LUGIA
+	reloadmapafterbattle
+	end
+
 
 LugiaText:
 	text "Gyaaas!"
