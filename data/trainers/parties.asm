@@ -4708,30 +4708,6 @@ SageGroup:
 	dw HOOTHOOT
 	db -1 ; end
 
-	next_list_item ; SAGE (10)
-	db "GAKU@", TRAINERTYPE_NORMAL
-	db 32
-	dw NOCTOWL
-	db 32
-	dw FLAREON
-	db -1 ; end
-
-	next_list_item ; SAGE (11)
-	db "MASA@", TRAINERTYPE_NORMAL
-	db 32
-	dw NOCTOWL
-	db 32
-	dw JOLTEON
-	db -1 ; end
-
-	next_list_item ; SAGE (12)
-	db "KOJI@", TRAINERTYPE_NORMAL
-	db 32
-	dw NOCTOWL
-	db 32
-	dw VAPOREON
-	db -1 ; end
-
 	end_list_items
 
 MediumGroup:

@@ -24,6 +24,8 @@ PewterCityBugCatcherScript:
 PewterCityGrampsScript:
 	faceplayer
 	opentext
+	checkver
+	iftrue .RainbowWing
 	checkevent EVENT_GOT_SILVER_WING
 	iftrue .GotSilverWing
 	writetext PewterCityGrampsText
@@ -36,6 +38,17 @@ PewterCityGrampsScript:
 .GotSilverWing:
 	writetext PewterCityGrampsText_GotSilverWing
 	waitbutton
+	closetext
+	end
+
+.RainbowWing:
+	checkevent EVENT_GOT_RAINBOW_WING
+	iftrue .GotSilverWing
+	writetext PewterCityGrampsText
+	promptbutton
+	verbosegiveitem RAINBOW_WING
+	setevent EVENT_GOT_RAINBOW_WING
+	setevent EVENT_TEAM_ROCKET_DISBANDED
 	closetext
 	end
 

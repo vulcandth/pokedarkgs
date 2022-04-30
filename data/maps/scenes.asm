@@ -43,7 +43,6 @@ MapScenes::
 	scene_var ROUTE_34,                                    wRoute34SceneID ; unused
 	scene_var ROUTE_34_ILEX_FOREST_GATE,                   wRoute34IlexForestGateSceneID ; unused
 	scene_var ECRUTEAK_TIN_TOWER_ENTRANCE,                 wEcruteakTinTowerEntranceSceneID
-	scene_var WISE_TRIOS_ROOM,                             wWiseTriosRoomSceneID
 	scene_var ECRUTEAK_POKECENTER_1F,                      wEcruteakPokecenter1FSceneID
 	scene_var ECRUTEAK_GYM,                                wEcruteakGymSceneID
 	scene_var MAHOGANY_TOWN,                               wMahoganyTownSceneID
