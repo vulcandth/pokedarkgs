@@ -1,36 +1,3 @@
-BeastsCheck:
-; Check if the player owns all three legendary beasts.
-; They must exist in either party or PC, and have the player's OT and ID.
-; Return the result in wScriptVar.
-
-	ld hl, RAIKOU
-	call GetPokemonIDFromIndex
-	ld [wScriptVar], a
-	call CheckOwnMonAnywhere
-	jr nc, .notexist
-
-	ld hl, ENTEI
-	call GetPokemonIDFromIndex
-	ld [wScriptVar], a
-	call CheckOwnMonAnywhere
-	jr nc, .notexist
-
-	ld hl, SUICUNE
-	call GetPokemonIDFromIndex
-	ld [wScriptVar], a
-	call CheckOwnMonAnywhere
-	jr nc, .notexist
-
-	; they exist
-	ld a, 1
-	ld [wScriptVar], a
-	ret
-
-.notexist
-	xor a
-	ld [wScriptVar], a
-	ret
-
 MonCheck:
 ; Check if the player owns any Pokémon of the species in wScriptVar.
 ; Return the result in wScriptVar.

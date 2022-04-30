@@ -120,17 +120,26 @@ RadioTower5FRocketBossScript:
 	opentext
 	writetext RadioTower5FDirectorThankYouText
 	promptbutton
-	verbosegiveitem CLEAR_BELL
-	writetext RadioTower5FDirectorDescribeClearBellText
+	checkver
+	iftrue .SilverWing
+	verbosegiveitem RAINBOW_WING
+	writetext RadioTower5FDirectorDescribeRainbowWingText
 	waitbutton
 	closetext
 	setscene SCENE_RADIOTOWER5F_NOOP
 	setmapscene ECRUTEAK_TIN_TOWER_ENTRANCE, SCENE_ECRUTEAKTINTOWERENTRANCE_SAGE_BLOCKS
-	setevent EVENT_GOT_CLEAR_BELL
+	setevent EVENT_GOT_RAINBOW_WING
 	setevent EVENT_TEAM_ROCKET_DISBANDED
-	sjump .UselessJump
+	sjump .GotWing
 
-.UselessJump:
+.SilverWing:
+	verbosegiveitem SILVER_WING
+	writetext RadioTower5FDirectorDescribeSilverWingText
+	waitbutton
+	closetext
+	setscene SCENE_RADIOTOWER5F_NOOP
+	setevent EVENT_GOT_SILVER_WING
+.GotWing:
 	applymovement RADIOTOWER5F_DIRECTOR, RadioTower5FDirectorWalksOut
 	playsound SFX_EXIT_BUILDING
 	disappear RADIOTOWER5F_DIRECTOR
@@ -238,9 +247,11 @@ FakeDirectorTextAfter:
 	done
 
 Executivef1SeenText:
-	text "Remember me from"
-	line "the HIDEOUT in"
-	cont "MAHOGANY TOWN?"
+	text "Hi, little boy."
+	line "Remember me from"
+
+	para "the HIDEOUT in"
+	line "MAHOGANY TOWN?"
 
 	para "I lost then, but I"
 	line "won't this time."
@@ -321,7 +332,7 @@ RadioTower5FRocketBossAfterText:
 	done
 
 RadioTower5FDirectorThankYouText:
-	text "DIRECTOR: <PLAY_G>,"
+	text "DIRECTOR: <PLAYER>,"
 	line "thank you!"
 
 	para "Your courageous"
@@ -335,7 +346,7 @@ RadioTower5FDirectorThankYouText:
 	cont "take this."
 	done
 
-RadioTower5FDirectorDescribeClearBellText:
+RadioTower5FDirectorDescribeRainbowWingText:
 	text "There used to be a"
 	line "tower right here"
 	cont "in GOLDENROD CITY."
@@ -347,40 +358,59 @@ RadioTower5FDirectorDescribeClearBellText:
 	line "with our RADIO"
 	cont "TOWER."
 
-	para "We dug up that"
-	line "bell during"
-	cont "construction."
+	para "During the tear-"
+	line "down, we found"
+	cont "that at the top."
 
-	para "I heard that all"
-	line "sorts of #MON"
+	para "I heard that giant"
+	line "#MON used to"
 
-	para "lived in GOLDENROD"
+	para "fly over GOLDENROD"
 	line "in the past."
 
-	para "Perhaps…"
+	para "Maybe that fell"
+	line "off a #MON."
 
-	para "That bell has some"
-	line "connection to the"
+	para "Maybe like the one"
+	line "that appears at"
 
 	para "TIN TOWER in"
-	line "ECRUTEAK CITY…"
+	line "ECRUTEAK CITY."
 
-	para "Ah!"
+	para "OK, I better go to"
+	line "my OFFICE."
+	done
 
-	para "That reminds me…"
+RadioTower5FDirectorDescribeSilverWingText:
+	text "There used to be a"
+	line "tower right here"
+	cont "in GOLDENROD CITY."
 
-	para "I overheard TEAM"
-	line "ROCKET whispering."
+	para "But it was old and"
+	line "creaky."
 
-	para "Apparently, some-"
-	line "thing is going on"
-	cont "at the TIN TOWER."
+	para "So we replaced it"
+	line "with our RADIO"
+	cont "TOWER."
 
-	para "I have no idea"
-	line "what is happening,"
+	para "During the tear-"
+	line "down, we found"
+	cont "that at the top."
 
-	para "but you might look"
-	line "into it."
+	para "I heard that giant"
+	line "#MON used to"
+
+	para "fly over GOLDENROD"
+	line "in the past."
+
+	para "Maybe that fell"
+	line "off a #MON."
+
+	para "Maybe like the one"
+	line "that appears at"
+
+	para "WHIRL ISLANDS near"
+	line "CIANWOOD."
 
 	para "OK, I better go to"
 	line "my OFFICE."
@@ -388,7 +418,7 @@ RadioTower5FDirectorDescribeClearBellText:
 
 RadioTower5FDirectorText:
 	text "DIRECTOR: Hello,"
-	line "<PLAY_G>!"
+	line "<PLAYER>!"
 
 	para "You know, I love"
 	line "#MON."
