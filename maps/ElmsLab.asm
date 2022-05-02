@@ -420,6 +420,16 @@ ElmGiveTicketScript:
 	writetext ElmGiveTicketText2
 	waitbutton
 	closetext
+	; Suicune moves to KANTO VERMILION_CITY
+	clearevent EVENT_SAW_SUICUNE_AT_VERMILION_CITY
+	setmapscene VERMILION_CITY, SCENE_VERMILIONCITY_SUICUNE_AND_EUSINE
+	; Suicune no longer in JOHTO
+	setevent EVENT_SAW_SUICUNE_ON_ROUTE_42
+	setmapscene ROUTE_42, SCENE_ROUTE42_NOOP
+	setevent EVENT_SAW_SUICUNE_ON_ROUTE_36
+	setmapscene ROUTE_36, SCENE_ROUTE36_NOOP
+	setevent EVENT_SAW_SUICUNE_AT_CIANWOOD_CITY
+	setmapscene CIANWOOD_CITY, SCENE_CIANWOODCITY_NOOP
 	end
 
 ElmJumpBackScript1:
