@@ -3048,7 +3048,6 @@ wOlivineCitySceneID::                             db
 wRoute34SceneID::                                 db
 wRoute34IlexForestGateSceneID::                   db
 wEcruteakTinTowerEntranceSceneID::                db
-	ds 1
 wEcruteakPokecenter1FSceneID::                    db
 wEcruteakGymSceneID::                             db
 wMahoganyTownSceneID::                            db
@@ -3084,6 +3083,7 @@ wDragonsDenB1FSceneID::                           db
 wDragonShrineSceneID::                            db
 wOlivinePortSceneID::                             db
 wVermilionPortSceneID::                           db
+wVermilionCitySceneID::                           db
 wFastShip1FSceneID::                              db
 wFastShipB1FSceneID::                             db
 wMountMoonSquareSceneID::                         db

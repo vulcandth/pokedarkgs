@@ -5,9 +5,13 @@
 	const VERMILIONCITY_SUPER_NERD
 	const VERMILIONCITY_BIG_SNORLAX
 	const VERMILIONCITY_POKEFAN_M
+	const VERMILIONCITY_EUSINE
+	const VERMILIONCITY_SUICUNE
 
 VermilionCity_MapScripts:
 	def_scene_scripts
+	scene_script VermilionCityNoop1Script, SCENE_VERMILIONCITY_NOOP
+	scene_script VermilionCityNoop1Script, SCENE_VERMILIONCITY_SUICUNE_AND_EUSINE
 
 	def_callbacks
 	callback MAPCALLBACK_NEWMAP, VermilionCityFlypointCallback
@@ -15,6 +19,45 @@ VermilionCity_MapScripts:
 VermilionCityFlypointCallback:
 	setflag ENGINE_FLYPOINT_VERMILION
 	endcallback
+
+VermilionCityNoop1Script:
+	end
+
+VermilionCityNoop2Script:
+	end
+
+VermilionCitySuicuneScriptLeft:
+	applymovement PLAYER, VermilionCityPlayerToSuicuneMovementFromLeft
+	scall VermilionCitySuicuneScript
+	end
+VermilionCitySuicuneScriptRight:
+	applymovement PLAYER, VermilionCityPlayerToSuicuneMovementFromRight
+	scall VermilionCitySuicuneScript
+	end
+
+VermilionCitySuicuneScript:
+	applymovement PLAYER, VermilionCityPlayerToFindSuicuneMovement
+	showemote EMOTE_SHOCK, PLAYER, 15
+	applymovement PLAYER, VermilionCityPlayerToApproachSuicuneMovement
+	applymovement VERMILIONCITY_EUSINE, VermilionCityEusineToSuicuneMovement
+	turnobject VERMILIONCITY_EUSINE, RIGHT
+	showemote EMOTE_SHOCK, VERMILIONCITY_EUSINE, 15
+	pause 15
+	playsound SFX_WARP_FROM
+	applymovement VERMILIONCITY_SUICUNE, VermilionCitySuicuneMovement
+	disappear VERMILIONCITY_SUICUNE
+	opentext
+	writetext VermilionCityEusineText_1
+	turnobject VERMILIONCITY_EUSINE, DOWN
+	writetext VermilionCityEusineText_2
+	closetext
+	turnobject PLAYER, UP
+	applymovement VERMILIONCITY_EUSINE, VermilionCityEusineWalksAwayMovement
+	disappear VERMILIONCITY_EUSINE
+	pause 10
+	setscene SCENE_VERMILIONCITY_NOOP
+	;clearevent EVENT_SAW_SUICUNE_AT_VERMILION_CITY
+	end
 
 VermilionCityTeacherScript:
 	jumptextfaceplayer VermilionCityTeacherText
@@ -122,6 +165,60 @@ VermilionCityMartSign:
 
 VermilionCityHiddenFullHeal:
 	hiddenitem FULL_HEAL, EVENT_VERMILION_CITY_HIDDEN_FULL_HEAL
+
+VermilionCitySuicuneMovement:
+	set_sliding
+	fast_jump_step RIGHT
+	fast_jump_step RIGHT
+	fast_jump_step RIGHT
+	remove_sliding
+	step_end
+
+VermilionCityEusineToSuicuneMovement:
+	step DOWN
+	step DOWN
+	step DOWN
+	step DOWN
+	step_end
+
+VermilionCityPlayerToSuicuneMovementFromLeft:
+	step UP
+	step UP
+	step UP
+	step RIGHT
+	step RIGHT
+	step_end
+
+VermilionCityPlayerToSuicuneMovementFromRight:
+	step UP
+	step UP
+	step UP
+	step RIGHT
+	step_end
+
+VermilionCityPlayerToFindSuicuneMovement:
+	big_step RIGHT
+	big_step RIGHT
+	big_step RIGHT
+	big_step RIGHT
+	big_step RIGHT
+	big_step RIGHT
+	big_step RIGHT
+	step_end
+
+VermilionCityPlayerToApproachSuicuneMovement:
+	step RIGHT
+	step UP
+	step UP
+	step RIGHT
+	step_end
+
+VermilionCityEusineWalksAwayMovement:
+	step UP
+	step UP
+	step UP
+	step UP
+	step_end
 
 VermilionCityTeacherText:
 	text "VERMILION PORT is"
@@ -265,6 +362,31 @@ VermilionCityPortSignText:
 	line "ENTRANCE"
 	done
 
+VermilionCityEusineText_1:
+	text "That was so close!"
+
+	para "I thought I could"
+	line "corner it by"
+	cont "ambushing it here."
+
+	para "But, running on"
+	line "water is beyond"
+	cont "me."
+
+	para "Still, I am"
+	line "starting to see a"
+	cont "pattern."
+
+	para "SUICUNE prefers"
+	line "water!"
+	cont "That means..."
+	done
+
+VermilionCityEusineText_2:
+	text "Sorry, <PLAYER>!"
+	line "I've got to go!"
+	done
+
 VermilionCity_MapEvents:
 	db 0, 0 ; filler
 
@@ -281,6 +403,8 @@ VermilionCity_MapEvents:
 	warp_event 34,  7, DIGLETTS_CAVE, 1
 
 	def_coord_events
+	coord_event 18, 28, SCENE_VERMILIONCITY_SUICUNE_AND_EUSINE, VermilionCitySuicuneScriptLeft
+	coord_event 19, 28, SCENE_VERMILIONCITY_SUICUNE_AND_EUSINE, VermilionCitySuicuneScriptRight
 
 	def_bg_events
 	bg_event 25,  3, BGEVENT_READ, VermilionCitySign
@@ -299,3 +423,5 @@ VermilionCity_MapEvents:
 	object_event 14, 16, SPRITE_SUPER_NERD, SPRITEMOVEDATA_WANDER, 1, 1, -1, -1, PAL_NPC_GREEN, OBJECTTYPE_SCRIPT, 0, VermilionCitySuperNerdScript, -1
 	object_event 34,  8, SPRITE_BIG_SNORLAX, SPRITEMOVEDATA_BIGDOLLSYM, 0, 0, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, VermilionSnorlax, EVENT_VERMILION_CITY_SNORLAX
 	object_event 31, 12, SPRITE_POKEFAN_M, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, VermilionGymBadgeGuy, -1
+	object_event 29, 18, SPRITE_SUPER_NERD, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_SAW_SUICUNE_AT_VERMILION_CITY
+	object_event 31, 23, SPRITE_SUICUNE, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, ObjectEvent, EVENT_SAW_SUICUNE_AT_VERMILION_CITY
