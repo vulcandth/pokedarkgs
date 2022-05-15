@@ -6,6 +6,8 @@ GoldSilverIntro:
 	ret
 
 .Init:
+	ld a, BANK(wLYOverrides)
+	ldh [rSVBK], a
 	farcall ClearSpriteAnims
 	xor a
 	ld [wIntroJumptableIndex], a
@@ -30,6 +32,8 @@ GoldSilverIntro:
 	ret
 
 .Finish:
+	ld a, 1
+	ldh [rSVBK], a
 	callfar ClearSpriteAnims
 	call ClearSprites
 	call DelayFrame
