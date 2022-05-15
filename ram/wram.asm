@@ -3500,9 +3500,6 @@ wOBPals2:: ds 8 palettes
 wLYOverrides:: ds SCREEN_HEIGHT_PX
 wLYOverridesEnd::
 
-wLYOverrides2:: ds SCREEN_HEIGHT_PX
-wLYOverrides2End::
-
 wMagnetTrain:: ; used only for BANK(wMagnetTrain)
 wMagnetTrainDirection:: db
 wMagnetTrainInitPosition:: db
@@ -3510,7 +3507,11 @@ wMagnetTrainHoldPosition:: db
 wMagnetTrainFinalPosition:: db
 wMagnetTrainPlayerSpriteInitX:: db
 
-wLYOverridesBackup:: ds SCREEN_HEIGHT_PX
+	ds 11
+
+wLYOverrides2:: ds SCREEN_HEIGHT_PX - 48
+wLYOverridesBackup:: ds SCREEN_HEIGHT_PX - 96
+wLYOverrides2End:: ds SCREEN_HEIGHT_PX - 48
 wLYOverridesBackupEnd::
 
 
