@@ -64,7 +64,6 @@ if DEF(_DEBUG)
 	giveitem MAX_REPEL, 99
 	giveitem MASTER_BALL, 99
 	giveitem RARE_CANDY, 99
-	giveitem THUNDERSTONE, 1
 	; all badges
 	setflag ENGINE_ZEPHYRBADGE
 	setflag ENGINE_HIVEBADGE
@@ -147,6 +146,25 @@ if DEF(_DEBUG)
 	setmapscene PLAYERS_HOUSE_1F, $1
 	setevent EVENT_PLAYERS_HOUSE_MOM_1
 	clearevent EVENT_PLAYERS_HOUSE_MOM_2
+	setmapscene VERMILION_CITY, $1
+	special SetDayOfWeek
+.SetDayOfWeek:
+	writetext IsItDSTText
+	yesorno
+	iffalse .WrongDay
+	special InitialSetDSTFlag
+	yesorno
+	iffalse .SetDayOfWeek
+	sjump .DayOfWeekDone
+
+.WrongDay:
+	special InitialClearDSTFlag
+	yesorno
+	iffalse .SetDayOfWeek
+	closetext
+	end
+
+.DayOfWeekDone:
 	closetext
 	end
 else
