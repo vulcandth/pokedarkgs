@@ -3084,13 +3084,14 @@ wDragonShrineSceneID::                            db
 wOlivinePortSceneID::                             db
 wVermilionPortSceneID::                           db
 wVermilionCitySceneID::                           db
+wRoute14SceneID::                                 db
 wFastShip1FSceneID::                              db
 wFastShipB1FSceneID::                             db
 wMountMoonSquareSceneID::                         db
 wMobileTradeRoomSceneID::                         db
 wMobileBattleRoomSceneID::                        db
 
-	ds 49
+	ds 48
 
 ; fight counts
 wJackFightCount::    db
