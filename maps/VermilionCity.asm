@@ -42,10 +42,12 @@ VermilionCitySuicuneScript:
 	applymovement VERMILIONCITY_EUSINE, VermilionCityEusineToSuicuneMovement
 	turnobject VERMILIONCITY_EUSINE, RIGHT
 	showemote EMOTE_SHOCK, VERMILIONCITY_EUSINE, 15
-	pause 15
+	cry SUICUNE
+	pause 20
 	playsound SFX_WARP_FROM
 	applymovement VERMILIONCITY_SUICUNE, VermilionCitySuicuneMovement
 	disappear VERMILIONCITY_SUICUNE
+	playmusic MUSIC_MYSTICALMAN_ENCOUNTER
 	opentext
 	writetext VermilionCityEusineText_1
 	turnobject VERMILIONCITY_EUSINE, DOWN
@@ -54,9 +56,13 @@ VermilionCitySuicuneScript:
 	turnobject PLAYER, UP
 	applymovement VERMILIONCITY_EUSINE, VermilionCityEusineWalksAwayMovement
 	disappear VERMILIONCITY_EUSINE
+	pause 20
+	special FadeOutMusic
+	special RestartMapMusic
 	pause 10
 	setscene SCENE_VERMILIONCITY_NOOP
-	;clearevent EVENT_SAW_SUICUNE_AT_VERMILION_CITY
+	clearevent EVENT_SAW_SUICUNE_ON_ROUTE_14
+	setmapscene ROUTE_14, SCENE_ROUTE14_SUICUNE_AND_EUSINE
 	end
 
 VermilionCityTeacherScript:
@@ -379,7 +385,7 @@ VermilionCityEusineText_1:
 
 	para "SUICUNE prefers"
 	line "water!"
-	cont "That means..."
+	cont "That means…"
 	done
 
 VermilionCityEusineText_2:
