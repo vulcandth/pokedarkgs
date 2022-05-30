@@ -45,6 +45,8 @@ Route14SuicuneScript:
 	special RestartMapMusic
 	pause 10
 	setscene SCENE_ROUTE14_NOOP
+	clearevent EVENT_FOUGHT_SUICUNE_ON_ROUTE_25
+	setmapscene ROUTE_25, SCENE_ROUTE25_SUICUNE_AND_EUSINE
 	end
 
 Kim:
