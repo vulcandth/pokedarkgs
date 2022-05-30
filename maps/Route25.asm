@@ -10,11 +10,15 @@
 	const ROUTE25_SUPER_NERD
 	const ROUTE25_COOLTRAINER_M2
 	const ROUTE25_POKE_BALL
+	const ROUTE25_EUSINE
+	const ROUTE25_SUICUNE
 
 Route25_MapScripts:
 	def_scene_scripts
-	scene_script Route25Noop1Scene, SCENE_ROUTE25_NOOP
-	scene_script Route25Noop2Scene, SCENE_ROUTE25_MISTYS_DATE
+	scene_script Route25Noop1Scene,                          SCENE_ROUTE25_NOOP
+	scene_script Route25Noop2Scene,                          SCENE_ROUTE25_MISTYS_DATE
+	scene_script Route25Noop3Scene,                          SCENE_ROUTE25_SUICUNE_AND_EUSINE
+	scene_script Route25SuicuneAndEusineReadyForBattleScene, SCENE_ROUTE25_SUICUNE_AND_EUSINE_READY_FOR_BATTLE
 
 	def_callbacks
 
@@ -22,6 +26,75 @@ Route25Noop1Scene:
 	end
 
 Route25Noop2Scene:
+	end
+
+Route25Noop3Scene:
+	end
+
+Route25SuicuneAndEusineReadyForBattleScene:
+	appear ROUTE25_SUICUNE
+	moveobject ROUTE25_EUSINE, 6, 6
+	appear ROUTE25_EUSINE
+	end
+
+Route25SuicuneScript:
+	showemote EMOTE_SHOCK, PLAYER, 15
+	cry SUICUNE
+	pause 20
+	applymovement PLAYER, Route25PlayerStepRightMovement
+	turnobject PLAYER, UP
+	appear ROUTE25_EUSINE
+	applymovement ROUTE25_EUSINE, Route25EusineRunUpMovement
+	turnobject PLAYER, LEFT
+	opentext
+	writetext Route25EusineCaughtUpText
+	turnobject ROUTE25_EUSINE, UP
+	pause 10
+	turnobject PLAYER, UP
+	writetext Route25EusineLookAtItText
+	closetext
+	clearevent EVENT_ROUTE_25_EUSINE_MOVED_OUT_OF_WAY
+	end
+
+Route25EusineWatching:
+	faceplayer
+	opentext
+	writetext Route25EusineLookAtItText
+	closetext
+	turnobject ROUTE25_EUSINE, UP
+	end
+
+Route25EusineMoveOutofWayScript:
+	checkevent EVENT_ROUTE_25_EUSINE_MOVED_OUT_OF_WAY
+	iffalse .EusineMoves
+	end
+.EusineMoves:
+	applymovement ROUTE25_EUSINE, Route25OutOfWayMovement
+	turnobject ROUTE25_EUSINE, UP
+	setevent EVENT_ROUTE_25_EUSINE_MOVED_OUT_OF_WAY
+	setscene SCENE_ROUTE25_SUICUNE_AND_EUSINE_READY_FOR_BATTLE
+	end
+
+Route25BattleSuicune:
+	faceplayer
+	cry SUICUNE
+	pause 10
+	loadwildmon SUICUNE, 40
+	loadvar VAR_BATTLETYPE, BATTLETYPE_SUICUNE
+	startbattle
+	dontrestartmapmusic
+	disappear ROUTE25_SUICUNE
+	warpfacingreloadmapafterbattle DOWN, ROUTE_25, 6, 5
+	moveobject ROUTE25_EUSINE, 6, 6
+	appear ROUTE25_EUSINE
+	playmapmusic
+	opentext
+	writetext Route25EusineFarewellText
+	closetext
+	turnobject PLAYER, DOWN
+	applymovement ROUTE25_EUSINE, Route25EusineLeaveMovement
+	disappear ROUTE25_EUSINE
+	setscene SCENE_ROUTE25_NOOP
 	end
 
 Route25MistyDate1Script:
@@ -191,6 +264,37 @@ Route25Protein:
 Route25HiddenPotion:
 	hiddenitem POTION, EVENT_ROUTE_25_HIDDEN_POTION
 
+Route25PlayerStepRightMovement:
+	step RIGHT
+	step_end
+
+Route25EusineRunUpMovement:
+	big_step UP
+	big_step UP
+	big_step LEFT
+	big_step LEFT
+	big_step LEFT
+	big_step UP
+	step UP
+	step UP
+	step_end
+
+Route25OutOfWayMovement:
+	step RIGHT
+	step_end
+
+Route25EusineLeaveMovement:
+	step LEFT
+	step DOWN
+	step DOWN
+	step DOWN
+	step RIGHT
+	step RIGHT
+	step RIGHT
+	step DOWN
+	step DOWN
+	step_end
+
 Route25MistysDateLeavesMovement1:
 	big_step DOWN
 	step_end
@@ -234,6 +338,57 @@ Route25MistyLeavesMovement:
 	step LEFT
 	step LEFT
 	step_end
+
+Route25EusineCaughtUpText:
+	text "Eusine: Puff puff…"
+	line "I am … no match" 
+	cont "for you."
+
+	para "…As I predicted."
+
+	para "………………"
+	line "…Go ahead."
+
+	para "Since I met you in"
+	line "the Burned Tower"
+	cont "at Ecruteak City,"
+
+	para "I've sort of known"
+	line "that SUICUNE would"
+	cont "choose you."
+	done
+
+Route25EusineLookAtItText:
+	text "Eusine: Take a"
+	line "look at it!"
+
+	para "SUICUNE is waiting"
+	line "for you!"
+
+	para "It has been"
+	line "waiting for a"
+
+	para "battle with a"
+	line "worthy Trainer to"
+
+	para "whom it can"
+	line "entrust itself!"
+	done
+
+Route25EusineFarewellText:
+	text "<PLAYER>…"
+	line "You two are truly"
+	cont "amazing…"
+
+	para "I have never seen"
+	line "a battle this"
+	cont "intense!"
+
+	para "I have no regrets…"
+
+	para "Farewell, SUICUNE!"
+	line "Farewell…<PLAYER>!"
+	done
 
 Route25MistyDateText:
 	text "MISTY: Aww! Why"
@@ -436,6 +591,10 @@ Route25_MapEvents:
 	def_coord_events
 	coord_event 42,  6, SCENE_ROUTE25_MISTYS_DATE, Route25MistyDate1Script
 	coord_event 42,  7, SCENE_ROUTE25_MISTYS_DATE, Route25MistyDate2Script
+	coord_event  5,  6, SCENE_ROUTE25_SUICUNE_AND_EUSINE, Route25SuicuneScript
+	coord_event  6,  5, SCENE_ROUTE25_SUICUNE_AND_EUSINE, Route25EusineMoveOutofWayScript
+	coord_event  7,  6, SCENE_ROUTE25_SUICUNE_AND_EUSINE, Route25EusineMoveOutofWayScript
+	coord_event  6,  8, SCENE_ROUTE25_SUICUNE_AND_EUSINE, Route25EusineMoveOutofWayScript
 
 	def_bg_events
 	bg_event 45,  5, BGEVENT_READ, BillsHouseSign
@@ -453,3 +612,5 @@ Route25_MapEvents:
 	object_event 31,  7, SPRITE_SUPER_NERD, SPRITEMOVEDATA_STANDING_DOWN, 0, 0, -1, -1, PAL_NPC_BROWN, OBJECTTYPE_TRAINER, 1, TrainerSupernerdPat, -1
 	object_event 37,  8, SPRITE_COOLTRAINER_M, SPRITEMOVEDATA_STANDING_LEFT, 0, 0, -1, -1, PAL_NPC_RED, OBJECTTYPE_SCRIPT, 0, TrainerCooltrainermKevin, -1
 	object_event 32,  4, SPRITE_POKE_BALL, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, 0, OBJECTTYPE_ITEMBALL, 0, Route25Protein, EVENT_ROUTE_25_PROTEIN
+	object_event  8, 11, SPRITE_SUPER_NERD, SPRITEMOVEDATA_STANDING_UP, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, Route25EusineWatching, EVENT_ROUTE_25_EUSINE
+	object_event  6,  4, SPRITE_SUICUNE, SPRITEMOVEDATA_STILL, 0, 0, -1, -1, PAL_NPC_BLUE, OBJECTTYPE_SCRIPT, 0, Route25BattleSuicune, EVENT_FOUGHT_SUICUNE_ON_ROUTE_25
