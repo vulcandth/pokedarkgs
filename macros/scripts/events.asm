@@ -1077,4 +1077,21 @@ MACRO checkmaplockedmons
 	db checkmaplockedmons_command
 ENDM
 
+	const givepokemove_command ; $ac
+MACRO givepokemove
+	db givepokemove_command
+	dw \1 ; move
+	dw \2 ; wPartyMon#
+	db \3 ; Move Number 0-3
+ENDM
+
+	const warpfacingreloadmapafterbattle_command ; $ad
+warpfacingreloadmapafterbattle: MACRO
+	db warpfacingreloadmapafterbattle_command
+	db \1 ; facing
+	map_id \2 ; map
+	db \3 ; x
+	db \4 ; y
+ENDM
+
 DEF NUM_EVENT_COMMANDS EQU const_value
