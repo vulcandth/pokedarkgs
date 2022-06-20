@@ -40,6 +40,10 @@ ___current_indirect_count = (\1) + 1 - ___current_indirect_index
 ___current_indirect_index = (\1) + 1
 ___current_indirect_iteration_limit = ___current_indirect_count / $FF
 ___current_indirect_count = ___current_indirect_count % $FF
+	if _NARG > 1
+		assert (\2.IndirectEnd - \2) == ___current_indirect_size * (___current_indirect_count), \
+			"\2: expected {d:___current_indirect_count} entries, each {d:___current_indirect_size} bytes"
+	endc
 	if ___current_indirect_iteration_limit
 ___current_indirect_iteration = 0
 		rept ___current_indirect_iteration_limit
