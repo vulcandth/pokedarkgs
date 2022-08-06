@@ -286,12 +286,11 @@ GetMonBackpic:
 	ret
 
 Intro_GetMonFrontpic:
-	ld a, c
 	push de
 	ld hl, PokemonPicPointers
-	dec a
-	ld bc, 6
-	call AddNTimes
+	rept 6
+		add hl, bc
+	endr
 	ld a, BANK(PokemonPicPointers)
 	call GetFarByte
 	push af
