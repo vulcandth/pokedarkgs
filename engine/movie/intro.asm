@@ -786,13 +786,13 @@ IntroScene10:
 	ld bc, vTiles1 - vTiles0
 	call Decompress
 
-	ld c, CHIKORITA
+	ld bc, CHIKORITA
 	ld de, vTiles0 tile $10
 	farcall Intro_GetMonFrontpic
-	ld c, CYNDAQUIL
+	ld bc, CYNDAQUIL
 	ld de, vTiles0 tile $29
 	farcall Intro_GetMonFrontpic
-	ld c, TOTODILE
+	ld bc, TOTODILE
 	ld de, vTiles0 tile $42
 	farcall Intro_GetMonFrontpic
 
@@ -1061,26 +1061,36 @@ Intro_FlashSilhouette:
 	ret
 
 Intro_LoadChikoritaPalette:
-	ld c, CHIKORITA
+	ld hl, CHIKORITA
+	call GetPokemonIDFromIndex
+	ld c, a
 	farcall Intro_LoadMonPalette
 	ret
 
 Intro_LoadCyndaquilPalette:
-	ld c, CYNDAQUIL
+	ld hl, CYNDAQUIL
+	call GetPokemonIDFromIndex
+	ld c, a
 	farcall Intro_LoadMonPalette
 	ret
 
 Intro_LoadTotodilePalette:
-	ld c, TOTODILE
+	ld hl, TOTODILE
+	call GetPokemonIDFromIndex
+	ld c, a
 	farcall Intro_LoadMonPalette
 	ret
 
 Intro_LoadCharizardPalette:
 	ldh a, [hCGB]
 	and a
-	ld c, CYNDAQUIL
+	ld hl, CYNDAQUIL
+	call GetPokemonIDFromIndex
+	ld c, a
 	jr nz, .got_mon
-	ld c, CHARIZARD
+	ld hl, CHARIZARD
+	call GetPokemonIDFromIndex
+	ld c, a
 .got_mon
 	farcall Intro_LoadMonPalette
 	ret
