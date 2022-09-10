@@ -442,10 +442,6 @@ Function4a28a:
 	xor a
 	ret
 
-MenuHeader_0x4a346: ; unreferenced
-	db MENU_BACKUP_TILES ; flags
-	menu_coords 12, 0, SCREEN_WIDTH - 1, 6
-
 String_4a34b:
 	db   "いれなおす"
 	next "けす"
@@ -496,13 +492,6 @@ Function4a373:
 	ld a, $1
 	ld [hli], a
 	ld [hli], a
-	ret
-
-Function4a39a: ; unreferenced
-	call Function4a485
-	call Function4a492
-	call Function4a3aa
-	call SetPalettes
 	ret
 
 Function4a3a7:
@@ -568,31 +557,6 @@ Function4a3aa:
 	lb bc, 1, 1
 	ld a, " "
 	call Function4a6d8
-	ret
-
-Function4a449: ; unreferenced
-	ld bc, 3 * SCREEN_WIDTH
-	ld a, $0
-	hlcoord 0, 0
-	call ByteFill
-	ld bc, 2 * SCREEN_WIDTH
-	ld a, $1
-	call ByteFill
-	ld bc, 2 * SCREEN_WIDTH
-	ld a, $0
-	call ByteFill
-	ld bc, 2 * SCREEN_WIDTH
-	ld a, $1
-	call ByteFill
-	ld bc, SCREEN_WIDTH
-	ld a, $2
-	call ByteFill
-	ld bc, SCREEN_WIDTH
-	ld a, $3
-	call ByteFill
-	ld bc, SCREEN_WIDTH
-	ld a, " "
-	call ByteFill
 	ret
 
 Function4a485:

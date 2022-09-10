@@ -1890,12 +1890,6 @@ Function17dc1f:
 	call Function17e40f
 	ret
 
-MenuData_17dc96: ; unreferenced
-	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING | STATICMENU_WRAP ; flags
-	db 2
-	db "はい@"
-	db "いいえ@"
-
 Function17dc9f:
 	call IncCrashCheckPointer
 	call HlToCrashCheckPointer
@@ -4653,12 +4647,6 @@ Table_17f699:
 	dw MobileErrorCode_101_009_Text
 	dw MobileErrorCode_101_009_Text
 
-Palette_17f6af: ; unreferenced
-	RGB  5,  5, 16
-	RGB  8, 19, 28
-	RGB  0,  0,  0
-	RGB 31, 31, 31
-
 Function17f6b7:
 	ld a, [wMobileErrorCodeBuffer]
 	call .bcd_two_digits
@@ -4685,12 +4673,6 @@ Function17f6b7:
 
 MobileCommunicationErrorText:
 	db "つうしんエラー　　　ー@"
-
-String_17f6e8: ; unreferenced
-	db   "みていぎ<NO>エラーです"
-	next "プログラム<WO>"
-	next "かくにん　してください"
-	db   "@"
 
 MobileErrorCodeTable:
 	dw MobileErrorCodes_10
@@ -5121,16 +5103,6 @@ MobileErrorCode_101_005_Text:
 	next "タイプが　ちがいます"
 	next "くわしくは　とりあつかい"
 	next "せつめいしょを　ごらんください"
-	db   "@"
-
-String_17fe9a: ; unreferenced
-; Cannot send your save data because Pokémon News is being updated.
-; Please send your save data after loading new Pokémon News.
-	db   "ポケモンニュースが"
-	next "あたらしくなっているので"
-	next "レポートを　おくれません"
-	next "あたらしい　ポケモンニュースの"
-	next "よみこみを　さきに　してください"
 	db   "@"
 
 MobileErrorCode_101_000_Text:

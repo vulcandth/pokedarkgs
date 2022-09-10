@@ -507,13 +507,6 @@ Function893ef:
 	call FarCopyBytes
 	ret
 
-Function893fe: ; unreferenced
-	call DisableLCD
-	call Function893ef
-	call EnableLCD
-	call DelayFrame
-	ret
-
 EZChatCursorGFX:
 INCBIN "gfx/mobile/ez_chat_cursor.2bpp"
 
@@ -792,13 +785,6 @@ Palette_895de:
 	RGB 07, 07, 06
 	RGB 00, 00, 00
 
-Function895e6: ; unreferenced
-	ld a, 7
-	hlcoord 0, 0, wAttrmap
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
-	call ByteFill
-	ret
-
 Function895f2:
 	push bc
 	xor a
@@ -988,43 +974,6 @@ Function896f5:
 	inc hl
 	inc hl
 	ld b, 2
-
-Function896ff: ; unreferenced
-; INPUT:
-; hl = address of upper left corner of the area
-; b = height
-; c = width
-
-; clears an area of the screen
-	ld a, " "
-	ld de, SCREEN_WIDTH
-.row_loop
-	push bc
-	push hl
-.col_loop
-	ld [hli], a
-	dec c
-	jr nz, .col_loop
-	pop hl
-	pop bc
-	add hl, de
-	dec b
-	jr nz, .row_loop
-
-; alternates tiles $36 and $18 at the bottom of the area
-	dec hl
-	inc c
-	inc c
-.bottom_loop
-	ld a, $36
-	ld [hli], a
-	dec c
-	ret z
-	ld a, $18
-	ld [hli], a
-	dec c
-	jr nz, .bottom_loop
-	ret
 
 Function8971f:
 	ld a, $2c
@@ -1694,12 +1643,6 @@ Function89b07:
 	call Mobile22_SetBGMapMode0
 	call DelayFrame
 	farcall Function4a3a7
-	ret
-
-Function89b14: ; unreferenced
-	call ClearBGPalettes
-	call Function89b07
-	call Function89b00
 	ret
 
 Function89b1e:
@@ -4224,13 +4167,6 @@ Function8adb3:
 	push af
 	call Function891de
 	pop af
-	ret
-
-Function8adbf: ; unreferenced
-	call OpenSRAMBank4
-	ld hl, $a603
-	call Function89b45
-	call CloseSRAM
 	ret
 
 Function8adcc:

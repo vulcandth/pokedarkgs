@@ -331,43 +331,6 @@ Function118284:
 	call BattleTowerRoomMenu_Cleanup
 	ret
 
-Function1182d5: ; unreferenced
-	call BattleTowerRoomMenu_InitRAM
-	ld a, $18
-	ld [wcd33], a
-	ld a, $19
-	ld [wcd34], a
-	ld a, $4
-	ld [wc3f0], a
-	ldh a, [rSVBK]
-	push af
-	ld a, $3
-	ldh [rSVBK], a
-.asm_1182ee
-	call JoyTextDelay
-	call Function118473
-	ld a, [wBattleTowerRoomMenuJumptableIndex]
-	cp $1b
-	jr c, .asm_118301
-	ld a, [wcd34]
-	ld [wBattleTowerRoomMenuJumptableIndex], a
-
-.asm_118301
-	call Function118746
-	call BattleTowerRoomMenu_WriteMessage
-	farcall Function115dd3
-	farcall Function11619d
-	call DelayFrame
-	ld a, [wBattleTowerRoomMenuJumptableIndex]
-	ld hl, wcd33
-	cp [hl]
-	jr nz, .asm_1182ee
-	pop af
-	ldh [rSVBK], a
-	call BattleTowerRoomMenu_Cleanup
-	call ReturnToMapFromSubmenu
-	ret
-
 Function118329:
 	call BattleTowerRoomMenu_InitRAM
 	ld a, $15
@@ -1039,23 +1002,6 @@ Function118880:
 	ld a, MOBILEAPI_01
 	jp Function119e2b
 
-Function118896: ; unreferenced
-	ld a, [wc821]
-	bit 1, a
-	jr nz, .asm_1188a5
-	bit 2, a
-	jr nz, .asm_1188a5
-	bit 0, a
-	jr z, .asm_1188aa
-
-.asm_1188a5
-	ld a, MOBILEAPI_1A
-	jp Function119e2b
-
-.asm_1188aa
-	call BattleTowerRoomMenu_IncrementJumptable
-	jp BattleTowerRoomMenu_IncrementJumptable
-
 Function1188b0:
 	ld de, wc346
 	ld a, MOBILEAPI_06
@@ -1302,24 +1248,6 @@ BattleTowerRoomMenu_UpdatePickLevelMenu:
 	ld [wMobileInactivityTimerFrames], a
 	ret
 
-Function118a54: ; unreferenced
-	ld a, [wcd55]
-	ld l, a
-	ld a, [wcd56]
-	ld h, a
-	ld de, wc3ec
-	ld bc, $0004
-	jp Function118ae4
-
-Function118a65: ; unreferenced
-	ld hl, BattleDownloadURL
-	ld de, wcc60
-	ld bc, $80
-	call CopyBytes
-	ld de, w3_d000
-	ld bc, $1000
-	jp Function118b10
-
 SetBattleDownloadURL:
 	ld hl, BattleDownloadURL
 	ld de, wcc60
@@ -1501,48 +1429,6 @@ OddEggDownloadURL:
 	db "http://gameboy.datacenter.ne.jp/cgb/download?name=/01/CGB-BXTJ/tamago/index.txt", 0
 
 popc
-
-Function118d35: ; unreferenced
-	ld hl, $d200
-	ld a, [wcd38]
-	and a
-	jr nz, .asm_118d6e
-	ld a, [hli]
-	cp $94
-	jr nz, .asm_118d7b
-	ld a, [hl]
-	cp $5
-	jr nz, .asm_118d7b
-	ld a, [wcd4f]
-	sla a
-	ld b, a
-	sla a
-	sla a
-	add b
-	ld b, a
-	ld a, BANK(s5_b2fb)
-	call OpenSRAM
-	ld a, b
-	ld [s5_b2fb], a
-	call CloseSRAM
-	farcall Function170be4
-	farcall Function1700c4
-	jr .asm_118d78
-
-.asm_118d6e
-	ld a, [hli]
-	cp $96
-	jr nz, .asm_118d7b
-	ld a, [hl]
-	cp $0
-	jr nz, .asm_118d7b
-
-.asm_118d78
-	jp BattleTowerRoomMenu_IncrementJumptable
-
-.asm_118d7b
-	ld a, $d3
-	jp SetMobileErrorCode
 
 Function118d80:
 	call Function118e06
@@ -3530,9 +3416,6 @@ setcharmap ascii
 XGameCode:
 	db "CGB-BXTJ-00", $0
 
-XGameResult: ; unreferenced
-	db "pokemon_crystal", $0
-
 popc
 
 Function119b0d:
@@ -3861,12 +3744,6 @@ MenuHeader_119cf7:
 	dw NULL
 	db 0 ; default option
 
-MenuData_119cff: ; unreferenced
-	db MENU_BACKUP_TILES ; flags
-	menu_coords 15, 7, SCREEN_WIDTH - 1, TEXTBOX_Y - 1
-	dw NULL
-	db 0 ; default option
-
 String_119d07:
 	db "   ▼@"
 
@@ -3889,9 +3766,6 @@ Strings_Ll0ToL40:
 	db " L:30 @@"
 	db " L:40 @@"
 	db "CANCEL@@"
-
-BattleTowerCancelString: ; unreferenced
-	db "CANCEL@"
 
 BattleTower_LevelCheck:
 	ldh a, [rSVBK]
@@ -4640,12 +4514,6 @@ String_11a2cf:
 String_11a2d3:
 	db "NO@"
 
-MenuHeader_11a2d6: ; unreferenced
-	db MENU_BACKUP_TILES ; flags
-	menu_coords 14, 6, SCREEN_WIDTH - 1, 10
-	dw NULL
-	db 0 ; default option
-
 MenuHeader_11a2de:
 	db MENU_BACKUP_TILES ; flags
 	menu_coords 14, 7, SCREEN_WIDTH - 1, TEXTBOX_Y - 1
@@ -5164,12 +5032,6 @@ String_11a7d7:
 String_11a7f4:
 	db   "　　　　　　　　　　　　　　　@"
 
-MenuHeader_11a804: ; unreferenced
-	db MENU_BACKUP_TILES ; flags
-	menu_coords 0, 0, SCREEN_WIDTH - 1, 5
-	dw NULL
-	db 0 ; default option
-
 Function11a80c:
 	ld de, hDivisor
 	ld bc, hDividend
@@ -5408,25 +5270,6 @@ Function11a9f0:
 	and a
 	ret
 
-Function11a9f4: ; unreferenced
-	ld a, [wcd8a]
-	ld l, a
-	ld a, [wcd8b]
-	ld h, a
-	inc hl
-	ld a, l
-	ld [wcd8a], a
-	ld a, h
-	ld [wcd8b], a
-	ld de, $d5d0
-	add hl, de
-	bit 7, h
-	ret nz
-	ld a, $d6
-	call SetMobileErrorCode
-	and a
-	ret
-
 Text_SaveFileWillBeSent:
 	text "SAVE FILE will be"
 	line "sent."
@@ -5449,24 +5292,9 @@ Text_QuitReadingNews:
 	text "Quit reading NEWS?"
 	done
 
-Text_CanceledSendingSaveFile: ; unreferenced
-	text "Canceled sending"
-	line "SAVE FILE."
-	done
-
-Text_ReceivedOddEgg: ; unreferenced
-	text "ODD EGG"
-	line "was received!"
-	done
-
 Text_RegisteringRecord:
 	text "Registering your"
 	line "record…"
-	done
-
-Text_BattleRoomVisitLimit: ; unreferenced
-	text "One visit per day"
-	line "per BATTLE ROOM!"
 	done
 
 Text_PartyMonTopsThisLevel:
@@ -5493,11 +5321,6 @@ Text_ExitGymLeaderHonorRoll:
 	line "HONOR ROLL?"
 	done
 
-Text_LinkingWithCenter: ; unreferenced
-	text "Linking with the"
-	line "CENTER…"
-	done
-
 Text_WhatLevelDoYouWantToChallenge:
 	text "What level do you"
 	line "want to challenge?"
@@ -5506,24 +5329,6 @@ Text_WhatLevelDoYouWantToChallenge:
 Text_CheckBattleRoomListByMaxLevel:
 	text "Check BATTLE ROOM"
 	line "list by max level?"
-	done
-
-Text_EnterWhichBattleRoom: ; unreferenced
-	text "Enter which"
-	line "BATTLE ROOM?"
-	done
-
-Text_WhichBattleRoom: ; unreferenced
-	text "Which BATTLE ROOM?"
-	done
-
-Text_ThisBattleRoomPleaseWait: ; unreferenced
-	text_ram wStringBuffer3
-	text "'s ROOM"
-	line "@"
-	text_ram wStringBuffer4
-	text "?"
-	cont "Please wait…"
 	done
 
 Function11ac3e:
@@ -6385,22 +6190,6 @@ Function11b175:
 	scf
 	ret
 
-FillScreenWithTile32: ; unreferenced
-	hlcoord 0, 0
-	ld a, $32
-	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
-	call ByteFill
-	ret
-
-CopyDataUntilFF: ; unreferenced
-.loop
-	ld a, [de]
-	cp $ff
-	ret z
-	inc de
-	ld [hli], a
-	jr .loop
-
 Function11b20b:
 	ld a, [wc7d1]
 	ld hl, wc7d0
@@ -6558,12 +6347,6 @@ Function11b295:
 	call PlaceString
 	ret
 
-String_11b2fe: ; unreferenced
-	db "あげる#@"
-
-String_11b303: ; unreferenced
-	db "ほしい#@"
-
 String_11b308:
 	db "　　　　　@"
 
@@ -6696,35 +6479,6 @@ Function11b397:
 	inc de
 	ld a, $5
 	ld [de], a ; attributes
-	inc de
-	jr .loop
-
-Function11b3b6: ; unreferenced
-.loop
-	ld a, [hl]
-	cp -1
-	ret z
-	ld a, [wcd4d]
-	and $7
-	swap a
-	add [hl]
-	inc hl
-	ld [de], a
-	inc de
-	ld a, [hli]
-	ld [de], a
-	inc de
-	push hl
-	ld l, c
-	ld h, b
-	ld a, [wcd4e]
-	add [hl]
-	inc bc
-	ld [de], a
-	inc de
-	pop hl
-	ld a, $5
-	ld [de], a
 	inc de
 	jr .loop
 
