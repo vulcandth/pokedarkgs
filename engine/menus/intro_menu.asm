@@ -9,9 +9,6 @@ Intro_MainMenu:
 	farcall MainMenu
 	jp StartTitleScreen
 
-IntroMenu_DummyFunction: ; unreferenced
-	ret
-
 PrintDayOfWeek:
 	push de
 	ld hl, .Days
@@ -805,15 +802,6 @@ NamePlayer:
 .Kris:
 	db "KRIS@@@@@@@"
 
-GSShowPlayerNamingChoices: ; unreferenced
-	call LoadMenuHeader
-	call VerticalMenu
-	ld a, [wMenuCursorY]
-	dec a
-	call CopyNameFromMenu
-	call CloseWindow
-	ret
-
 StorePlayerName:
 	ld a, "@"
 	ld bc, NAME_LENGTH
@@ -1100,11 +1088,6 @@ TitleScreenScene:
 	dw TitleScreenTimer
 	dw TitleScreenMain
 	dw TitleScreenEnd
-
-TitleScreenNextScene: ; unreferenced
-	ld hl, wJumptableIndex
-	inc [hl]
-	ret
 
 TitleScreenTimer:
 ; Next scene

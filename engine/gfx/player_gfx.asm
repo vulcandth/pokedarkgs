@@ -1,14 +1,3 @@
-BetaLoadPlayerTrainerClass: ; unreferenced
-	ld c, CAL
-	ld a, [wPlayerGender]
-	bit PLAYERGENDER_FEMALE_F, a
-	jr z, .got_class
-	ld c, KAREN ; not KRIS?
-.got_class
-	ld a, c
-	ld [wTrainerClass], a
-	ret
-
 MovePlayerPicRight:
 	hlcoord 6, 4
 	ld de, 1
@@ -70,17 +59,6 @@ ShowPlayerNamingChoices:
 	ret
 
 INCLUDE "data/player_names.asm"
-
-GetPlayerNameArray: ; unreferenced
-	ld hl, wPlayerName
-	ld de, MalePlayerNameArray
-	ld a, [wPlayerGender]
-	bit PLAYERGENDER_FEMALE_F, a
-	jr z, .got_array
-	ld de, FemalePlayerNameArray
-.got_array
-	call InitName
-	ret
 
 GetPlayerIcon:
 	ld de, ChrisSpriteGFX
