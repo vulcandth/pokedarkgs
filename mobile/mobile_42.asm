@@ -309,14 +309,6 @@ Function108201:
 	predef GetAnimatedFrontpic
 	ret
 
-Function108219: ; unreferenced
-	ld [wCurPartySpecies], a
-	hlcoord 7, 2
-	ld d, $0
-	ld e, ANIM_MON_TRADE
-	predef AnimateFrontpic
-	ret
-
 Function108229:
 	ld [wCurPartySpecies], a
 	hlcoord 7, 2
@@ -1557,10 +1549,6 @@ Function108bec:
 	text_far _MobileForPartnersMonText
 	text_end
 
-.MobilePlayersMonTradeText: ; unreferenced
-	text_far _MobilePlayersMonTradeText
-	text_end
-
 Function108c16:
 	ld a, $90
 	ldh [hWY], a
@@ -1664,9 +1652,6 @@ INCBIN "gfx/mobile/mobile_trade.tilemap.lz"
 
 MobileTradeAttrmapLZ:
 INCBIN "gfx/mobile/mobile_trade.attrmap.lz"
-
-UnusedMobilePulsePalettes: ; unreferenced
-INCLUDE "gfx/mobile/unused_mobile_pulses.pal"
 
 MobileTradeBGPalettes:
 INCLUDE "gfx/mobile/mobile_trade_bg.pal"
