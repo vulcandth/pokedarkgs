@@ -1083,6 +1083,7 @@ MACRO givepokemove
 	dw \1 ; move
 	dw \2 ; wPartyMon#
 	db \3 ; Move Number 0-3
+	assert (\3 >= 0) && (\3 < 4), "givepokemove Move Number \3 is not 0-3!"
 ENDM
 
 	const warpfacingreloadmapafterbattle_command ; $ad
