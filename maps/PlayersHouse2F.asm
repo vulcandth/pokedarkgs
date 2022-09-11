@@ -130,14 +130,14 @@ if DEF(_DEBUG)
 	; hm slaves
 	givepoke MEW, 100, LEFTOVERS
 	givepoke MEW, 100, LEFTOVERS
-	loadmem wPartyMon2Moves+0, FLY
-	loadmem wPartyMon2Moves+1, SURF
-	loadmem wPartyMon2Moves+2, STRENGTH
-	loadmem wPartyMon2Moves+3, CUT
-	loadmem wPartyMon3Moves+0, FLASH
-	loadmem wPartyMon3Moves+1, ROCK_SMASH
-	loadmem wPartyMon3Moves+2, HEADBUTT
-	loadmem wPartyMon3Moves+3, WATERFALL
+	givepokemove FLY,        wPartyMon2, 0
+	givepokemove SURF,       wPartyMon2, 1
+	givepokemove STRENGTH,   wPartyMon2, 2
+	givepokemove CUT,        wPartyMon2, 3
+	givepokemove FLASH,      wPartyMon3, 0
+	givepokemove ROCK_SMASH, wPartyMon3, 1
+	givepokemove HEADBUTT,   wPartyMon3, 2
+	givepokemove WATERFALL,  wPartyMon3, 3
 	; Other test pokemon
 	givepoke PIKACHU, 50
 	givepoke DITTO, 50
