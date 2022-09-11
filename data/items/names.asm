@@ -136,7 +136,7 @@ ItemNames::
 	li "PASS"
 	li "TERU-SAMA"
 	li "TERU-SAMA"
-	li "TERU-SAMA"
+	li "ZINC"
 	li "CHARCOAL"
 	li "BERRY JUICE"
 	li "SCOPE LENS"
