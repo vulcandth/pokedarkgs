@@ -781,7 +781,7 @@ LoadBluePage:
 	dec b
 	jr nz, .vertical_divider
 	hlcoord 11, 8
-	ld bc, 6
+	ld bc, 0
 	predef PrintTempMonStats
 	ret
 
@@ -791,6 +791,9 @@ LoadBluePage:
 	call PlaceString
 	ld de, OTString
 	hlcoord 0, 12
+	call PlaceString
+	ld de, HPDVString
+	hlcoord 0, 15
 	call PlaceString
 	hlcoord 2, 10
 	lb bc, PRINTNUM_LEADINGZEROS | 2, 5
@@ -804,9 +807,9 @@ LoadBluePage:
 	call PlaceString
 	ld a, [wTempMonCaughtGender]
 	and a
-	jr z, .done
+	jr z, .gender_done
 	cp $7f
-	jr z, .done
+	jr z, .gender_done
 	and CAUGHT_GENDER_MASK
 	ld a, "♂"
 	jr z, .got_gender
@@ -814,7 +817,41 @@ LoadBluePage:
 .got_gender
 	hlcoord 9, 13
 	ld [hl], a
-.done
+.gender_done
+	push hl
+	ld hl, wTempMonDVs
+	call .get_hp_dv
+	ld de, wStringBuffer1
+	ld [de], a
+	hlcoord 6, 15
+	lb bc, 1, 2
+	call PrintNum
+	pop hl
+	ret
+
+.get_hp_dv
+	ld a, [hl]
+	swap a
+	and 1
+	add a
+	add a
+	add a
+	ld b, a
+	ld a, [hli]
+	and 1
+	add a
+	add a
+	add b
+	ld b, a
+	ld a, [hl]
+	swap a
+	and 1
+	add a
+	add b
+	ld b, a
+	ld a, [hl]
+	and 1
+	add b
 	ret
 
 .OTNamePointers:
@@ -828,6 +865,9 @@ IDNoString:
 
 OTString:
 	db "OT/@"
+
+HPDVString:
+	db "HP DV:@"
 
 StatsScreen_PlaceFrontpic:
 	ld hl, wTempMonDVs
