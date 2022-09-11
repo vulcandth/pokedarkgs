@@ -84,6 +84,52 @@ DrawHP:
 
 PrintTempMonStats:
 ; Print wTempMon's stats at hl, with spacing bc.
+	push hl
+	call .prep
+	lb bc, 2, 3
+	ld de, wTempMonAttack
+	call .PrintStat
+	ld de, wTempMonDefense
+	call .PrintStat
+	ld de, wTempMonSpclAtk
+	call .PrintStat
+	ld de, wTempMonSpclDef
+	call .PrintStat
+	ld de, wTempMonSpeed
+	call PrintNum
+	ld bc, 7
+	pop hl
+	call .prep
+	lb bc, 1, 2
+	; attack dv
+	ld de, wTempMonDVs
+	ld a, [de]
+	swap a
+	and $f
+	call .PrintDV
+	; defense dv
+	ld de, wTempMonDVs
+	ld a, [de]
+	and $f
+	call .PrintDV
+	; spcl.atk dv
+	ld de, wTempMonDVs + 1
+	ld a, [de]
+	and $f
+	call .PrintDV
+	; spcl.def dv
+	ld de, wTempMonDVs + 1
+	ld a, [de]
+	and $f
+	call .PrintDV
+	; speed dv
+	ld de, wTempMonDVs + 1
+	ld a, [de]
+	swap a
+	and $f
+	jp .PrintDV
+
+.prep:
 	push bc
 	push hl
 	ld de, .StatNames
@@ -93,18 +139,12 @@ PrintTempMonStats:
 	add hl, bc
 	ld bc, SCREEN_WIDTH
 	add hl, bc
-	ld de, wTempMonAttack
-	lb bc, 2, 3
-	call .PrintStat
-	ld de, wTempMonDefense
-	call .PrintStat
-	ld de, wTempMonSpclAtk
-	call .PrintStat
-	ld de, wTempMonSpclDef
-	call .PrintStat
-	ld de, wTempMonSpeed
-	jp PrintNum
+	ret
 
+.PrintDV
+	ld de, wStringBuffer1
+	ld [de], a
+	; fallthrough
 .PrintStat:
 	push hl
 	call PrintNum
@@ -114,7 +154,7 @@ PrintTempMonStats:
 	ret
 
 .StatNames:
-	db   "ATTACK"
+	db   "ATTACK DV"
 	next "DEFENSE"
 	next "SPCL.ATK"
 	next "SPCL.DEF"
