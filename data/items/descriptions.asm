@@ -137,7 +137,7 @@ ItemDescriptions:
 	dw PassDesc
 	dw QuestionMarkDesc
 	dw QuestionMarkDesc
-	dw QuestionMarkDesc
+	dw ZincDesc
 	dw CharcoalDesc
 	dw BerryJuiceDesc
 	dw ScopeLensDesc
@@ -372,7 +372,7 @@ LuckyPunchDesc:
 	next "ratio of CHANSEY.@"
 
 CalciumDesc:
-	db   "Ups SPECIAL stats"
+	db   "Raises SPCL.ATK"
 	next "of one #MON.@"
 
 RareCandyDesc:
@@ -756,6 +756,10 @@ BasementKeyDesc:
 PassDesc:
 	db   "A ticket for the"
 	next "MAGNET TRAIN.@"
+
+ZincDesc:
+	db   "Raises SPCL.DEF"
+	next "of one #MON.@"
 
 CharcoalDesc:
 	db   "Powers up fire-"
