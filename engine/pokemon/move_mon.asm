@@ -223,6 +223,8 @@ endr
 	inc de
 
 	; Initial Personality
+	farcall GenerateShininess
+	ld [de], a
 	inc de
 	inc de
 
@@ -296,8 +298,13 @@ endr
 	ld [de], a
 	inc de
 
+.copywildmonPersonality
 	; skip Personality
+	ld a, [wEnemyMonPersonality]
+	ld [de], a
 	inc de
+	ld a, [wEnemyMonPersonality + 1]
+	ld [de], a
 	inc de
 
 	; Skip extra byte

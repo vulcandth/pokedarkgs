@@ -1156,6 +1156,9 @@ BillsPC_LoadMonStats:
 	ld a, [hli]
 	ld [de], a
 	inc de
+	ld a, [hli]
+	ld [de], a
+	inc de
 	ld a, [hl]
 	ld [de], a
 	call CloseSRAM
@@ -1179,6 +1182,9 @@ BillsPC_LoadMonStats:
 	ld a, e
 	call AddNTimes
 	ld de, wTempMonDVs
+	ld a, [hli]
+	ld [de], a
+	inc de
 	ld a, [hli]
 	ld [de], a
 	inc de
@@ -1208,6 +1214,9 @@ BillsPC_LoadMonStats:
 	ld a, e
 	call AddNTimes
 	ld de, wTempMonDVs
+	ld a, [hli]
+	ld [de], a
+	inc de
 	ld a, [hli]
 	ld [de], a
 	inc de

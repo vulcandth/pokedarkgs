@@ -5,36 +5,30 @@ DEF SHINY_DEF_DV EQU 10
 DEF SHINY_SPD_DV EQU 10
 DEF SHINY_SPC_DV EQU 10
 
+GenerateShininess:
+; outputs shinyness bit in a
+	call Random
+	and a
+	jr nz, .not_shiny
+
+	call Random
+	cp SHINY_NUMERATOR
+	jr nc, .not_shiny
+	xor a
+	dec a
+	and SHINY_MASK
+	ret
+
+.not_shiny
+	xor a
+	ret
+
 CheckShininess:
-; Check if a mon is shiny by DVs at bc.
+; Check if a mon is shiny by Personality Shiny bit at bc.
 ; Return carry if shiny.
-
-	ld l, c
-	ld h, b
-
-; Attack
-	ld a, [hl]
-	and SHINY_ATK_MASK << 4
+	ld a, [bc]
+	bit MON_SHINY_F, a
 	jr z, .not_shiny
-
-; Defense
-	ld a, [hli]
-	and %1111
-	cp SHINY_DEF_DV
-	jr nz, .not_shiny
-
-; Speed
-	ld a, [hl]
-	and %1111 << 4
-	cp SHINY_SPD_DV << 4
-	jr nz, .not_shiny
-
-; Special
-	ld a, [hl]
-	and %1111
-	cp SHINY_SPC_DV
-	jr nz, .not_shiny
-
 ; shiny
 	scf
 	ret
@@ -662,7 +656,7 @@ InitPartyMenuOBPals:
 
 GetBattlemonBackpicPalettePointer:
 	push de
-	farcall GetPartyMonDVs
+	farcall GetPartyMonShiny
 	ld c, l
 	ld b, h
 	ld a, [wTempBattleMonSpecies]
@@ -672,7 +666,7 @@ GetBattlemonBackpicPalettePointer:
 
 GetEnemyFrontpicPalettePointer:
 	push de
-	farcall GetEnemyMonDVs
+	farcall GetEnemyMonShiny
 	ld c, l
 	ld b, h
 	ld a, [wTempEnemyMonSpecies]
