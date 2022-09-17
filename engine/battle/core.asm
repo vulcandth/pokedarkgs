@@ -3981,11 +3981,11 @@ InitBattleMon:
 	ret
 
 BattleCheckPlayerShininess:
-	call GetPartyMonDVs
+	call GetPartyMonShiny
 	jr BattleCheckShininess
 
 BattleCheckEnemyShininess:
-	call GetEnemyMonDVs
+	call GetEnemyMonShiny
 
 BattleCheckShininess:
 	ld b, h
@@ -3993,13 +3993,22 @@ BattleCheckShininess:
 	callfar CheckShininess
 	ret
 
-GetPartyMonDVs:
-	ld hl, wBattleMonDVs
+GetPartyMonShiny:
+	ld hl, wBattleMonShiny
 	ld a, [wPlayerSubStatus5]
 	bit SUBSTATUS_TRANSFORMED, a
 	ret z
-	ld hl, wPartyMon1DVs
+	ld hl, wPartyMon1Shiny
 	ld a, [wCurBattleMon]
+	jp GetPartyLocation
+
+GetEnemyMonShiny:
+	ld hl, wEnemyMonShiny
+	ld a, [wBattleMode]
+	dec a
+	ret z
+	ld hl, wOTPartyMon1Shiny
+	ld a, [wCurOTMon]
 	jp GetPartyLocation
 
 GetEnemyMonDVs:
@@ -6214,12 +6223,18 @@ LoadEnemyMon:
 
 ; Forced shiny battle type
 ; Used by Red Gyarados at Lake of Rage
+	push af
+	ld hl, wEnemyMonShiny
+	farcall GenerateShininess
+	bit MON_SHINY_F, a
+	jr z, .not_shiny
+	set MON_SHINY_F, a
+.not_shiny
+	pop af
 	cp BATTLETYPE_SHINY
 	jr nz, .GenerateDVs
-; TODO: Fix Red Gyarados forced shiny.
-	ld b, ATKDEFDV_SHINY ; $ea
-	ld c, SPDSPCDV_SHINY ; $aa
-	jr .UpdateDVs
+	ld hl, wEnemyMonShiny
+	set MON_SHINY_F, [hl]
 
 .GenerateDVs:
 ; Generate new random DVs
