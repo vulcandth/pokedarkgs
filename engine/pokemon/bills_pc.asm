@@ -1060,7 +1060,7 @@ PCMonInfo:
 	ld a, [wTempSpecies]
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
-	ld hl, wTempMonDVs
+	ld hl, wTempMonForm
 	predef GetUnownLetter
 	call GetBaseData
 	ld de, vTiles2 tile $00
@@ -1736,7 +1736,7 @@ StatsScreenDPad:
 	ld a, [wTempSpecies]
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
-	ld hl, wTempMonDVs
+	ld hl, wTempMonForm
 	predef GetUnownLetter
 	call GetBaseData
 	call BillsPC_CopyMon

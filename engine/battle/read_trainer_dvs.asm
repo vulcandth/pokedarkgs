@@ -10,10 +10,17 @@ GetTrainerDVs:
 	ld hl, TrainerClassDVs
 	add hl, bc
 	add hl, bc
+	add hl, bc
 
-	ld a, [hli]
-	ld b, a
-	ld c, [hl]
+	ld bc, wTempDVs + 2
+	ld a, [hld]
+	ld [bc], a
+	dec bc
+	ld a, [hld]
+	ld [bc], a
+	dec bc
+	ld a, [hl]
+	ld [bc], a
 
 	pop hl
 	ret

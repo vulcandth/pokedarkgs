@@ -510,8 +510,7 @@ wPayDayMoney:: ds 3
 
 wSafariMonAngerCount:: db ; unreferenced
 wSafariMonEating:: db
-	ds 1
-wEnemyBackupDVs:: dw ; used when enemy is transformed
+wEnemyBackupDVs:: ds 3 ; used when enemy is transformed
 wAlreadyDisobeyed:: db
 
 wDisabledMove:: db
@@ -546,14 +545,12 @@ wEnemyScreens::
 wPlayerSafeguardCount:: db
 wPlayerLightScreenCount:: db
 wPlayerReflectCount:: db
-	ds 1
 
 wEnemySafeguardCount:: db
 wEnemyLightScreenCount:: db
 wEnemyReflectCount:: db
-	ds 1
 
-	ds 1
+wTempDVs:: ds 3
 
 wBattleWeather::
 ; 00 normal

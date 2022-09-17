@@ -104,28 +104,28 @@ PrintTempMonStats:
 	; attack dv
 	ld de, wTempMonDVs
 	ld a, [de]
-	swap a
 	and $f
 	call .PrintDV
 	; defense dv
-	ld de, wTempMonDVs
+	ld de, wTempMonDVs + 1
 	ld a, [de]
+	swap a
 	and $f
 	call .PrintDV
 	; spcl.atk dv
-	ld de, wTempMonDVs + 1
+	ld de, wTempMonDVs + 2
 	ld a, [de]
+	swap a
 	and $f
 	call .PrintDV
 	; spcl.def dv
-	ld de, wTempMonDVs + 1
+	ld de, wTempMonDVs + 2
 	ld a, [de]
 	and $f
 	call .PrintDV
 	; speed dv
 	ld de, wTempMonDVs + 1
 	ld a, [de]
-	swap a
 	and $f
 	jp .PrintDV
 
