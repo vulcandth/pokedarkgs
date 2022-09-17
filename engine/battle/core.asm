@@ -3521,7 +3521,7 @@ LoadEnemyMonToSwitchTo:
 	ld a, [wFirstUnownSeen]
 	and a
 	jr nz, .skip_unown
-	ld hl, wEnemyMonDVs
+	ld hl, wEnemyMonForm
 	predef GetUnownLetter
 	ld a, [wUnownLetter]
 	ld [wFirstUnownSeen], a
@@ -4099,7 +4099,7 @@ SwitchPlayerMon:
 	ret
 
 SendOutPlayerMon:
-	ld hl, wBattleMonDVs
+	ld hl, wBattleMonForm
 	predef GetUnownLetter
 	hlcoord 1, 5
 	ld b, 7
@@ -4834,6 +4834,9 @@ DrawEnemyHUD:
 	jr z, .ok
 	ld hl, wEnemyBackupDVs
 .ok
+	ld a, [hli]
+	ld [de], a
+	inc de
 	ld a, [hli]
 	ld [de], a
 	inc de
@@ -6132,6 +6135,9 @@ LoadEnemyMon:
 	ld a, [hli]
 	ld [de], a
 	inc de
+	ld a, [hli]
+	ld [de], a
+	inc de
 	ld a, [hl]
 	ld [de], a
 	jp .Happiness
@@ -6167,9 +6173,16 @@ LoadEnemyMon:
 ; Grab DVs
 	call GetRoamMonDVs
 	inc hl
+	inc hl
+	ld bc, wTempDVs + 2
 	ld a, [hld]
-	ld c, a
-	ld b, [hl]
+	ld [bc], a
+	dec bc
+	ld a, [hld]
+	ld [bc], a
+	dec bc
+	ld a, [hl]
+	ld [bc], a
 
 ; Get back the result of our check
 	pop af
@@ -6180,12 +6193,19 @@ LoadEnemyMon:
 ; (HP is initialized at the end of the battle)
 	call GetRoamMonDVs
 	inc hl
+	inc hl
+	ld bc, wTempDVs + 2
 	call BattleRandom
 	ld [hld], a
-	ld c, a
+	ld [bc], a
+	dec bc
+	call BattleRandom
+	ld [hld], a
+	ld [bc], a
+	dec bc
 	call BattleRandom
 	ld [hl], a
-	ld b, a
+	ld [bc], a
 ; We're done with DVs
 	jr .UpdateDVs
 
@@ -6196,24 +6216,34 @@ LoadEnemyMon:
 ; Used by Red Gyarados at Lake of Rage
 	cp BATTLETYPE_SHINY
 	jr nz, .GenerateDVs
-
+; TODO: Fix Red Gyarados forced shiny.
 	ld b, ATKDEFDV_SHINY ; $ea
 	ld c, SPDSPCDV_SHINY ; $aa
 	jr .UpdateDVs
 
 .GenerateDVs:
 ; Generate new random DVs
+	ld hl, wTempDVs + 2
 	call BattleRandom
-	ld b, a
+	ld [hld], a
 	call BattleRandom
-	ld c, a
+	ld [hld], a
+	call BattleRandom
+	ld [hl], a
+	ld b, h
+	ld c, l
 
 .UpdateDVs:
-; Input DVs in register bc
+; Input bc pointer to DVs
 	ld hl, wEnemyMonDVs
-	ld a, b
+	ld a, [bc]
 	ld [hli], a
-	ld [hl], c
+	inc bc
+	ld a, [bc]
+	ld [hli], a
+	inc bc
+	ld a, [bc]
+	ld [hl], a
 
 ; We've still got more to do if we're dealing with a wild monster
 	ld a, [wBattleMode]
@@ -6240,13 +6270,17 @@ LoadEnemyMon:
 	endc
 	jr nz, .Magikarp
 
-; Get letter based on DVs
-	ld hl, wEnemyMonDVs
+; Get random letter
+.GenerateUnownLetter
+	ld hl, wEnemyMonForm
+	call BattleRandom
+	and FORM_MASK
+	ld [hl], a
 	predef GetUnownLetter
 ; Can't use any letters that haven't been unlocked
 ; If combined with forced shiny battletype, causes an infinite loop
 	call CheckUnownLetter
-	jr c, .GenerateDVs ; try again
+	jr c, .GenerateUnownLetter ; try again
 	jr .Happiness ; skip the Magikarp check
 
 .Magikarp:
@@ -6315,7 +6349,7 @@ LoadEnemyMon:
 ; Try again if length < 1024 mm (i.e. if HIGH(length) < 3 feet)
 	ld a, [wMagikarpLength]
 	cp 3
-	jr c, .GenerateDVs ; try again
+	jp c, .GenerateDVs ; try again
 
 ; Finally done with DVs
 
@@ -6329,7 +6363,7 @@ LoadEnemyMon:
 ; Fill stats
 	ld de, wEnemyMonMaxHP
 	ld b, FALSE
-	ld hl, wEnemyMonDVs - (MON_DVS - MON_EVS + 1)
+	ld hl, wEnemyMonDVs - (MON_DVS - MON_EVS)
 	predef CalcMonStats
 
 ; If we're in a trainer battle,
@@ -8119,7 +8153,7 @@ DropPlayerSub:
 	push af
 	ld a, [wBattleMonSpecies]
 	ld [wCurPartySpecies], a
-	ld hl, wBattleMonDVs
+	ld hl, wBattleMonForm
 	predef GetUnownLetter
 	ld de, vTiles2 tile $31
 	predef GetMonBackpic
@@ -8156,7 +8190,7 @@ DropEnemySub:
 	ld [wCurSpecies], a
 	ld [wCurPartySpecies], a
 	call GetBaseData
-	ld hl, wEnemyMonDVs
+	ld hl, wEnemyMonForm
 	predef GetUnownLetter
 	ld de, vTiles2
 	predef GetAnimatedFrontpic
@@ -8344,7 +8378,7 @@ InitEnemyWildmon:
 	ld de, wWildMonPP
 	ld bc, NUM_MOVES
 	call CopyBytes
-	ld hl, wEnemyMonDVs
+	ld hl, wEnemyMonForm
 	predef GetUnownLetter
 	ld a, [wCurPartySpecies]
 	call GetPokemonIndexFromID

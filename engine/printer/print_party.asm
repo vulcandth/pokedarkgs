@@ -208,7 +208,7 @@ PrintPartyMonPage1:
 	ld a, [wTempMonMoves + 0]
 	call PlaceMoveNameString
 	call PlaceGenderAndShininess
-	ld hl, wTempMonDVs
+	ld hl, wTempMonForm
 	predef GetUnownLetter
 	ld hl, wBoxAlignment
 	xor a

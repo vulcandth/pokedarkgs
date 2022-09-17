@@ -832,26 +832,7 @@ LoadBluePage:
 .get_hp_dv
 	ld a, [hl]
 	swap a
-	and 1
-	add a
-	add a
-	add a
-	ld b, a
-	ld a, [hli]
-	and 1
-	add a
-	add a
-	add b
-	ld b, a
-	ld a, [hl]
-	swap a
-	and 1
-	add a
-	add b
-	ld b, a
-	ld a, [hl]
-	and 1
-	add b
+	and $f
 	ret
 
 .OTNamePointers:
@@ -870,7 +851,7 @@ HPDVString:
 	db "HP DV:@"
 
 StatsScreen_PlaceFrontpic:
-	ld hl, wTempMonDVs
+	ld hl, wTempMonForm
 	predef GetUnownLetter
 	call StatsScreen_GetAnimationParam
 	jr c, .egg

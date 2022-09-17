@@ -449,6 +449,8 @@ PokeBallEffect:
 	ld a, [wEnemyMonDVs]
 	ld [hli], a
 	ld a, [wEnemyMonDVs + 1]
+	ld [hli], a
+	ld a, [wEnemyMonDVs + 2]
 	ld [hl], a
 
 .load_data

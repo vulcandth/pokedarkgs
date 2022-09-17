@@ -25,6 +25,7 @@ CheckMagikarpLength:
 	jr nz, .not_magikarp
 
 	; Now let's compute its length based on its DVs and ID.
+	; TODO: Fix magikarp DVs
 	ld a, [wCurPartyMon]
 	ld hl, wPartyMon1Species
 	ld bc, PARTYMON_STRUCT_LENGTH
