@@ -4016,7 +4016,7 @@ GetEnemyMonDVs:
 	ld a, [wEnemySubStatus5]
 	bit SUBSTATUS_TRANSFORMED, a
 	ret z
-	ld hl, wEnemyBackupDVs
+	ld hl, wEnemyBackupDVsAndPersonality
 	ld a, [wBattleMode]
 	dec a
 	ret z
@@ -4841,8 +4841,14 @@ DrawEnemyHUD:
 	ld a, [wEnemySubStatus5]
 	bit SUBSTATUS_TRANSFORMED, a
 	jr z, .ok
-	ld hl, wEnemyBackupDVs
+	ld hl, wEnemyBackupDVsAndPersonality
 .ok
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hli]
+	ld [de], a
+	inc de
 	ld a, [hli]
 	ld [de], a
 	inc de
@@ -6139,8 +6145,14 @@ LoadEnemyMon:
 	jr z, .InitDVs
 
 ; Unknown
-	ld hl, wEnemyBackupDVs
+	ld hl, wEnemyBackupDVsAndPersonality
 	ld de, wEnemyMonDVs
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, [hli]
+	ld [de], a
+	inc de
 	ld a, [hli]
 	ld [de], a
 	inc de
@@ -6226,9 +6238,9 @@ LoadEnemyMon:
 	push af
 	ld hl, wEnemyMonShiny
 	farcall GenerateShininess
-	bit MON_SHINY_F, a
-	jr z, .not_shiny
-	set MON_SHINY_F, a
+	jr nc, .not_shiny
+	ld hl, wEnemyMonShiny
+	set MON_SHINY_F, [hl]
 .not_shiny
 	pop af
 	cp BATTLETYPE_SHINY

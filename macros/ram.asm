@@ -97,7 +97,7 @@ MACRO battle_struct
 \1HPAtkDV::     db
 \1DefSpdDV::    db
 \1SatSpfDV::    db
-\1Personality:: db
+\1Personality::
 \1Shiny::
 \1Ability::
 \1Nature::      db
@@ -105,6 +105,7 @@ MACRO battle_struct
 \1IsEgg::
 \1ExtraBit::
 \1Form::        db
+\1Padding::     db
 \1PP::          ds NUM_MOVES
 \1Happiness::   db
 \1Level::       db

@@ -47,7 +47,7 @@ CheckOppositeGender:
 	ld a, [wEnemySubStatus5]
 	bit SUBSTATUS_TRANSFORMED, a
 	jr z, .not_transformed
-	ld hl, wEnemyBackupDVs
+	ld hl, wEnemyBackupDVsAndPersonality
 .not_transformed
 	ld a, [hli]
 	ld [wTempMonDVs], a

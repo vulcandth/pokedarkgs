@@ -6,7 +6,7 @@ DEF SHINY_SPD_DV EQU 10
 DEF SHINY_SPC_DV EQU 10
 
 GenerateShininess:
-; outputs shinyness bit in a
+; returns c if shiny.
 	call Random
 	and a
 	jr nz, .not_shiny
@@ -14,9 +14,6 @@ GenerateShininess:
 	call Random
 	cp SHINY_NUMERATOR
 	jr nc, .not_shiny
-	xor a
-	dec a
-	and SHINY_MASK
 	ret
 
 .not_shiny

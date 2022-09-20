@@ -445,12 +445,16 @@ PokeBallEffect:
 	bit SUBSTATUS_TRANSFORMED, a
 	jr nz, .load_data
 
-	ld hl, wEnemyBackupDVs
+	ld hl, wEnemyBackupDVsAndPersonality
 	ld a, [wEnemyMonDVs]
 	ld [hli], a
 	ld a, [wEnemyMonDVs + 1]
 	ld [hli], a
 	ld a, [wEnemyMonDVs + 2]
+	ld [hli], a
+	ld a, [wEnemyMonPersonality]
+	ld [hli], a
+	ld a, [wEnemyMonPersonality + 1]
 	ld [hl], a
 
 .load_data
@@ -459,6 +463,18 @@ PokeBallEffect:
 	ld a, [wEnemyMonLevel]
 	ld [wCurPartyLevel], a
 	farcall LoadEnemyMon
+
+	ld hl, wEnemyBackupDVsAndPersonality
+	ld a, [hli]
+	ld [wEnemyMonDVs], a
+	ld a, [hli]
+	ld [wEnemyMonDVs + 1], a
+	ld a, [hli]
+	ld [wEnemyMonDVs + 2], a
+	ld a, [hli]
+	ld [wEnemyMonPersonality], a
+	ld a, [hl]
+	ld [wEnemyMonPersonality + 1], a
 
 	pop af
 	ld [wEnemySubStatus5], a
