@@ -1080,7 +1080,7 @@ SendMonIntoBox:
 	jr nz, .loop2
 
 	ld hl, wEnemyMonDVs
-	ld b, 3 + 2 + NUM_MOVES ; DVs, Personality, and PP ; wEnemyMonHappiness - wEnemyMonDVs
+	ld b, MON_HAPPINESS - MON_DVS ; DVs, Personality, extra byte, and PP ; wEnemyMonHappiness - wEnemyMonDVs
 .loop3
 	ld a, [hli]
 	ld [de], a
