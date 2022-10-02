@@ -170,37 +170,37 @@ GetGender:
 ; a = 0: f = nc|z;  female
 ;        f = c:  genderless
 
-; This is determined by comparing the Attack and Speed DVs
-; with the species' gender ratio.
+; This is determined by checking the Personality gender value,
+; which was already determined by the species' gender ratio.
 
 ; Figure out what type of monster struct we're looking at.
 
 ; 0: PartyMon
-	ld hl, wPartyMon1DVs
+	ld hl, wPartyMon1Gender
 	ld bc, PARTYMON_STRUCT_LENGTH
 	ld a, [wMonType]
 	and a
 	jr z, .PartyMon
 
 ; 1: OTPartyMon
-	ld hl, wOTPartyMon1DVs
+	ld hl, wOTPartyMon1Gender
 	dec a
 	jr z, .PartyMon
 
 ; 2: sBoxMon
-	ld hl, sBoxMon1DVs
+	ld hl, sBoxMon1Gender
 	ld bc, BOXMON_STRUCT_LENGTH
 	dec a
 	jr z, .sBoxMon
 
 ; 3: Unknown
-	ld hl, wTempMonDVs
+	ld hl, wTempMonGender
 	dec a
-	jr z, .DVs
+	jr z, .Gender
 
 ; else: WildMon
-	ld hl, wEnemyMonDVs
-	jr .DVs
+	ld hl, wEnemyMonGender
+	jr .Gender
 
 ; Get our place in the party/box.
 
@@ -209,24 +209,17 @@ GetGender:
 	ld a, [wCurPartyMon]
 	call AddNTimes
 
-.DVs:
+.Gender:
 ; sBoxMon data is read directly from SRAM.
 	ld a, [wMonType]
 	cp BOXMON
 	ld a, BANK(sBox)
 	call z, OpenSRAM
 
-; Attack DV
-	ld a, [hli]
-	and $f0
-	ld b, a
-; Speed DV
+; Gender and form as stored in the same byte.
 	ld a, [hl]
-	and $f0
-	swap a
-
-; Put our DVs together.
-	or b
+	and GENDER_MASK
+	rlc a
 	ld b, a
 
 ; Close SRAM if we were dealing with a sBoxMon.
@@ -249,21 +242,21 @@ GetGender:
 	jr z, .Genderless
 
 	call GetFarByte
+	ld c, a
 
-; The higher the ratio, the more likely the monster is to be female.
-
+; Fixed values ignore the Personality gender value.
+	ld a, c
 	cp GENDER_UNKNOWN
 	jr z, .Genderless
-
-	and a ; GENDER_F0?
+	and a ; cp GENDER_F0
 	jr z, .Male
-
 	cp GENDER_F100
 	jr z, .Female
 
-; Values below the ratio are male, and vice versa.
-	cp b
-	jr c, .Male
+; Otherwise, use the Personality gender value directly.
+	ld a, b
+	and a ; cp MALE
+	jr z, .Male
 
 .Female:
 	xor a

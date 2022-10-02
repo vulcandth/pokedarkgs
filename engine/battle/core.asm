@@ -6299,15 +6299,16 @@ LoadEnemyMon:
 
 ; Get random letter
 .GenerateUnownLetter
+	ld a, NUM_UNOWN
 	ld hl, wEnemyMonForm
-	call BattleRandom
+	call BattleRandomRange
 	and FORM_MASK
 	ld [hl], a
-	predef GetUnownLetter
+	;predef GetUnownLetter
 ; Can't use any letters that haven't been unlocked
 ; If combined with forced shiny battletype, causes an infinite loop
 	call CheckUnownLetter
-	jr c, .GenerateUnownLetter ; try again
+	jr nc, .GenerateUnownLetter ; try again
 	jr .Happiness ; skip the Magikarp check
 
 .Magikarp:
@@ -6612,14 +6613,13 @@ CheckSleepingTreeMon:
 INCLUDE "data/wild/treemons_asleep.asm"
 
 CheckUnownLetter:
-; Return carry if the Unown letter hasn't been unlocked yet
-
+; Return carry if the Unown letter in a has been unlocked.
+	ld b, a
 	ld a, [wUnlockedUnowns]
 	ld c, a
 	ld de, 0
 
 .loop
-
 ; Don't check this set unless it's been unlocked
 	srl c
 	jr nc, .next
@@ -6632,14 +6632,13 @@ CheckUnownLetter:
 	ld l, a
 
 	push de
-	ld a, [wUnownLetter]
-	ld de, 1
 	push bc
-	call IsInArray
+	ld a, b
+	call IsInByteArray
 	pop bc
 	pop de
 
-	jr c, .match
+	ret c ; unlocked letter, returns carry
 
 .next
 ; Make sure we haven't gone past the end of the table
@@ -6649,14 +6648,7 @@ CheckUnownLetter:
 	cp UnlockedUnownLetterSets.End - UnlockedUnownLetterSets
 	jr c, .loop
 
-; Hasn't been unlocked, or the letter is invalid
-	scf
-	ret
-
-.match
-; Valid letter
-	and a
-	ret
+	ret ; not unlocked or invalid letter, returns not carry
 
 INCLUDE "data/wild/unlocked_unowns.asm"
 
