@@ -2349,7 +2349,7 @@ wCurPartyLevel:: db
 
 wScrollingMenuListSize:: db
 
-	ds 1
+wCurPartyForm:: db
 
 ; used when following a map warp
 wNextWarp:: db

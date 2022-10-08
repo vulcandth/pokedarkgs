@@ -126,10 +126,10 @@ if DEF(_DEBUG)
 	; post-e4
 	setflag ENGINE_CREDITS_SKIP
 	; good party
-	givepoke MEWTWO, 100, BRIGHTPOWDER
+	givepoke MEWTWO, PLAIN_FORM, 100, BRIGHTPOWDER
 	; hm slaves
-	givepoke MEW, 100, LEFTOVERS
-	givepoke MEW, 100, LEFTOVERS
+	givepoke MEW, PLAIN_FORM, 100, LEFTOVERS
+	givepoke MEW, PLAIN_FORM, 100, LEFTOVERS
 	givepokemove FLY,        wPartyMon2, 0
 	givepokemove SURF,       wPartyMon2, 1
 	givepokemove STRENGTH,   wPartyMon2, 2
@@ -139,8 +139,9 @@ if DEF(_DEBUG)
 	givepokemove HEADBUTT,   wPartyMon3, 2
 	givepokemove WATERFALL,  wPartyMon3, 3
 	; Other test pokemon
-	givepoke PIKACHU, 50
-	givepoke DITTO, 50
+	givepoke UNOWN, UNOWN_A, 50
+	givepoke UNOWN, UNOWN_B, 50
+	givepoke SPEAROW, PLAIN_FORM, 10, NO_ITEM, TRUE, GiftSpearow2Name, GiftSpearowOT2Name
 	; intro events
 	addcellnum PHONE_MOM
 	setmapscene PLAYERS_HOUSE_1F, $1
@@ -231,6 +232,12 @@ PlayersRadioText4:
 	text "#MON!"
 	line "#MON CHANNEL…"
 	done
+
+GiftSpearow2Name:
+	db "KENYA@"
+
+GiftSpearowOT2Name:
+	db "RANDY@"
 
 PlayersHouse2F_MapEvents:
 	db 0, 0 ; filler
