@@ -1914,6 +1914,8 @@ Script_givepoke:
 	call LoadScriptPokemonID
 	ld [wCurPartySpecies], a
 	call GetScriptByte
+	ld [wCurPartyForm], a
+	call GetScriptByte
 	ld [wCurPartyLevel], a
 	call GetScriptByte
 	ld [wCurItem], a
@@ -2191,9 +2193,9 @@ Script_warpcheck:
 	farcall EnableEvents
 	ret
 
-Script_enableevents: ; unreferenced
-	farcall EnableEvents
-	ret
+;Script_enableevents: ; unreferenced
+;	farcall EnableEvents
+;	ret
 
 Script_newloadmap:
 	call GetScriptByte
@@ -2220,9 +2222,6 @@ Script_writeunusedbyte:
 	call GetScriptByte
 	ld [wUnusedScriptByte], a
 	ret
-
-UnusedClosetextScript: ; unreferenced
-	closetext
 
 Script_closetext:
 	call _OpenAndCloseMenu_HDMATransferTilemapAndAttrmap

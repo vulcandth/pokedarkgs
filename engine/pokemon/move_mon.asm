@@ -1681,6 +1681,12 @@ GivePoke::
 	push bc
 	push de
 	push af
+	ld a, [wCurPartyMon]
+	ld hl, wPartyMon1Form
+	ld bc, PARTYMON_STRUCT_LENGTH
+	call AddNTimes
+	ld a, [wCurPartyForm]
+	ld [hl], a
 	ld a, [wCurItem]
 	and a
 	jr z, .done
@@ -1709,6 +1715,8 @@ GivePoke::
 	push bc
 	push de
 	push af
+	ld a, [wCurPartyForm]
+	ld [sBoxMon1Form], a
 	ld a, [wCurItem]
 	and a
 	jr z, .done
