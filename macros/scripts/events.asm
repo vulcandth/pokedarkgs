@@ -1087,7 +1087,7 @@ MACRO givepokemove
 ENDM
 
 	const warpfacingreloadmapafterbattle_command ; $ad
-warpfacingreloadmapafterbattle: MACRO
+MACRO warpfacingreloadmapafterbattle
 	db warpfacingreloadmapafterbattle_command
 	db \1 ; facing
 	map_id \2 ; map
