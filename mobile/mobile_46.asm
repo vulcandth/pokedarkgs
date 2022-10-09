@@ -7279,8 +7279,23 @@ AddMobileMonToParty:
 	ld l, a
 	ld a, [wMobileMonStructPointer + 1]
 	ld h, a
+	push de
 	ld bc, PARTYMON_STRUCT_LENGTH
 	call CopyBytes
+	pop hl ; poped from de
+	ld bc, MON_DVS
+	add hl, bc
+	call Random
+	ld [hli], a
+	call Random
+	ld [hli], a
+	call Random
+	ld [hli], a
+	inc hl
+	call Random
+	and 1
+	rrc a
+	ld [hl], a
 
 	ld hl, wPartyMonOTs
 	ld bc, NAME_LENGTH
