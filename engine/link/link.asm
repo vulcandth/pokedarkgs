@@ -558,8 +558,7 @@ LinkTimeout:
 	call ClearScreen
 	ld b, SCGB_DIPLOMA
 	call GetSGBLayout
-	call WaitBGMap2
-	ret
+	jp WaitBGMap2
 
 .LinkTimeoutText:
 	text_far _LinkTimeoutText
@@ -2419,8 +2418,7 @@ LoadTradeScreenBorderGFX:
 
 SetTradeRoomBGPals:
 	farcall LoadTradeRoomBGPals ; just a nested farcall; so wasteful
-	call SetPalettes
-	ret
+	jp SetPalettes
 
 PlaceTradeScreenTextbox: ; unreferenced
 	hlcoord 0, 0
@@ -2544,8 +2542,7 @@ GetIncompatibleMonName:
 	add hl, bc
 	ld a, [hl]
 	ld [wNamedObjectIndex], a
-	call GetPokemonName
-	ret
+	jp GetPokemonName
 
 EnterTimeCapsule:
 	vc_patch Wireless_net_delay_6

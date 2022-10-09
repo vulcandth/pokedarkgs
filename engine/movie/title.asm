@@ -90,8 +90,7 @@ TitleScreen:
 	call GetSGBLayout
 	call LoadTitleScreenPals
 	ld de, MUSIC_TITLE
-	call PlayMusic
-	ret
+	jp PlayMusic
 
 LoadTitleScreenPals:
 	ldh a, [hCGB]
@@ -137,8 +136,7 @@ ENDC
 IF DEF(_SILVER)
 	ld a, %11100000
 ENDC
-	call DmgToCgbObjPal0
-	ret
+	jp DmgToCgbObjPal0
 
 FillTitleScreenPals:
 	ldh a, [hCGB]
@@ -202,5 +200,4 @@ LoadTitleScreenTilemap:
 	hlbgcoord 0, 11
 	ld bc, BG_MAP_WIDTH
 	ld a, "@"
-	call ByteFill
-	ret
+	jp ByteFill

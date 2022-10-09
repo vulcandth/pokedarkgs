@@ -446,8 +446,7 @@ ConstructCreditsTilemap:
 	ldh [hBGMapAddress], a
 	hlcoord 0, 0
 	call .InitTopPortion
-	call WaitBGMap2
-	ret
+	jp WaitBGMap2
 
 .InitTopPortion:
 	ld b, 5
@@ -532,8 +531,7 @@ GetCreditsPalette:
 	adc HIGH(wBGPals2)
 	ld d, a
 	ld bc, 24
-	call CopyBytes
-	ret
+	jp CopyBytes
 
 CreditsPalettes:
 INCLUDE "gfx/credits/credits.pal"

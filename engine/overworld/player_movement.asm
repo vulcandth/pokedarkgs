@@ -782,8 +782,7 @@ ENDM
 	call CheckSFX
 	ret c
 	ld de, SFX_BUMP
-	call PlaySFX
-	ret
+	jp PlaySFX
 
 .GetOutOfWater:
 	push bc

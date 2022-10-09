@@ -49,8 +49,7 @@ MobileCheckOwnMonAnywhere:
 	call .CheckMatch
 	jr nc, .loop
 
-	call CloseSRAM
-	ret
+	jp CloseSRAM
 
 .loop
 	push bc
@@ -303,8 +302,7 @@ Function4a9d7:
 	call CopyBytes
 	ld hl, MobileUseTheseThreeMonText
 	call PrintText
-	call YesNoBox
-	ret
+	jp YesNoBox
 
 MobileUseTheseThreeMonText:
 	text_far _MobileUseTheseThreeMonText
@@ -779,8 +777,7 @@ Function4ad17:
 	ld de, SFX_WRONG
 	call WaitPlaySFX
 	ld hl, MobileOnlyThreeMonMayEnterText
-	call PrintText
-	ret
+	jp PrintText
 
 .asm_4ad39
 	ld a, [wCurPartyMon]
@@ -795,8 +792,7 @@ Function4ad17:
 .asm_4ad4a
 	ld a, $ff
 	ld [hl], a
-	call Function4adc2
-	ret
+	jp Function4adc2
 
 MobileOnlyThreeMonMayEnterText:
 	text_far _MobileOnlyThreeMonMayEnterText
@@ -804,8 +800,7 @@ MobileOnlyThreeMonMayEnterText:
 
 Function4ad56:
 	farcall OpenPartyStats
-	call WaitBGMap2
-	ret
+	jp WaitBGMap2
 
 Function4ad60:
 	farcall ManagePokemonMoves
@@ -826,8 +821,7 @@ Function4ad68:
 	ld de, String_4ad9a
 
 .asm_4ad84
-	call PlaceString
-	ret
+	jp PlaceString
 
 String_4ad88:
 	db   "つよさをみる"

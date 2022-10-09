@@ -278,8 +278,7 @@ IsObjectFacingSomeoneElse: ; unreferenced
 	ldh a, [hMapObjectIndex]
 	call GetObjectStruct
 	call .GetFacingCoords
-	call IsNPCAtCoord
-	ret
+	jp IsNPCAtCoord
 
 .GetFacingCoords:
 	ld hl, OBJECT_MAP_X
