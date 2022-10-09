@@ -1,16 +1,31 @@
 LoadOverworldMonIcon:
 	ld a, e
 	call ReadMonMenuIcon
+	;ld [wCurIcon], a
 	ld l, a
 	ld h, 0
 	add hl, hl
+	ld e, a
+	ld d, 0
+	add hl, de
 	ld de, IconPointers
 	add hl, de
 	ld a, [hli]
+	ld b, a
+	ld a, [hli]
 	ld e, a
 	ld d, [hl]
-	ld b, BANK(Icons)
 	ld c, 8
+	push bc
+
+	push de
+	pop hl
+	ld a, b
+	ld de, wDecompressScratch
+	push de
+	call FarDecompress
+	pop de
+	pop bc
 	ret
 
 LoadMenuMonIcon:
@@ -316,15 +331,25 @@ endr
 	ld l, a
 	ld h, 0
 	add hl, hl
+	ld e, a
+	ld d, 0
+	add hl, de
 	ld de, IconPointers
 	add hl, de
+	ld a, [hli]
+	ld b, a
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
 	pop hl
 
-	lb bc, BANK(Icons), 8
-	call GetGFXUnlessMobile
+	push hl
+	ld h, d
+	ld l, e
+	pop de
+
+	ld c, 8
+	call DecompressRequest2bpp
 
 	pop hl
 	ret
