@@ -12,8 +12,7 @@ ClearSpriteAnims:
 
 PlaySpriteAnimationsAndDelayFrame:
 	call PlaySpriteAnimations
-	call DelayFrame
-	ret
+	jp DelayFrame
 
 PlaySpriteAnimations:
 	push hl
@@ -545,8 +544,7 @@ AnimateEndOfExpBar:
 	inc d
 	dec c
 	jr nz, .loop
-	call ClearSprites
-	ret
+	jp ClearSprites
 
 .AnimateFrame:
 	ld hl, wShadowOAMSprite00

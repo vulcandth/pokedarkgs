@@ -271,8 +271,7 @@ MobileString_PersonalInfo:
 Function48283:
 	lb bc, 2, 18
 	hlcoord 1, 15
-	call ClearBox
-	ret
+	jp ClearBox
 
 asm_4828d:
 	call Function48283
@@ -447,8 +446,7 @@ Function483bb:
 	hlcoord 11, 7
 	call ClearBox
 	hlcoord 11, 8
-	call PlaceString
-	ret
+	jp PlaceString
 
 Function483e8:
 	push de
@@ -475,8 +473,7 @@ Function483e8:
 	ld d, h
 	ld e, l
 	pop hl
-	call PlaceString
-	ret
+	jp PlaceString
 
 Function4840c:
 	call Function48187
@@ -669,8 +666,7 @@ Function48689:
 	hlcoord 0, 4
 	ld b, $8
 	ld c, $12
-	call Function48cdc
-	ret
+	jp Function48cdc
 
 Function486bf:
 	ld hl, w2DMenuCursorInitY
@@ -879,8 +875,7 @@ rept 4
 	inc hl
 endr
 	ld de, String_4880d
-	call PlaceString
-	ret
+	jp PlaceString
 
 Function487ff:
 	push hl
@@ -890,8 +885,7 @@ Function487ff:
 	pop hl
 	ld b, PRINTNUM_LEADINGZEROS | 1
 	ld c, 3
-	call PrintNum
-	ret
+	jp PrintNum
 
 String_4880d:
 	db "@"
@@ -1652,15 +1646,13 @@ Function48d30:
 	ld hl, wd475
 	call Function48d4a
 	ld hl, wd477
-	call Function48d4a
-	ret
+	jp Function48d4a
 
 Function48d3d:
 	ld hl, wd475
 	call Function48d94
 	ld hl, wd477
-	call Function48d94
-	ret
+	jp Function48d94
 
 Function48d4a:
 	inc hl

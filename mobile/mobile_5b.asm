@@ -13,8 +13,7 @@ Function16c09e:
 	ld a, [wcf64]
 	cp $4
 	ret nz
-	call Function16c0fa
-	ret
+	jp Function16c0fa
 
 Function16c0a8:
 	xor a
@@ -23,8 +22,7 @@ Function16c0a8:
 	call ClearSprites
 	ld a, $90
 	ldh [hWY], a
-	call Function16c0fa
-	ret
+	jp Function16c0fa
 
 Function16c0ba:
 	call Function16c943
@@ -90,8 +88,7 @@ MobileSystemSplashScreen_InitGFX:
 	call Function16cc02
 	xor a
 	ldh [hBGMapMode], a
-	call EnableLCD
-	ret
+	jp EnableLCD
 
 .LoadPals:
 	ld de, wBGPals1
@@ -110,8 +107,7 @@ MobileSystemSplashScreen_InitGFX:
 	ld hl, .Tilemap
 	decoord 0, 1
 	ld bc, $0154
-	call CopyBytes
-	ret
+	jp CopyBytes
 
 .LoadAttrmap:
 	hlcoord 0, 0, wAttrmap
@@ -121,8 +117,7 @@ MobileSystemSplashScreen_InitGFX:
 	ld hl, .Attrmap
 	decoord 0, 1, wAttrmap
 	ld bc, 17 * SCREEN_WIDTH
-	call CopyBytes
-	ret
+	jp CopyBytes
 
 .Tiles:
 INCBIN "gfx/mobile/mobile_splash.2bpp"
@@ -458,8 +453,7 @@ Function16cb2e:
 	call Function16cb40
 	ld hl, Unknown_16cb86
 	ld de, wShadowOAM
-	call Function16cb5d
-	ret
+	jp Function16cb5d
 
 Function16cb40:
 	ld hl, wd1ec
@@ -536,8 +530,7 @@ Function16cbae:
 	and a
 	ret z
 	call Function16cbba
-	call Function16cbd1
-	ret
+	jp Function16cbd1
 
 Function16cbba:
 	ld hl, wd1f2
@@ -586,15 +579,13 @@ Function16cc02:
 	call Function16cc25
 	call Function16cc6e
 	call Function16cb0f
-	call Function16cba3
-	ret
+	jp Function16cba3
 
 Function16cc18:
 	ld hl, vTiles1
 	ld de, MobileAdapterCheckGFX
 	lb bc, BANK(MobileAdapterCheckGFX), 46
-	call Get2bpp
-	ret
+	jp Get2bpp
 
 Function16cc25:
 	ld hl, Unknown_16cfa9
@@ -605,8 +596,7 @@ Function16cc25:
 	call .CopyPal
 	ld hl, Unknown_16cfb9
 	ld de, wOBPals1 + 1 palettes
-	call .CopyPal
-	ret
+	jp .CopyPal
 
 .CopyPal:
 	ld bc, 1 palettes
@@ -619,8 +609,7 @@ Function16cc49:
 	call Function16cc5a
 	hlcoord 4, 16
 	ld a, $90
-	call Function16cc5a
-	ret
+	jp Function16cc5a
 
 Function16cc5a:
 	ld c, $10
@@ -635,8 +624,7 @@ Function16cc62:
 	hlcoord 0, 15, wAttrmap
 	ld bc, $0028
 	ld a, $1
-	call ByteFill
-	ret
+	jp ByteFill
 
 Function16cc6e:
 	hlbgcoord 0, 0, vBGMap1

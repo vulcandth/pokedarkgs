@@ -902,8 +902,7 @@ ReceiveIRHelloMessage:
 	ld d, 5
 	call SendInfraredLEDOn
 	ld d, 5
-	call SendInfraredLEDOff
-	ret
+	jp SendInfraredLEDOff
 
 SendIRHelloMessageAfterDelay:
 	; Wait a random amount of time
@@ -1081,8 +1080,7 @@ SendIRDataMessage:
 	ld d, 5
 	call SendInfraredLEDOn
 	ld d, 17
-	call SendInfraredLEDOff
-	ret
+	jp SendInfraredLEDOff
 
 InfraredLEDReceiveTimedOut:
 	ldh a, [hMGStatusFlags]
@@ -1245,8 +1243,7 @@ ReceiveIRDataMessage:
 	jp z, InfraredLEDReceiveTimedOut
 
 	ld d, 16
-	call SendInfraredLEDOff
-	ret
+	jp SendInfraredLEDOff
 
 SendEmptyIRDataBlock:
 	ld b, 0
@@ -1554,8 +1551,7 @@ InitMysteryGiftLayout:
 	call WaitBGMap
 	ld b, SCGB_MYSTERY_GIFT
 	call GetSGBLayout
-	call SetPalettes
-	ret
+	jp SetPalettes
 
 .Load5GFX:
 	ld b, 5
@@ -1726,8 +1722,7 @@ endr
 	call WaitBGMap
 	ld b, SCGB_DIPLOMA
 	call GetSGBLayout
-	call SetPalettes
-	ret
+	jp SetPalettes
 
 StageDataForNameCard:
 	ld de, wMysteryGiftStaging
@@ -1756,8 +1751,7 @@ StageDataForNameCard:
 	ld hl, s4_a007 ; address of MBC30 bank
 	ld bc, 12
 	call CopyBytes
-	call CloseSRAM
-	ret
+	jp CloseSRAM
 
 InitNameCardLayout:
 	call ClearBGPalettes

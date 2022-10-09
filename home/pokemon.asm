@@ -109,8 +109,7 @@ PlayStereoCry::
 	ld [wStereoPanningMask], a
 	pop af
 	call _PlayMonCry
-	call WaitSFX
-	ret
+	jp WaitSFX
 
 PlayStereoCry2::
 ; Don't wait for the cry to end.
@@ -123,8 +122,7 @@ PlayStereoCry2::
 
 PlayMonCry::
 	call PlayMonCry2
-	call WaitSFX
-	ret
+	jp WaitSFX
 
 PlayMonCry2::
 ; Don't wait for the cry to end.
@@ -133,8 +131,7 @@ PlayMonCry2::
 	ld [wStereoPanningMask], a
 	ld [wCryTracks], a
 	pop af
-	call _PlayMonCry
-	ret
+	jp _PlayMonCry
 
 _PlayMonCry::
 	push hl

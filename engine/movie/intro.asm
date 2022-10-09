@@ -147,8 +147,7 @@ IntroScene1:
 	call DmgToCgbObjPals
 	call Intro_InitShellders
 	ld de, MUSIC_GS_OPENING
-	call PlayMusic
-	ret
+	jp PlayMusic
 
 IntroScene2:
 ; shellders underwater
@@ -158,8 +157,7 @@ IntroScene2:
 	and a
 	jr z, .skip_intro
 	dec [hl]
-	call Intro_InitBubble
-	ret
+	jp Intro_InitBubble
 
 .skip_intro
 	ld [hl], $10
@@ -193,8 +191,7 @@ IntroScene4:
 	dec [hl]
 
 .skip_move_left
-	call Intro_AnimateOceanWaves
-	ret
+	jp Intro_AnimateOceanWaves
 
 .next
 	ld hl, wIntroJumptableIndex
@@ -308,21 +305,18 @@ IntroScene3_Jumper:
 ; fallthrough
 
 .scene3_2:
-	call Intro_AnimateOceanWaves
-	ret
+	jp Intro_AnimateOceanWaves
 
 .scene3_3:
 	call Intro_InitMagikarps
-	call Intro_AnimateOceanWaves
-	ret
+	jp Intro_AnimateOceanWaves
 
 .scene3_4:
 	ld hl, wIntroFrameCounter2
 	ld a, [hl]
 	and %00011111
 	jr z, .load_palettes
-	call Intro_InitMagikarps
-	ret
+	jp Intro_InitMagikarps
 
 .load_palettes
 	callfar Intro_LoadMagikarpPalettes
@@ -334,8 +328,7 @@ IntroScene3_Jumper:
 	ret
 
 .scene3_6:
-	call Intro_UpdateLYOverrides
-	ret
+	jp Intro_UpdateLYOverrides
 
 Intro_InitBubble:
 	ld hl, wIntroFrameCounter1
@@ -354,8 +347,7 @@ Intro_InitBubble:
 	inc hl
 	ld d, [hl]
 	ld a, SPRITE_ANIM_INDEX_GS_INTRO_BUBBLE
-	call InitSpriteAnimStruct
-	ret
+	jp InitSpriteAnimStruct
 
 .pixel_table
 	db  6 * 8, 14 * 8 + 4
@@ -385,8 +377,7 @@ Intro_InitMagikarps:
 	depixel 26, 0
 	call .InitAnim
 	depixel 0, 24
-	call .InitAnim
-	ret
+	jp .InitAnim
 
 .alternate_frame
 	depixel 28, 30
@@ -394,13 +385,11 @@ Intro_InitMagikarps:
 	depixel 31, 24
 	call .InitAnim
 	depixel 2, 28
-	call .InitAnim
-	ret
+	jp .InitAnim
 
 .InitAnim:
 	ld a, SPRITE_ANIM_INDEX_GS_INTRO_MAGIKARP
-	call InitSpriteAnimStruct
-	ret
+	jp InitSpriteAnimStruct
 
 Intro_InitShellders:
 	depixel 18, 7
@@ -411,8 +400,7 @@ Intro_InitShellders:
 
 .InitAnim:
 	ld a, SPRITE_ANIM_INDEX_GS_INTRO_SHELLDER
-	call InitSpriteAnimStruct
-	ret
+	jp InitSpriteAnimStruct
 
 Intro_InitLapras:
 	ld a, [wIntroFrameCounter2]
@@ -420,14 +408,12 @@ Intro_InitLapras:
 	ret nz
 	depixel 16, 24
 	ld a, SPRITE_ANIM_INDEX_GS_INTRO_LAPRAS
-	call InitSpriteAnimStruct
-	ret
+	jp InitSpriteAnimStruct
 
 Intro_UnusedInitAerodactyl: ; unreferenced
 	depixel 2, 0
 	ld a, SPRITE_ANIM_INDEX_UNUSED_INTRO_AERODACTYL
-	call InitSpriteAnimStruct
-	ret
+	jp InitSpriteAnimStruct
 
 Intro_UpdateTilemapAndBGMap:
 ; add new tiles to top as water scene scrolls up to surface
@@ -742,20 +728,17 @@ Intro_InitNote:
 	jr z, .invisible
 	depixel 11, 6, 4, 0
 	ld a, SPRITE_ANIM_INDEX_GS_INTRO_NOTE
-	call InitSpriteAnimStruct
-	ret
+	jp InitSpriteAnimStruct
 
 .invisible
 	depixel 10, 6, 4, 0
 	ld a, SPRITE_ANIM_INDEX_GS_INTRO_INVISIBLE_NOTE
-	call InitSpriteAnimStruct
-	ret
+	jp InitSpriteAnimStruct
 
 Intro_InitJigglypuff:
 	depixel 14, 6
 	ld a, SPRITE_ANIM_INDEX_GS_INTRO_JIGGLYPUFF
-	call InitSpriteAnimStruct
-	ret
+	jp InitSpriteAnimStruct
 
 Intro_InitPikachu:
 	depixel 14, 24
@@ -763,8 +746,7 @@ Intro_InitPikachu:
 	call InitSpriteAnimStruct
 	depixel 14, 24
 	ld a, SPRITE_ANIM_INDEX_GS_INTRO_PIKACHU_TAIL
-	call InitSpriteAnimStruct
-	ret
+	jp InitSpriteAnimStruct
 
 IntroScene10:
 ; Set up fireball cutscene (Charizard, Johto starters)
@@ -825,8 +807,7 @@ IntroScene10:
 	call PlayMusic
 	call DelayFrame
 	ld de, MUSIC_GS_OPENING_2
-	call PlayMusic
-	ret
+	jp PlayMusic
 
 IntroScene11:
 ; scroll up to Charizard silhoutte, flash Johto starters
@@ -868,8 +849,7 @@ IntroScene12:
 	call DmgToCgbBGPals
 	ld e, a
 	ld d, a
-	call DmgToCgbObjPals
-	ret
+	jp DmgToCgbObjPals
 
 .next
 	ld hl, wIntroJumptableIndex
@@ -959,8 +939,7 @@ IntroScene16:
 	call DmgToCgbBGPals
 	ld e, a
 	ld d, a
-	call DmgToCgbObjPals
-	ret
+	jp DmgToCgbObjPals
 
 .next
 	ld hl, wIntroJumptableIndex
@@ -982,8 +961,7 @@ Intro_BlankTilemapAndBGMap:
 	hlbgcoord 0, 0
 	ld bc, vBGMap1 - vBGMap0
 	xor a
-	call ByteFill
-	ret
+	jp ByteFill
 
 Intro_CheckSCYEvent:
 	ldh a, [hSCY]
@@ -1027,38 +1005,33 @@ Intro_ChikoritaAppears:
 	call PlaySFX
 	depixel 22, 1
 	ld a, SPRITE_ANIM_INDEX_GS_INTRO_CHIKORITA
-	call InitSpriteAnimStruct
-	ret
+	jp InitSpriteAnimStruct
 
 Intro_CyndaquilAppears:
 	ld de, SFX_GS_INTRO_POKEMON_APPEARS
 	call PlaySFX
 	depixel 22, 20
 	ld a, SPRITE_ANIM_INDEX_GS_INTRO_CYNDAQUIL
-	call InitSpriteAnimStruct
-	ret
+	jp InitSpriteAnimStruct
 
 Intro_TotodileAppears:
 	ld de, SFX_GS_INTRO_POKEMON_APPEARS
 	call PlaySFX
 	depixel 22, 1
 	ld a, SPRITE_ANIM_INDEX_GS_INTRO_TOTODILE
-	call InitSpriteAnimStruct
-	ret
+	jp InitSpriteAnimStruct
 
 Intro_FlashMonPalette:
 	lb de, %11100100, %11100100
 	call DmgToCgbObjPals
 	xor a
-	call DmgToCgbBGPals
-	ret
+	jp DmgToCgbBGPals
 
 Intro_FlashSilhouette:
 	lb de, %11111111, %11111111
 	call DmgToCgbObjPals
 	ld a, %00111111
-	call DmgToCgbBGPals
-	ret
+	jp DmgToCgbBGPals
 
 Intro_LoadChikoritaPalette:
 	ld hl, CHIKORITA

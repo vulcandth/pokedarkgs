@@ -256,8 +256,7 @@ Intro_GetMonFrontpic:
 	call GetFarWord
 	pop af
 	pop de
-	call FarDecompress
-	ret
+	jp FarDecompress
 
 GetTrainerPic:
 	ld a, [wTrainerClass]
@@ -403,8 +402,7 @@ PadFrontpic:
 	jr nz, .five_loop
 	ld c, 7 << 4
 	xor a
-	call .Fill
-	ret
+	jp .Fill
 
 .Fill:
 	ld [hli], a
