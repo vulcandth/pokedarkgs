@@ -139,9 +139,8 @@ if DEF(_DEBUG)
 	givepokemove HEADBUTT,   wPartyMon3, 2
 	givepokemove WATERFALL,  wPartyMon3, 3
 	; Other test pokemon
-	givepoke UNOWN, UNOWN_A, 50
-	givepoke UNOWN, UNOWN_B, 50
-	givepoke SPEAROW, PLAIN_FORM, 10, NO_ITEM, TRUE, GiftSpearow2Name, GiftSpearowOT2Name
+	givepoke PIKACHU, 2
+	givepoke DITTO, 2
 	; intro events
 	addcellnum PHONE_MOM
 	setmapscene PLAYERS_HOUSE_1F, $1

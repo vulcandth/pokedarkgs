@@ -6,3 +6,10 @@ _hl_::
 _de_::
 	push de
 	ret
+
+SwapHLDE::
+	push de
+	ld d, h
+	ld e, l
+	pop hl
+	ret
