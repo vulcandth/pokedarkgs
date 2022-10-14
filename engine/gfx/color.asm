@@ -452,11 +452,12 @@ GetPredefPal:
 	ret
 
 LoadHLPaletteIntoDE:
+	ld c, 1 palettes
+LoadHLBytesIntoDE:
 	ldh a, [rSVBK]
 	push af
 	ld a, BANK(wOBPals1)
 	ldh [rSVBK], a
-	ld c, 1 palettes
 .loop
 	ld a, [hli]
 	ld [de], a
@@ -637,6 +638,19 @@ InitPartyMenuOBPals:
 	ld bc, 8 palettes
 	ld a, BANK(wOBPals1)
 	jp FarCopyWRAM
+
+SetFirstOBJPalette::
+; input: e must contain the offset of the selected palette from PartyMenuOBPals
+	ld hl, PartyMenuOBPals
+	ld d, 0
+	add hl, de
+	ld de, wOBPals1
+	ld bc, 1 palettes
+	ld a, BANK(wOBPals1)
+	call FarCopyWRAM
+	ld a, TRUE
+	ldh [hCGBPalUpdate], a
+	jp ApplyPals
 
 GetBattlemonBackpicPalettePointer:
 	push de
@@ -1271,6 +1285,19 @@ INCLUDE "gfx/stats/party_menu_bg_mobile.pal"
 
 PartyMenuBGPalette:
 INCLUDE "gfx/stats/party_menu_bg.pal"
+
+BillsPC_ThemePals:
+	table_width PAL_COLOR_SIZE * 4, BillsPC_ThemePals
+INCLUDE "gfx/pc/themes.pal"
+	assert_table_length NUM_BILLS_PC_THEMES
+
+BillsPC_CursorPalette:
+	; middle colors are set dynamically
+	RGB 31,31,31, 31,31,31, 00,00,00, 00,00,00
+BillsPC_PackPalette:
+	RGB 31,31,31, 31,31,31, 07,19,07, 00,00,00
+BillsPC_WhitePalette:
+	RGB 31,31,31, 31,31,31, 31,31,31, 31,31,31
 
 TilesetBGPalette:
 INCLUDE "gfx/tilesets/bg_tiles.pal"

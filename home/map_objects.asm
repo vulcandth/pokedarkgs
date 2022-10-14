@@ -280,6 +280,15 @@ CheckObjectTime::
 	ret c
 	ld a, [hl]
 	cp d
+	jr nc, .yes
+	jr .no
+
+.yes
+	and a
+	ret
+
+.no
+	scf
 	ret
 
 UnmaskCopyMapObjectStruct::

@@ -74,6 +74,12 @@ SpriteAnimFrameData:
 	dw .Frameset_GSIntroChikorita
 	dw .Frameset_GSIntroCyndaquil
 	dw .Frameset_GSIntroTotodile
+	dw .Frameset_PCCursor
+	dw .Frameset_PCCursorItem
+	dw .Frameset_PCQuick
+	dw .Frameset_PCMode
+	dw .Frameset_PCMode2
+	dw .Frameset_PCPack
 	assert_table_length NUM_SPRITE_ANIM_FRAMESETS
 
 .Frameset_00:
@@ -492,3 +498,28 @@ ENDC
 .Frameset_GSIntroTotodile:
 	oamframe SPRITE_ANIM_OAMSET_GS_INTRO_TOTODILE, 24
 	oamdelete 
+
+.Frameset_PCCursor:
+	oamframe SPRITE_ANIM_OAMSET_PC_CURSOR, 32
+	oamrestart
+
+.Frameset_PCCursorItem:
+	; Conditionally switched to when dealing with items
+	oamframe SPRITE_ANIM_OAMSET_PC_CURSOR_ITEM, 32
+	oamrestart
+
+.Frameset_PCQuick:
+	oamframe SPRITE_ANIM_OAMSET_PC_QUICK, 8
+	oamdelete
+
+.Frameset_PCMode:
+	oamframe SPRITE_ANIM_OAMSET_PC_MODE, 32
+	oamrestart
+
+.Frameset_PCMode2:
+	oamframe SPRITE_ANIM_OAMSET_PC_MODE2, 32
+	oamrestart
+
+.Frameset_PCPack:
+	oamframe SPRITE_ANIM_OAMSET_PC_PACK, 32
+	oamrestart

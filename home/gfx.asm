@@ -32,6 +32,74 @@ FarCopyBytesDouble_DoubleBankSwitch::
 	rst Bankswitch
 	ret
 
+SafeHDMATransfer::
+; Copy c 2bpp tiles from b:de to hl using GDMA. Assumes $00 < c <= $80.
+	dec c
+	ldh a, [hBGMapMode]
+	push af
+	xor a
+	ldh [hBGMapMode], a
+	ldh a, [hROMBank]
+	push af
+	ld a, b
+	rst Bankswitch
+
+	; load the source and target MSB and LSB
+	ld a, d
+	ldh [rHDMA1], a ; source MSB
+	ld a, e
+	ldh [rHDMA2], a ; source LSB
+	ld a, h
+	ldh [rHDMA3], a ; target MSB
+	ld a, l
+	ldh [rHDMA4], a ; target LSB
+
+	; if LCD is disabled, just run all of it
+	ldh a, [rLCDC]
+	bit rLCDC_ENABLE, a
+	jr nz, .lcd_enabled
+
+	ld a, c
+	ldh [rHDMA5], a
+	jr .done
+
+.lcd_enabled
+	push de
+	di
+.loop
+	ld a, c
+	cp 5
+	ld d, c
+	jr c, .got_tilecopy
+	ld d, 4
+.got_tilecopy
+	push bc
+	lb bc, %11, LOW(rSTAT)
+.wait_hblank1
+	ld a, [c]
+	and b
+	jr z, .wait_hblank1
+.wait_hblank2
+	ld a, [c]
+	and b
+	jr nz, .wait_hblank2
+
+	ld a, d
+	ldh [rHDMA5], a
+	pop bc
+	ld a, c
+	sub 5
+	ld c, a
+	jr nc, .loop
+	ei
+	pop de
+.done
+	pop af
+	rst Bankswitch
+	pop af
+	ldh [hBGMapMode], a
+	ret
+
 UpdatePlayerSprite::
 	farcall _UpdatePlayerSprite
 	ret
@@ -118,8 +186,41 @@ FarCopyBytesDouble:
 	rst Bankswitch
 	ret
 
+CheckGDMA:
+; Check if we can use GDMA. Return carry if we can.
+	ldh a, [hCGB]
+	and a
+	ret z
+
+	; The 4 least significant bits must be zero.
+	ld a, e
+	or l
+	and $f
+	ret nz
+
+	; Must be a copy from non-VRAM to VRAM.
+	ld a, d
+	sub $80
+	cp $20
+	ccf
+	ret nc
+	ld a, h
+	sub $80
+	cp $20
+	ret nc
+
+	; Must not be a copy of >$80 tiles.
+	ld a, c
+	dec a
+	add a
+	ccf
+	ret
+
 Request2bpp::
 ; Load 2bpp at b:de to occupy c tiles of hl.
+	call CheckGDMA
+	jp c, SafeHDMATransfer
+
 	ldh a, [hBGMapMode]
 	push af
 	xor a
@@ -274,6 +375,9 @@ Get2bpp::
 	; fallthrough
 
 Copy2bpp:
+	call CheckGDMA
+	jp c, SafeHDMATransfer
+
 	push hl
 	ld h, d
 	ld l, e

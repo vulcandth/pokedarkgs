@@ -4981,7 +4981,7 @@ Function1023c6:
 	ld [wCurPartyMon], a
 	xor a ; REMOVE_PARTY
 	ld [wPokemonWithdrawDepositParameter], a
-	farcall RemoveMonFromPartyOrBox
+	farcall RemoveMonFromParty
 	ld hl, wPartyCount
 	inc [hl]
 	ld a, [hli]

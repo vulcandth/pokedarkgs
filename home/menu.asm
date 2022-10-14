@@ -399,6 +399,8 @@ CopyNameFromMenu::
 YesNoBox::
 	lb bc, SCREEN_WIDTH - 6, 7
 ; fallthrough
+NoYesBox::
+	newfarjp _NoYesBox
 
 PlaceYesNoBox::
 ; Return nc (yes) or c (no).
