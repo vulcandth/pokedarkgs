@@ -3,8 +3,7 @@ LoadOverworldMonIcon:
 	ld [wCurIcon], a
 	; fallthrough
 _LoadOverworldMonIcon:
-	ld l, a
-	ld h, 0
+	call GetPokemonIndexFromID
 	add hl, hl
 	ld e, a
 	ld d, 0
@@ -153,9 +152,10 @@ GetMenuMonIconPalette:
 GetMenuMonIconPalette_PredeterminedShininess:
 	push af
 	ld a, [wCurPartySpecies]
-	dec a
-	ld c, a
-	ld b, 0
+	call GetPokemonIndexFromID
+	dec hl
+	ld b, h
+	ld c, l
 	ld hl, MonMenuIconPals
 	add hl, bc
 	ld e, [hl]
@@ -479,8 +479,7 @@ endr
 
 	ld a, [wCurIcon]
 	push hl
-	ld l, a
-	ld h, 0
+	call GetPokemonIndexFromID
 	add hl, hl
 	ld e, a
 	ld d, 0
@@ -501,11 +500,19 @@ endr
 	ret
 
 GetIconBank:
+	push hl
 	ld a, [wCurIcon]
-	cp MAGIKARP ; first species in "Mon Icons 2"
+	call GetPokemonIndexFromID
+	ld a, h
+	cp HIGH(MAGIKARP) ; first species in "Mon Icons 2"
 	lb bc, BANK("Mon Icons 1"), 8
-	ret c
+	jr c, .return
+	ld a, l
+	cp LOW(MAGIKARP)
+	jr c, .return
 	ld b, BANK("Mon Icons 2")
+.return
+	pop hl
 	ret
 
 GetGFXUnlessMobile:
