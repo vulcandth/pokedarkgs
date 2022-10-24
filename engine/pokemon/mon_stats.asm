@@ -182,9 +182,9 @@ GetGender:
 	and a
 	jr z, .PartyMon
 
-	ld hl, wBufferMonDVs
+	ld hl, wBufferMonGender
 	cp BUFFERMON
-	jr z, .DVs
+	jr z, .Gender
 
 ; 1: OTPartyMon
 	ld hl, wOTPartyMon1Gender
@@ -215,12 +215,8 @@ GetGender:
 	ld a, [wCurPartyMon]
 	call AddNTimes
 
-.DVs:
-; Attack DV
-	ld a, [hli]
-	and $f0
-	ld b, a
-; Speed DV
+.Gender:
+; Gender and form as stored in the same byte.
 	ld a, [hl]
 	and GENDER_MASK
 	rlc a

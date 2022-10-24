@@ -128,18 +128,24 @@ DEF SAVEMON_ITEM               rb
 DEF SAVEMON_MOVES_LOW          rb NUM_MOVES
 DEF SAVEMON_ID                 rw
 DEF SAVEMON_EXP                rb 3
-rsset SAVEMON_EXP
-DEF SAVEMON_IS_EGG             rb ; EGG is stored in the most significant EXP bit.
+DEF SAVEMON_EVS                rb NUM_STATS
+rsset SAVEMON_EVS
+DEF SAVEMON_HP_EV              rb
+DEF SAVEMON_ATK_EV             rb
+DEF SAVEMON_DEF_EV             rb
+DEF SAVEMON_SPD_EV             rb
+DEF SAVEMON_SAT_EV             rb
+DEF SAVEMON_SDF_EV             rb
+DEF SAVEMON_DVS                rb NUM_STATS / 2
+DEF SAVEMON_PERSONALITY        rw
+DEF SAVEMON_SHINY     EQU MON_PERSONALITY
+DEF SAVEMON_ABILITY   EQU MON_PERSONALITY
+DEF SAVEMON_NATURE    EQU MON_PERSONALITY
+DEF SAVEMON_GENDER    EQU MON_PERSONALITY + 1
+DEF SAVEMON_IS_EGG    EQU MON_PERSONALITY + 1
+DEF SAVEMON_EXTRA_BIT EQU MON_PERSONALITY + 1
+DEF SAVEMON_FORM      EQU MON_PERSONALITY + 1
                                rb_skip
-                               rb_skip
-DEF SAVEMON_STAT_EXP           rw NUM_EXP_STATS
-rsset SAVEMON_STAT_EXP
-DEF SAVEMON_HP_EXP             rw
-DEF SAVEMON_ATK_EXP            rw
-DEF SAVEMON_DEF_EXP            rw
-DEF SAVEMON_SPD_EXP            rw
-DEF SAVEMON_SPC_EXP            rw
-DEF SAVEMON_DVS                rw
 ; savemon_struct is identical to party_struct before this point
 DEF SAVEMON_MOVES_HIGH         rb NUM_MOVES
 rsset SAVEMON_MOVES_HIGH

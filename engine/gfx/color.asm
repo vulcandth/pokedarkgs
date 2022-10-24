@@ -1340,16 +1340,3 @@ INCLUDE "gfx/beta_poker/beta_poker.pal"
 
 SlotMachinePals:
 INCLUDE "gfx/slots/slots.pal"
-
-; Input: E must contain the offset of the selected palette from PartyMenuOBPals.
-SetFirstOBJPalette::
-	ld hl, PartyMenuOBPals
-	ld d, 0
-	add hl, de
- 	ld de, wOBPals1
-	ld bc, 1 palettes
-	ld a, BANK(wOBPals1)
-	call FarCopyWRAM
-	ld a, TRUE
-	ldh [hCGBPalUpdate], a
-	jp ApplyPals

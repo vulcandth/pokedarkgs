@@ -5,13 +5,8 @@ LoadOverworldMonIcon:
 _LoadOverworldMonIcon:
 	call GetPokemonIndexFromID
 	add hl, hl
-	ld e, a
-	ld d, 0
-	add hl, de
 	ld de, IconPointers
 	add hl, de
-	ld a, [hli]
-	ld b, a
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
@@ -489,14 +484,9 @@ endr
 	jr z, .is_egg
 	call GetPokemonIndexFromID
 	add hl, hl
-	ld e, a
-	ld d, 0
-	add hl, de
 	ld de, IconPointers
 	add hl, de
 .is_egg
-	ld a, [hli]
-	ld b, a
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]

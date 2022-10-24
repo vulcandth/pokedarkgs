@@ -809,7 +809,7 @@ SendMonIntoBox:
 		cp HIGH(UNOWN)
 	endc
 	jr nz, .not_unown
-	ld hl, sBoxMon1Form
+	ld hl, wBufferMonForm
 	predef GetUnownLetter
 	callfar UpdateUnownDex
 
@@ -1304,7 +1304,7 @@ GivePoke::
 	push de
 	push af
 	ld a, [wCurPartyForm]
-	ld [sBoxMon1Form], a
+	ld [wBufferMonForm], a
 	ld a, [wCurItem]
 	and a
 	jr z, .done

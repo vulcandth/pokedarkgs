@@ -753,7 +753,7 @@ EncodeBufferMon:
 	ld hl, wEncodedBufferMonIsEgg
 	cp EGG
 	jr nz, .not_egg
-	set IS_EGG_F, [hl]
+	set MON_IS_EGG_F, [hl]
 	.not_egg
 
 	; Convert species to 16 bit.
@@ -973,11 +973,11 @@ DecodeBufferMon:
 
 	; If EGG, load EGG into AltSpecies, otherwise
 	; load Species into AltSpecies.
-	bit IS_EGG_F, a
+	bit MON_IS_EGG_F, a
 	ld a, [wBufferMonSpecies]
 	jr z, .is_not_egg
 	ld a, EGG
-	res IS_EGG_F, [hl]
+	res MON_IS_EGG_F, [hl]
 .is_not_egg
 	ld [wBufferMonAltSpecies], a
 
@@ -1037,7 +1037,7 @@ SetTempPartyMonData:
 	ld [wCurSpecies], a
 	call GetBaseData
 	ld b, TRUE
-	ld hl, wBufferMonStatExp - 1
+	ld hl, wBufferMonEVs
 	ld de, wBufferMonMaxHP
 	ld a, [wBufferMonLevel]
 	ld [wCurPartyLevel], a
