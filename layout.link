@@ -118,7 +118,7 @@ ROMX $23
 ROMX $24
 	"bank24"
 ROMX $25
-	"Maps"
+	"Map Headers"
 	"Events"
 ROMX $26
 	"Map Scripts 11"

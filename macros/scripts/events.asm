@@ -303,7 +303,11 @@ MACRO givepoke
 		db \3 ; level
 	else
 		dw \1 ; pokemon
-		db PLAIN_FORM
+		if \1 != UNOWN
+			db PLAIN_FORM
+		else
+			db UNOWN_A
+		endc
 		db \2 ; level
 	endc
 	if _NARG >= 4

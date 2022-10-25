@@ -1423,8 +1423,10 @@ GivePoke::
 	ld a, b
 	and a
 	ret z
+if !DEF(_DEBUG)
 	ld hl, WasSentToBillsPCText
 	call PrintText
+endc
 	ld hl, wMonOrItemNameBuffer
 	ld de, wBufferMonNickname
 	ld bc, MON_NAME_LENGTH

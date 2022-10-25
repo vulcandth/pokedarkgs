@@ -15,6 +15,7 @@ DEF MAP_LOCATION           rb ; 5
 DEF MAP_MUSIC              rb ; 6
 DEF MAP_PALETTE            rb ; 7
 DEF MAP_FISHGROUP          rb ; 8
+DEF MAP_HABITAT            rb ; 9
 DEF MAP_LENGTH EQU _RS
 
 ; map environments (wEnvironment)
