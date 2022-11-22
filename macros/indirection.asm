@@ -32,9 +32,10 @@ MACRO indirect_entries
 	DEF ___current_indirect_index = (\1) + 1
 	DEF ___current_indirect_iteration_limit = ___current_indirect_count / $FF
 	DEF ___current_indirect_count = ___current_indirect_count % $FF
+	DEF ___current_indirect_count_total = ((___current_indirect_iteration_limit * $FF) + ___current_indirect_count)
 	if _NARG > 1
-		assert (\2.IndirectEnd - \2) == ___current_indirect_size * (___current_indirect_count), \
-			"\2: expected {d:___current_indirect_count} entries, each {d:___current_indirect_size} bytes"
+		assert (\2.IndirectEnd - \2) == ___current_indirect_size * ___current_indirect_count_total, \
+			"\2: expected {d:___current_indirect_count_total} entries, each {d:___current_indirect_size} bytes"
 	endc
 	if ___current_indirect_iteration_limit
 		FOR ___current_indirect_iteration, ___current_indirect_iteration_limit
