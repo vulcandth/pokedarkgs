@@ -184,8 +184,6 @@ hFunctionTarget::
 hFunctionTargetLo:: db
 hFunctionTargetHi:: db
 
-hAppendVWFText:: ds 4
-
 hDelayFrameLY:: db
 
-	ds 8
+	ds 12
