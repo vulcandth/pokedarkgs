@@ -83,6 +83,7 @@ RefreshSprites::
 	xor a
 	ld [hUsedSpriteIndex], a
 	call ReloadSpriteIndex
+	call LoadMiscTiles
 	pop bc
 	pop de
 	pop hl
