@@ -1044,35 +1044,25 @@ CheckHabitatMon:
 	dec a
 	ld h, 0
 	ld l, a
+	ld d, 0
+	ld e, a
 	add hl, hl
+	add hl, de
 	ld de, HabitatPointers
 	add hl, de
 	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	push hl
-	xor a
-	ld c, a
-.loop
-	inc c
-	ld a, [hli]
+	ld e, a
+	ld d, [hl]
 	inc hl
-	cp -1
-	jr nz, .loop
-	pop hl
-	ld a, c
-	push hl
-	pop de
+	ld a, [hl]
 	call RandomRange
 	ld h, 0
 	ld l, a
 	add hl, hl
 	add hl, de
 	ld a, [hli]
-	ld c, a
-	ld b, [hl]
-	push bc
-	pop hl
+	ld h, [hl]
+	ld l, a
 	ret
 
 INCLUDE "data/wild/johto_grass.asm"

@@ -1,16 +1,16 @@
 ; Habitats
 
 HabitatPointers:
-	table_width 2, HabitatPointers
-	dw GrasslandHabitat
-	dw ForestHabitat
-	dw WatersEdgeHabitat
-	dw SeaHabitat
-	dw CaveHabitat
-	dw MountainHabitat
-	dw RoughTerrainHabitat
-	dw UrbanHabitat
-	dw RareHabitat
+	table_width 3, HabitatPointers
+	dwb GrasslandHabitat,    ((ForestHabitat - GrasslandHabitat) / 2)
+	dwb ForestHabitat,       ((WatersEdgeHabitat - ForestHabitat) / 2)
+	dwb WatersEdgeHabitat,   ((SeaHabitat - WatersEdgeHabitat) / 2)
+	dwb SeaHabitat,          ((CaveHabitat - SeaHabitat) / 2)
+	dwb CaveHabitat,         ((MountainHabitat - CaveHabitat) / 2)
+	dwb MountainHabitat,     ((RoughTerrainHabitat - MountainHabitat) / 2)
+	dwb RoughTerrainHabitat, ((UrbanHabitat - RoughTerrainHabitat) / 2)
+	dwb UrbanHabitat,        ((RareHabitat - UrbanHabitat) / 2)
+	dwb RareHabitat,         ((EndHabitats - RareHabitat) / 2)
 	assert_table_length NUM_HABITATS
 
 HabitatMonPointers:
@@ -73,7 +73,6 @@ GrasslandHabitat:
 	dw CYNDAQUIL
 	dw QUILAVA
 	dw TYPHLOSION
-	dw -1
 ForestHabitat:
 	dw CATERPIE
 	dw METAPOD
@@ -116,7 +115,6 @@ ForestHabitat:
 	dw HERACROSS
 	dw TOGEPI
 	dw TOGETIC
-	dw -1
 WatersEdgeHabitat:
 	dw GOLDEEN
 	dw SEAKING
@@ -146,7 +144,6 @@ WatersEdgeHabitat:
 	dw TOTODILE
 	dw CROCONAW
 	dw FERALIGATR
-	dw -1
 SeaHabitat:
 	dw TENTACOOL
 	dw TENTACRUEL
@@ -171,7 +168,6 @@ SeaHabitat:
 	dw OMASTAR
 	dw KABUTO
 	dw KABUTOPS
-	dw -1
 CaveHabitat:
 	dw ZUBAT
 	dw GOLBAT
@@ -188,7 +184,6 @@ CaveHabitat:
 	dw HAUNTER
 	dw GENGAR
 	dw WOBBUFFET
-	dw -1
 MountainHabitat:
 	dw GEODUDE
 	dw GRAVELER
@@ -220,7 +215,6 @@ MountainHabitat:
 	dw CHARMANDER
 	dw CHARMELEON
 	dw CHARIZARD
-	dw -1
 RoughTerrainHabitat:
 	dw SPEAROW
 	dw FEAROW
@@ -235,7 +229,6 @@ RoughTerrainHabitat:
 	dw PHANPY
 	dw DONPHAN
 	dw SKARMORY
-	dw -1
 UrbanHabitat:
 	dw MEOWTH
 	dw PERSIAN
@@ -269,7 +262,6 @@ UrbanHabitat:
 	dw FLAREON
 	dw ESPEON
 	dw UMBREON
-	dw -1
 RareHabitat:
 	dw RAIKOU
 	dw ENTEI
@@ -283,6 +275,5 @@ RareHabitat:
 	dw HO_OH
 	dw MEWTWO
 	dw MEW
-	dw -1
-	assert_table_length NUM_POKEMON + NUM_HABITATS
-	print NUM_POKEMON
+EndHabitats:
+	assert_table_length NUM_POKEMON
