@@ -1035,7 +1035,9 @@ CheckHabitatMon:
 	cp (10 percent)
 	ret nc
 	ld de, MAP_HABITAT
+	push hl
 	call GetMapField
+	pop hl
 	ld a, c
 	inc a
 	ret z
@@ -1046,10 +1048,7 @@ CheckHabitatMon:
 	ld de, HabitatPointers
 	add hl, de
 	ld a, [hli]
-	ld b, a
-	ld a, [hl]
-	ld h, a
-	ld a, b
+	ld h, [hl]
 	ld l, a
 	push hl
 	xor a
@@ -1071,8 +1070,7 @@ CheckHabitatMon:
 	add hl, de
 	ld a, [hli]
 	ld c, a
-	ld a, [hl]
-	ld b, a
+	ld b, [hl]
 	push bc
 	pop hl
 	ret
