@@ -1,66 +1,37 @@
-# 16-bit index expansion for Crystal
+# Pokémon Dark Gold and Dark Silver
 
-This repository contains a modified Pokémon Crystal game, updated to handle 16-bit indexes. The main goal of this
-project is to create a reusable system that ROM hacks can use to bring 16-bit indexes into their games.  
-It is *not* within scope to create a new game, or to add additional features beyond 16-bit indexes.
+##### <u>Playability Status:</u> *Still in early development, You are going to have a bad time.*
 
-The `master` branch of this repository is intended to perform identically to the original Pokémon Crystal, with
-minimal changes to support further development on it. Other branches will implement more features on top of it; the
-intention is that the necessary changes can be readily seen by comparing said branches to `master` (or between each
-other). Therefore, these other branches will never be merged into `master`, even though they will always be directly
-descended from it (i.e., in Git terminology, a merge would be a fast-forward).
+This is a Rom Hack based on the disassembly of Pokémon Crystal by Pret. I wanted to learn about ROM hacking and assembly, as well as make something fun for my Friends and Family to play. Many of the changes are based on things I wanted from a ROM Hack or my Friends or Family asked for. You are more than welcome to give it a play, suggest changes, and propose code improvements. 
 
-Since this repository is intended to be used as a reference, the commit history is intentionally kept clean to make
-changes clearly visible. Therefore, modifications (such as bug fixes) will often be merged into whichever commit is
-more suitable for them, with the remainder of the commit tree rebased on top of the updated commit. **Please do not
-fork this repository to build a new game on top** (unless you intend to contribute to it), as the publicly-visible
-history will be repeatedly rewritten, making merges impossible. If you do want to contribute to the repository, let
-me know in advance so I can notify you of history rewrites.
 
-For further documentation, check out the [wiki].
 
-## Branches
+This romhack aims to bring Pokemon Gold/Silver to the Crystal Engine with a few twists. See below for some Planned features.
 
-* `master`: (status: **stable**, last update: **2020-08-03**) Base branch. This branch contains a slightly modified
-  version of Pokémon Crystal, with some quality-of-life improvements intended to make development easier. These
-  improvements have been taken from the documentation in the [main disassembly repository][pokecrystal]. This branch
-  contains no 16-bit features and it is only intended as a reference.
-* `base-components`: (status: **stable**, last update: **2020-06-19**) This branch defines the basic components that
-  will comprise the 16-bit index table system, on top of which the remaining branches will be built. Since it only
-  defines macros (and a handful of WRAM locations to be shared by all index tables), it should build the same ROM as
-  `master`.
-* `expand-mon-ID`: (status: **stable**, last update: **2020-08-03**) This branch implements 16-bit indexes for Pokémon
-  species, thus allowing more than 253 species to be included in a single game.
-* `expand-move-ID`: (status: **stable**, last update: **2020-08-31**) This branch implements 16-bit indexes for moves,
-  on top of the existing 16-bit support for Pokémon species from the previous branch. (Interaction between the
-  branches is kept to a minimum, though.)
+1. Add most pokemon directly related to the Gen I / II pokemon. (Ex. Baby Pokemon).
 
-To view the differences between any two branches (or any two commits in the repository), you can use GitHub's [tree
-comparison][compare] tool.
+2. 16bit Mon ID's 16bit Move ID's. [**Implemented**]
 
-## FAQs
+3. Newbox (Bill's PC overhall). [**Implemented**]
 
-**Q1:** Will this engine include \<insert additional feature here\>?  
-**A1:** Unless the feature is specifically related to 16-bit indexing (or otherwise extending the range of possible
-index values), the answer is almost certainly "no". This repository's scope is limited to 16-bit indexes. If you
-already have a ROM hack that includes the features you like and you'd want it to have 16-bit indexes, the right course
-of action would be to port this engine to it. Otherwise, you can use this engine as a base to make your own ROM hack
-with all the features you want.
+4. 60 FPS Doublespeed [**Implemented**]
 
-**Q2:** Can I use this engine for my own ROM hack?  
-**A2:** Of course; that's what it was made for. I will try make it as easy as possible to port to existing or new ROM
-hacks; instructions to do so will be in the [wiki]. All I can ask you for is that, just like this engine was openly
-available for you to use, you make your hack's code openly available as well — quoting some of the text in
-[SQLite](https://sqlite.org)'s copyright disclaimer, "may you share freely, never taking more than you give".
+5. Dynamic Sprite Reload [**Implemented**]
 
-**Q3:** What's this engine's new limit on indexes?  
-**A3:** The theoretical limit is 65,534, minus a couple of "special" indexes used by the game for specific purposes
-(such as the value that indicates that a Pokémon is inside an egg). However, there are several limitations that will
-probably prevent you from ever reaching that limit. For starters, you can't fit 65,534 of _anything_ inside a ROM
-bank! The index work is done, and I'll try to remove any hurdles that would render that work useless; however, if you
-want to push the limits of the hardware and add 20,000 new Pokémon, you'll find yourself against a technical challenge
-that will go beyond indexes.
+6. 3DS Virtual Console Support [**Implemented**]
 
-[compare]: https://github.com/aaaaaa123456789/pokecrystal16/compare
-[pokecrystal]: https://github.com/pret/pokecrystal/
-[wiki]: https://github.com/aaaaaa123456789/pokecrystal16/wiki
+7. Rare spawns based on habitat [**Partially Implemented**]
+
+8. Follower Pokemon [**Coming Soon!**]
+
+9. Slightly Increased difficulty
+
+10. New Town/Gym In Lake of Rage
+
+11. Lavendar town rework
+
+12.  ... and More!
+
+
+
+You may be asking why is it called "Dark"? Hell if I know. I have a couple ideas about that.. but.. whatever. Feel free to help me discover where this romhack will take us!
