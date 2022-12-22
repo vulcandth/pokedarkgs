@@ -356,6 +356,7 @@ ChooseWildEncounter:
 	jr z, .nowildbattle
 
 .done
+	call CheckHabitatMon
 	call GetPokemonIDFromIndex
 	ld [wTempWildMonSpecies], a
 
@@ -1029,9 +1030,45 @@ RandomPhoneMon:
 	ld bc, MON_NAME_LENGTH
 	jp CopyBytes
 
+CheckHabitatMon:
+	call Random
+	cp (10 percent)
+	ret nc
+	ld de, MAP_HABITAT
+	push hl
+	call GetMapField
+	pop hl
+	ld a, c
+	inc a
+	ret z
+	dec a
+	ld h, 0
+	ld l, a
+	ld d, 0
+	ld e, a
+	add hl, hl
+	add hl, de
+	ld de, HabitatPointers
+	add hl, de
+	ld a, [hli]
+	ld e, a
+	ld d, [hl]
+	inc hl
+	ld a, [hl]
+	call RandomRange
+	ld h, 0
+	ld l, a
+	add hl, hl
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ret
+
 INCLUDE "data/wild/johto_grass.asm"
 INCLUDE "data/wild/johto_water.asm"
 INCLUDE "data/wild/kanto_grass.asm"
 INCLUDE "data/wild/kanto_water.asm"
 INCLUDE "data/wild/swarm_grass.asm"
 INCLUDE "data/wild/swarm_water.asm"
+INCLUDE "data/wild/habitat_pointers.asm"

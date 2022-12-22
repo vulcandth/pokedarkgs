@@ -1,6 +1,6 @@
 ; LCD handling
 
-LCD::
+LCDGeneric::
 	push af
 	ldh a, [hLCDCPointer]
 	and a

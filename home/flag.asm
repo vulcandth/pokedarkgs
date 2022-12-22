@@ -16,8 +16,7 @@ ResetFlashIfOutOfCave::
 	cp ROUTE
 	jr z, .outdoors
 	cp TOWN
-	jr z, .outdoors
-	ret
+	ret nz
 
 .outdoors
 	ld hl, wStatusFlags
@@ -26,7 +25,6 @@ ResetFlashIfOutOfCave::
 
 EventFlagAction::
 	ld hl, wEventFlags
-	jp FlagAction
 
 FlagAction::
 ; Perform action b on bit de in flag array hl.

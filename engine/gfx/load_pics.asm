@@ -36,7 +36,40 @@ GetAnimatedFrontpic:
 	ldh [rSVBK], a
 	jp CloseSRAM
 
-_GetFrontpic:
+PrepareFrontpic:
+	ldh a, [rSVBK]
+	push af
+	call _OldPrepareFrontPic
+	pop af
+	ldh [rSVBK], a
+	ret
+
+_OldPrepareFrontPic::
+	push de
+	call GetBaseData
+	ld a, [wBasePicSize]
+	and $f
+	ld b, a
+	push bc
+	call GetFrontpicPointer
+	ld a, BANK(wDecompressEnemyFrontpic)
+	ldh [rSVBK], a
+	ld a, b
+	ld de, wDecompressEnemyFrontpic
+	call FarDecompress
+	pop bc
+	ld hl, wDecompressScratch
+	ld de, wDecompressEnemyFrontpic
+	call PadFrontpic
+	pop hl
+	push hl
+	ld de, wDecompressScratch
+	ld c, 7 * 7
+	ldh a, [hROMBank]
+	pop hl
+	ret
+
+_PrepareFrontpic:
 	ld a, BANK(sEnemyFrontPicTileCount)
 	call OpenSRAM
 	push de
@@ -68,7 +101,12 @@ _GetFrontpic:
 	ld de, sPaddedEnemyFrontPic
 	ld c, 7 * 7
 	ldh a, [hROMBank]
-	ld b, a
+	pop hl
+	ret
+
+_GetFrontpic:
+	call _PrepareFrontpic
+	push hl
 	call Get2bpp
 	pop hl
 	ret

@@ -141,7 +141,12 @@ if DEF(_DEBUG)
 	; Other test pokemon
 	givepoke PIKACHU, 2
 	givepoke DITTO, 2
-	givepoke BULBASAUR, 2
+;for x, NUM_POKEMON
+;	givepoke BULBASAUR + x, 50
+;endr
+;for x, 48
+;	givepoke BULBASAUR + x, 50
+;endr
 	; intro events
 	addcellnum PHONE_MOM
 	setmapscene PLAYERS_HOUSE_1F, $1

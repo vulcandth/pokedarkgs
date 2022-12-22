@@ -136,6 +136,7 @@ hWX::            db
 hWY::            db
 hTilesPerCycle:: db
 hBGMapMode::     db
+hBGMapHalf:: ; used in newbox
 hBGMapThird::    db
 hBGMapAddress::  dw
 
@@ -172,4 +173,17 @@ hSystemBooted:: db
 
 hClockResetTrigger:: db
 
-	ds 19
+hFarCallSavedA:: db
+hFarCallSavedHL::
+hFarCallSavedL:: db
+hFarCallSavedH:: db
+
+hLCDInterruptFunction::
+hFunctionJump::     db ; $c3 jp
+hFunctionTarget::
+hFunctionTargetLo:: db
+hFunctionTargetHi:: db
+
+hDelayFrameLY:: db
+
+	ds 12

@@ -87,14 +87,8 @@ NamingScreen:
 	; Is it a PartyMon or a BoxMon?
 	ld a, [wMonType]
 	and a
-	jr z, .party_mon
-
-	ld hl, sBoxMon1Shiny
-	ld a, BANK(sBox)
-	call OpenSRAM
-	jr .start
-
-.party_mon
+	ld hl, wBufferMonShiny
+	jr nz, .start
 	ld a, MON_SHINY
 	call GetPartyParamLocation
 .start
@@ -104,9 +98,6 @@ NamingScreen:
 	inc de
 	ld a, [hl]
 	ld [de], a
-	ld a, [wMonType]
-	cp BOXMON
-	call z, CloseSRAM
 
 	ld hl, LoadMenuMonIcon
 	ld a, BANK(LoadMenuMonIcon)
@@ -248,7 +239,8 @@ NamingScreen:
 	jr .StoreParams
 
 .StoreBoxIconParams:
-	ld a, BOX_NAME_LENGTH - 1
+	; the terminator isn't saved, so no "- 1" is needed.
+	ld a, BOX_NAME_LENGTH
 	hlcoord 5, 4
 	jr .StoreParams
 

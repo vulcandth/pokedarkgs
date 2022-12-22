@@ -90,6 +90,11 @@ DEF NUM_SPRITEANIMDICT_ENTRIES EQU 10
 	const SPRITE_ANIM_INDEX_GS_INTRO_CHIKORITA        ; 32
 	const SPRITE_ANIM_INDEX_GS_INTRO_CYNDAQUIL        ; 33
 	const SPRITE_ANIM_INDEX_GS_INTRO_TOTODILE         ; 34
+	const SPRITE_ANIM_INDEX_PC_CURSOR                 ; 35
+	const SPRITE_ANIM_INDEX_PC_QUICK                  ; 36
+	const SPRITE_ANIM_INDEX_PC_MODE                   ; 37
+	const SPRITE_ANIM_INDEX_PC_MODE2                  ; 38
+	const SPRITE_ANIM_INDEX_PC_PACK                   ; 39
 DEF NUM_SPRITE_ANIM_INDEXES EQU const_value
 
 ; DoAnimFrame.Jumptable indexes (see engine/gfx/sprite_anims.asm)
@@ -136,6 +141,10 @@ DEF NUM_SPRITE_ANIM_INDEXES EQU const_value
 	const SPRITE_ANIM_SEQ_GS_INTRO_FIREBALL           ; 27
 	const SPRITE_ANIM_SEQ_GS_INTRO_CHIKORITA_TOTODILE ; 28
 	const SPRITE_ANIM_SEQ_GS_INTRO_CYNDAQUIL          ; 29
+	const SPRITE_ANIM_SEQ_PC_CURSOR                   ; 23
+	const SPRITE_ANIM_SEQ_PC_QUICK                    ; 24
+	const SPRITE_ANIM_SEQ_PC_MODE                     ; 25
+	const SPRITE_ANIM_SEQ_PC_PACK                     ; 26
 DEF NUM_SPRITE_ANIM_SEQS EQU const_value
 
 ; SpriteAnimFrameData indexes (see data/sprite_anims/framesets.asm)
@@ -213,6 +222,12 @@ DEF NUM_SPRITE_ANIM_SEQS EQU const_value
 	const SPRITE_ANIM_FRAMESET_GS_INTRO_CHIKORITA        ; 46
 	const SPRITE_ANIM_FRAMESET_GS_INTRO_CYNDAQUIL        ; 47
 	const SPRITE_ANIM_FRAMESET_GS_INTRO_TOTODILE         ; 48
+	const SPRITE_ANIM_FRAMESET_PC_CURSOR                 ; 49
+	const SPRITE_ANIM_FRAMESET_PC_CURSOR_ITEM            ; 4a
+	const SPRITE_ANIM_FRAMESET_PC_QUICK                  ; 4b
+	const SPRITE_ANIM_FRAMESET_PC_MODE                   ; 4c
+	const SPRITE_ANIM_FRAMESET_PC_MODE2                  ; 4d
+	const SPRITE_ANIM_FRAMESET_PC_PACK                   ; 4e
 DEF NUM_SPRITE_ANIM_FRAMESETS EQU const_value
 
 ; SpriteAnimOAMData indexes (see data/sprite_anims/oam.asm)
@@ -359,4 +374,10 @@ DEF NUM_SPRITE_ANIM_FRAMESETS EQU const_value
 	const SPRITE_ANIM_OAMSET_GAMEFREAK_LOGO_11           ; 8b
 	const SPRITE_ANIM_OAMSET_PARTY_MON_1                 ; 8c
 	const SPRITE_ANIM_OAMSET_PARTY_MON_2                 ; 8d
+	const SPRITE_ANIM_OAMSET_PC_CURSOR                   ; 8e
+	const SPRITE_ANIM_OAMSET_PC_CURSOR_ITEM              ; 8f
+	const SPRITE_ANIM_OAMSET_PC_QUICK                    ; 90
+	const SPRITE_ANIM_OAMSET_PC_MODE                     ; 91
+	const SPRITE_ANIM_OAMSET_PC_MODE2                    ; 92
+	const SPRITE_ANIM_OAMSET_PC_PACK                     ; 93
 DEF NUM_SPRITE_ANIM_OAMSETS EQU const_value

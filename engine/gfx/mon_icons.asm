@@ -1,32 +1,16 @@
 LoadOverworldMonIcon:
 	ld a, e
-	call ReadMonMenuIcon
-	;ld [wCurIcon], a
-	ld l, a
-	ld h, 0
+	ld [wCurIcon], a
+	; fallthrough
+_LoadOverworldMonIcon:
+	call GetPokemonIndexFromID
 	add hl, hl
-	ld e, a
-	ld d, 0
-	add hl, de
 	ld de, IconPointers
 	add hl, de
 	ld a, [hli]
-	ld b, a
-	ld a, [hli]
 	ld e, a
 	ld d, [hl]
-	ld c, 8
-	push bc
-
-	push de
-	pop hl
-	ld a, b
-	ld de, wDecompressScratch
-	push de
-	call FarDecompress
-	pop de
-	pop bc
-	ret
+	jp GetIconBank
 
 SetMenuMonIconColor:
 	push hl
@@ -121,6 +105,46 @@ _FinishMenuMonIconColor:
 	pop hl
 	ret
 
+GetMonPalInBCDE:
+; Sets BCDE to mon icon palette.
+; Input: c = species, b = shininess (1=true, 0=false)
+	ld a, c
+	call GetPokemonIndexFromID
+	dec hl
+	ld d, h
+	ld e, l
+
+	ld hl, MonMenuIconPals
+
+	; This sets z if mon is shiny.
+	dec b
+	ld b, 0
+	add hl, de
+	ld a, [hl]
+	jr z, .shiny
+	swap a
+.shiny
+	and $f
+
+	; Now we have the target color. Get the palette (+ 2 to avoid white).
+	ld hl, PartyMenuOBPals + 2
+	ld bc, 1 palettes
+	call AddNTimes
+
+	push hl
+	ld a, BANK(PartyMenuOBPals)
+	call GetFarWord
+	ld b, h
+	ld c, l
+	pop hl
+	inc hl
+	inc hl
+	ld a, BANK(PartyMenuOBPals)
+	call GetFarWord
+	ld d, h
+	ld e, l
+	ret
+
 GetMenuMonIconPalette:
 	ld c, l
 	ld b, h
@@ -130,8 +154,8 @@ GetMenuMonIconPalette_PredeterminedShininess:
 	ld a, [wCurPartySpecies]
 	call GetPokemonIndexFromID
 	dec hl
-	ld c, l
 	ld b, h
+	ld c, l
 	ld hl, MonMenuIconPals
 	add hl, bc
 	ld e, [hl]
@@ -289,7 +313,6 @@ InitPartyMenuIcon:
 	ld d, 0
 	add hl, de
 	ld a, [hl]
-	call ReadMonMenuIcon
 	ld [wCurIcon], a
 	call GetMemIconGFX
 	ldh a, [hObjectStructIndex]
@@ -347,7 +370,6 @@ NamingScreen_InitAnimatedMonIcon:
 	ld hl, wTempMonShiny
 	call SetMenuMonIconColor
 	ld a, [wTempIconSpecies]
-	call ReadMonMenuIcon
 	ld [wCurIcon], a
 	xor a
 	call GetIconGFX
@@ -364,7 +386,6 @@ MoveList_InitAnimatedMonIcon:
 	call GetPartyParamLocation
 	call SetMenuMonIconColor
 	ld a, [wTempIconSpecies]
-	call ReadMonMenuIcon
 	ld [wCurIcon], a
 	xor a
 	call GetIconGFX
@@ -379,7 +400,6 @@ MoveList_InitAnimatedMonIcon:
 
 Trade_LoadMonIconGFX:
 	ld a, [wTempIconSpecies]
-	call ReadMonMenuIcon
 	ld [wCurIcon], a
 	ld a, $62
 	ld [wCurIconTile], a
@@ -392,7 +412,6 @@ GetSpeciesIcon:
 	call GetPartyParamLocation
 	call SetMenuMonIconColor
 	ld a, [wTempIconSpecies]
-	call ReadMonMenuIcon
 	ld [wCurIcon], a
 	pop de
 	ld a, e
@@ -401,7 +420,6 @@ GetSpeciesIcon:
 FlyFunction_GetMonIcon:
 	push de
 	ld a, [wTempIconSpecies]
-	call ReadMonMenuIcon
 	ld [wCurIcon], a
 	pop de
 	ld a, e
@@ -459,33 +477,40 @@ endr
 	add hl, de
 	push hl
 
-; The icons are contiguous, in order and of the same
-; size, so the pointer table is somewhat redundant.
 	ld a, [wCurIcon]
+	cp EGG
 	push hl
-	ld l, a
-	ld h, 0
+	ld hl, IconPointers - (3 * 2)
+	jr z, .is_egg
+	call GetPokemonIndexFromID
 	add hl, hl
-	ld e, a
-	ld d, 0
-	add hl, de
 	ld de, IconPointers
 	add hl, de
-	ld a, [hli]
-	ld b, a
+.is_egg
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
 	pop hl
 
+	call GetIconBank
+	call GetGFXUnlessMobile
+
+	pop hl
+	ret
+
+GetIconBank:
 	push hl
-	ld h, d
-	ld l, e
-	pop de
-
-	ld c, 8
-	call DecompressRequest2bpp
-
+	ld a, [wCurIcon]
+	call GetPokemonIndexFromID
+	ld a, h
+	cp HIGH(MAGIKARP) ; first species in "Mon Icons 2"
+	lb bc, BANK("Mon Icons 1"), 8
+	jr c, .return
+	ld a, l
+	cp LOW(MAGIKARP)
+	jr c, .return
+	ld b, BANK("Mon Icons 2")
+.return
 	pop hl
 	ret
 
@@ -494,6 +519,25 @@ GetGFXUnlessMobile:
 	cp LINK_MOBILE
 	jp nz, Request2bpp
 	jp Get2bppViaHDMA
+
+
+GetStorageIcon_a:
+; Load frame 1 icon graphics into VRAM starting from tile a
+	ld l, a ; no-optimize hl|bc|de = a * 16 (rept)
+	ld h, 0
+rept 4
+	add hl, hl
+endr
+	ld de, vTiles0
+	add hl, de
+	; fallthrough
+GetStorageIcon:
+	push hl
+	ld a, [wCurIcon]
+	call _LoadOverworldMonIcon
+	ld c, 4
+	pop hl
+	newfarjp BillsPC_SafeGet2bpp
 
 FreezeMonIcons:
 	ld hl, wSpriteAnimationStructs
@@ -580,22 +624,6 @@ HoldSwitchmonIcon:
 	jr nz, .loop
 	ret
 
-ReadMonMenuIcon:
-	cp EGG
-	jr z, .egg
-	call GetPokemonIndexFromID
-	ld de, MonMenuIcons - 1
-	add hl, de
-	ld a, [hl]
-	ret
-.egg
-	ld a, ICON_EGG
-	ret
-
-INCLUDE "data/pokemon/menu_icons.asm"
-
 INCLUDE "data/pokemon/menu_icon_pals.asm"
 
-INCLUDE "data/icon_pointers.asm"
-
-INCLUDE "gfx/icons.asm"
+INCLUDE "data/pokemon/icon_pointers.asm"

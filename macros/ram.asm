@@ -42,6 +42,63 @@ MACRO box_struct
 \1BoxEnd::
 ENDM
 
+MACRO savemon_struct
+\1SpeciesLow::     db
+\1Item::           db
+\1MovesLow::       ds NUM_MOVES
+\1ID::             dw
+\1Exp::            ds 3
+\1EVs::
+\1HPEV::           db
+\1AtkEV::          db
+\1DefEV::          db
+\1SpdEV::          db
+\1SpclAtkEV::      db
+\1SpclDefEV::      db
+\1DVs::
+\1HPAtkDV::        db
+\1DefSpdDV::       db
+\1SatSdfDV::       db
+\1Personality::
+\1Shiny::
+\1Ability::
+\1Nature::         db
+\1Gender::
+\1IsEgg::
+\1ExtraBit::
+\1Form::           db
+\1Padding::        db
+\1MovesHigh::
+\1PPUps::          ds NUM_MOVES
+\1Happiness::      db
+\1PokerusStatus::  db
+\1CaughtData::
+\1CaughtTime::
+\1CaughtLevel::    db
+\1CaughtGender::
+\1CaughtLocation:: db
+\1Level::          db
+\1SpeciesHigh::    db
+\1Nickname::       ds MON_NAME_LENGTH - 1 ; terminator is implicit
+\1OT::             ds PLAYER_NAME_LENGTH - 1 ; terminator is implicit
+\1End::
+ENDM
+
+MACRO pokedb
+\1Mons::
+	for n, 1, \2 + 1
+	\1Mon{d:n}:: savemon_struct \1Mon{d:n}
+	endr
+\1End::
+ENDM
+
+MACRO newbox
+\1Entries:: ds MONS_PER_BOX
+\1Banks::   flag_array MONS_PER_BOX
+\1Name::    ds BOX_NAME_LENGTH
+\1Theme::   db
+ENDM
+
 MACRO party_struct
 	box_struct \1
 \1Status::         db

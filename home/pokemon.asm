@@ -131,7 +131,6 @@ PlayMonCry2::
 	ld [wStereoPanningMask], a
 	ld [wCryTracks], a
 	pop af
-	jp _PlayMonCry
 
 _PlayMonCry::
 	push hl
@@ -207,6 +206,7 @@ PrintLevel::
 ; Print wTempMonLevel at hl
 
 	ld a, [wTempMonLevel]
+_PrintLevel::
 	ld [hl], "<LV>"
 	inc hl
 
@@ -276,7 +276,6 @@ GetBaseData::
 	ld [hl], e
 	inc hl
 	ld [hl], d
-	jr .end ; useless
 
 .end
 ; Replace Pokedex # with species

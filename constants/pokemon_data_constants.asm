@@ -121,6 +121,52 @@ DEF MON_SAT                rw
 DEF MON_SDF                rw
 DEF PARTYMON_STRUCT_LENGTH EQU _RS
 
+; savemon_struct members (see macros/wram.asm)
+rsreset
+DEF SAVEMON_SPECIES_LOW        rb
+DEF SAVEMON_ITEM               rb
+DEF SAVEMON_MOVES_LOW          rb NUM_MOVES
+DEF SAVEMON_ID                 rw
+DEF SAVEMON_EXP                rb 3
+DEF SAVEMON_EVS                rb NUM_STATS
+rsset SAVEMON_EVS
+DEF SAVEMON_HP_EV              rb
+DEF SAVEMON_ATK_EV             rb
+DEF SAVEMON_DEF_EV             rb
+DEF SAVEMON_SPD_EV             rb
+DEF SAVEMON_SAT_EV             rb
+DEF SAVEMON_SDF_EV             rb
+DEF SAVEMON_DVS                rb NUM_STATS / 2
+DEF SAVEMON_PERSONALITY        rw
+DEF SAVEMON_SHINY     EQU MON_PERSONALITY
+DEF SAVEMON_ABILITY   EQU MON_PERSONALITY
+DEF SAVEMON_NATURE    EQU MON_PERSONALITY
+DEF SAVEMON_GENDER    EQU MON_PERSONALITY + 1
+DEF SAVEMON_IS_EGG    EQU MON_PERSONALITY + 1
+DEF SAVEMON_EXTRA_BIT EQU MON_PERSONALITY + 1
+DEF SAVEMON_FORM      EQU MON_PERSONALITY + 1
+                               rb_skip
+; savemon_struct is identical to party_struct before this point
+DEF SAVEMON_MOVES_HIGH         rb NUM_MOVES
+rsset SAVEMON_MOVES_HIGH
+DEF SAVEMON_PP_UPS             rb NUM_MOVES
+; savemon_struct is shifted from party_struct beyond this point
+DEF SAVEMON_HAPPINESS          rb
+DEF SAVEMON_PKRUS              rb
+DEF SAVEMON_CAUGHTDATA         rw
+rsset SAVEMON_CAUGHTDATA
+DEF SAVEMON_CAUGHTTIME         rb
+DEF SAVEMON_CAUGHTGENDER       rb
+rsset SAVEMON_CAUGHTDATA
+DEF SAVEMON_CAUGHTLEVEL        rb
+DEF SAVEMON_CAUGHTLOCATION     rb
+DEF SAVEMON_LEVEL              rb
+; savemon_struct is different from party_struct beyond this point
+DEF SAVEMON_SPECIES_HIGH       rb
+DEF SAVEMON_NICKNAME           rb MON_NAME_LENGTH - 1
+DEF SAVEMON_OT                 rb PLAYER_NAME_LENGTH - 1
+DEF SAVEMON_STRUCT_LENGTH EQU _RS
+
 DEF NICKNAMED_MON_STRUCT_LENGTH EQU PARTYMON_STRUCT_LENGTH + MON_NAME_LENGTH
 DEF REDMON_STRUCT_LENGTH EQU 44
 
@@ -142,12 +188,15 @@ DEF MON_GENDER_F   EQU 7
 DEF MON_IS_EGG_F   EQU 6
 
 ; shiny probability values
-SHINY_NUMERATOR         EQU 16 ; 16/65536 = 1/4096
-CHARMED_SHINY_NUMERATOR EQU 48 ; 48/65536 = 3/4096
+DEF SHINY_NUMERATOR         EQU 16 ; 16/65536 = 1/4096
+DEF CHARMED_SHINY_NUMERATOR EQU 48 ; 48/65536 = 3/4096
 
 ; gender values
 DEF MON_MALE   EQU %00000000
 DEF MON_FEMALE EQU %10000000
+
+; savemon Move High Mask
+DEF MOVES_HIGH_MASK EQU %00111111
 
 ; caught data
 
@@ -170,9 +219,10 @@ DEF PARTY_LENGTH EQU 6
 
 ; boxes
 DEF MONS_PER_BOX EQU 20
-; box: count, species, mons, OTs, nicknames, padding
-DEF BOX_LENGTH EQU 1 + MONS_PER_BOX + 1 + (BOXMON_STRUCT_LENGTH + NAME_LENGTH + MON_NAME_LENGTH) * MONS_PER_BOX + 2 ; $450
-DEF NUM_BOXES EQU 14
+
+DEF MONDB_ENTRIES   EQU 163
+DEF MIN_MONDB_SLACK EQU 10
+DEF NUM_BOXES       EQU (MONDB_ENTRIES * 2 - MIN_MONDB_SLACK) / MONS_PER_BOX ; 16
 
 ; hall of fame
 ; hof_mon: species, id, dvs, level, nicknames
