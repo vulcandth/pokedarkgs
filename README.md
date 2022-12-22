@@ -1,4 +1,4 @@
-# Pokémon Dark Gold and Dark Silver
+# Pokémon Dark Gold and Dark Silver ![master workflow](https://github.com/vulcandth/pokedarkgs/actions/workflows/main.yml/badge.svg)
 
 ##### <u>Playability Status:</u> *Still in early development, You are going to have a bad time.*
 
