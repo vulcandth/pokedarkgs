@@ -1,16 +1,20 @@
 ; Habitats
 
+MACRO habitat
+	dwb \1, (\1.End - \1) / 2
+ENDM
+
 HabitatPointers:
 	table_width 3, HabitatPointers
-	dwb GrasslandHabitat,    ((ForestHabitat - GrasslandHabitat) / 2)
-	dwb ForestHabitat,       ((WatersEdgeHabitat - ForestHabitat) / 2)
-	dwb WatersEdgeHabitat,   ((SeaHabitat - WatersEdgeHabitat) / 2)
-	dwb SeaHabitat,          ((CaveHabitat - SeaHabitat) / 2)
-	dwb CaveHabitat,         ((MountainHabitat - CaveHabitat) / 2)
-	dwb MountainHabitat,     ((RoughTerrainHabitat - MountainHabitat) / 2)
-	dwb RoughTerrainHabitat, ((UrbanHabitat - RoughTerrainHabitat) / 2)
-	dwb UrbanHabitat,        ((RareHabitat - UrbanHabitat) / 2)
-	dwb RareHabitat,         ((EndHabitats - RareHabitat) / 2)
+	habitat GrasslandHabitat
+	habitat ForestHabitat
+	habitat WatersEdgeHabitat
+	habitat SeaHabitat
+	habitat CaveHabitat
+	habitat MountainHabitat
+	habitat RoughTerrainHabitat
+	habitat UrbanHabitat
+	habitat RareHabitat
 	assert_table_length NUM_HABITATS
 
 HabitatMonPointers:
@@ -73,6 +77,7 @@ GrasslandHabitat:
 	dw CYNDAQUIL
 	dw QUILAVA
 	dw TYPHLOSION
+.End
 ForestHabitat:
 	dw CATERPIE
 	dw METAPOD
@@ -115,6 +120,7 @@ ForestHabitat:
 	dw HERACROSS
 	dw TOGEPI
 	dw TOGETIC
+.End
 WatersEdgeHabitat:
 	dw GOLDEEN
 	dw SEAKING
@@ -144,6 +150,7 @@ WatersEdgeHabitat:
 	dw TOTODILE
 	dw CROCONAW
 	dw FERALIGATR
+.End
 SeaHabitat:
 	dw TENTACOOL
 	dw TENTACRUEL
@@ -168,6 +175,7 @@ SeaHabitat:
 	dw OMASTAR
 	dw KABUTO
 	dw KABUTOPS
+.End
 CaveHabitat:
 	dw ZUBAT
 	dw GOLBAT
@@ -184,6 +192,7 @@ CaveHabitat:
 	dw HAUNTER
 	dw GENGAR
 	dw WOBBUFFET
+.End
 MountainHabitat:
 	dw GEODUDE
 	dw GRAVELER
@@ -215,6 +224,7 @@ MountainHabitat:
 	dw CHARMANDER
 	dw CHARMELEON
 	dw CHARIZARD
+.End
 RoughTerrainHabitat:
 	dw SPEAROW
 	dw FEAROW
@@ -229,6 +239,7 @@ RoughTerrainHabitat:
 	dw PHANPY
 	dw DONPHAN
 	dw SKARMORY
+.End
 UrbanHabitat:
 	dw MEOWTH
 	dw PERSIAN
@@ -262,6 +273,7 @@ UrbanHabitat:
 	dw FLAREON
 	dw ESPEON
 	dw UMBREON
+.End
 RareHabitat:
 	dw RAIKOU
 	dw ENTEI
@@ -275,5 +287,6 @@ RareHabitat:
 	dw HO_OH
 	dw MEWTWO
 	dw MEW
+.End
 EndHabitats:
 	assert_table_length NUM_POKEMON
