@@ -309,12 +309,11 @@ MACRO bugcontestwinner
 ENDM
 
 MACRO hof_mon
-; TODO: fix hof mons
-\1Species::  dw
-\1ID::       dw
-\1DVs::      dw
-\1Level::    db
-\1Nickname:: ds MON_NAME_LENGTH - 1
+\1Species::     dw
+\1ID::          dw
+\1Personality:: dw
+\1Level::       db
+\1Nickname::    ds MON_NAME_LENGTH - 1
 \1End::
 ENDM
 
