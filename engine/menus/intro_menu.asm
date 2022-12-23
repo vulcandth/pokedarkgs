@@ -616,7 +616,7 @@ if !DEF(_DEBUG)
 	call RotateThreePalettesRight
 	call ClearTilemap
 
-	ld hl, MARILL
+	ld hl, GASTLY
 	call GetPokemonIDFromIndex
 	ld [wCurSpecies], a
 	ld [wCurPartySpecies], a
