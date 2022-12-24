@@ -1063,6 +1063,7 @@ OctilleryEvosAttacks:
 DelibirdEvosAttacks:
 	db 0 ; no more evolutions
 	dbw 1, PRESENT
+	dbw 25, HAIL
 	db 0 ; no more level-up moves
 
 MantineEvosAttacks:

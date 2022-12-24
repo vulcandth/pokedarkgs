@@ -257,6 +257,7 @@ MoveDescriptions1:
 	dw WhirlpoolDescription
 	dw BeatUpDescription
 	dw MoonblastDescription
+	dw HailDescription
 .IndirectEnd::
 
 InvalidMoveDescription:
@@ -1269,3 +1270,7 @@ BeatUpDescription:
 MoonblastDescription:
 	db   "An attack that may"
 	next "lower Sp.Atk.@"
+
+HailDescription:
+	db   "Inflicts damage"
+	next "every turn.@"

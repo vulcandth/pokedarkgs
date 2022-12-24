@@ -77,7 +77,7 @@ Moves1:
 	move EFFECT_NORMAL_HIT,        120, WATER,          80,  5,   0, SPECIAL       ;HYDRO_PUMP
 	move EFFECT_NORMAL_HIT,         95, WATER,         100, 15,   0, SPECIAL       ;SURF
 	move EFFECT_FREEZE_HIT,         95, ICE,           100, 10,  10, SPECIAL       ;ICE_BEAM
-	move EFFECT_FREEZE_HIT,        120, ICE,            70,  5,  10, SPECIAL       ;BLIZZARD
+	move EFFECT_BLIZZARD,          120, ICE,            70,  5,  10, SPECIAL       ;BLIZZARD
 	move EFFECT_CONFUSE_HIT,        65, PSYCHIC_TYPE,  100, 20,  10, SPECIAL       ;PSYBEAM
 	move EFFECT_SPEED_DOWN_HIT,     65, WATER,         100, 20,  10, SPECIAL       ;BUBBLEBEAM
 	move EFFECT_ATTACK_DOWN_HIT,    65, ICE,           100, 20,  10, SPECIAL       ;AURORA_BEAM
@@ -252,7 +252,7 @@ Moves1:
 	move EFFECT_DEFENSE_DOWN_HIT,  100, STEEL,          75, 15,  30, PHYSICAL      ;IRON_TAIL
 	move EFFECT_ATTACK_UP_HIT,      50, STEEL,          95, 35,  10, PHYSICAL      ;METAL_CLAW
 	move EFFECT_ALWAYS_HIT,         70, FIGHTING,      100, 10,   0, PHYSICAL      ;VITAL_THROW
-	move EFFECT_MORNING_SUN,         0, NORMAL,        100,  5,   0,  STATUS       ;MORNING_SUN
+	move EFFECT_MORNING_SUN,         0, NORMAL,        100,  5,   0, STATUS        ;MORNING_SUN
 	move EFFECT_SYNTHESIS,           0, GRASS,         100,  5,   0, STATUS        ;SYNTHESIS
 	move EFFECT_MOONLIGHT,           0, FAIRY,         100,  5,   0, STATUS        ;MOONLIGHT
 	move EFFECT_HIDDEN_POWER,        1, NORMAL,        100, 15,   0, SPECIAL       ;HIDDEN_POWER
@@ -271,4 +271,5 @@ Moves1:
 	move EFFECT_TRAP_TARGET,        15, WATER,          70, 15,   0, SPECIAL       ;WHIRLPOOL
 	move EFFECT_BEAT_UP,            10, DARK,          100, 10,   0, PHYSICAL      ;BEAT_UP
 	move EFFECT_SP_ATK_DOWN_HIT,    95, FAIRY,         100, 15,  30, SPECIAL       ;MOONBLAST
+	move EFFECT_HAIL,                0, ICE,           100, 10,   0, STATUS        ;HAIL
 .IndirectEnd::

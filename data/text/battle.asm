@@ -145,6 +145,11 @@ BattleText_TheSandstormRages:
 	line "rages."
 	prompt
 
+BattleText_HailContinuesToFall:
+	text "Hail continues to"
+	line "fall."
+	prompt
+
 BattleText_TheRainStopped:
 	text "The rain stopped."
 	prompt
@@ -159,11 +164,25 @@ BattleText_TheSandstormSubsided:
 	line "subsided."
 	prompt
 
+BattleText_TheHailStopped:
+	text "The hail stopped."
+	prompt
+
 BattleText_EnemyMonFainted:
 	text "Enemy @"
 	text_ram wEnemyMonNickname
 	text_start
 	line "fainted!"
+	prompt
+
+ItStartedToHailText:
+	text "It started"
+	line "to hail!"
+	prompt
+
+PeltedByHailText:
+	text "<USER>"
+	line "is pelted by HAIL!"
 	prompt
 
 GotMoneyForWinningText:
