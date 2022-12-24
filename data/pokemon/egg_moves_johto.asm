@@ -188,6 +188,7 @@ IgglybuffEggMoves:
 	dw PERISH_SONG
 	dw PRESENT
 	dw FAINT_ATTACK
+	dw MOONBLAST
 	dw -1 ; end
 
 TogepiEggMoves:

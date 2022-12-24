@@ -269,4 +269,5 @@ Moves1:
 	move EFFECT_DEFENSE_DOWN_HIT,   20, FIGHTING,      100, 15,  50      ;ROCK_SMASH
 	move EFFECT_TRAP_TARGET,        15, WATER,          70, 15,   0      ;WHIRLPOOL
 	move EFFECT_BEAT_UP,            10, DARK,          100, 10,   0      ;BEAT_UP
+	move EFFECT_SP_ATK_DOWN_HIT,    95, FAIRY,         100, 15,  30      ;MOONBLAST
 .IndirectEnd::

@@ -94,6 +94,7 @@ DoBattleAnimFrame:
 	dw BattleAnimFunction_AncientPower
 	dw BattleAnimFunction_RockSmash
 	dw BattleAnimFunction_Cotton
+	dw BattleAnimFunction_Moon
 	assert_table_length NUM_BATTLEANIMFUNCS
 
 BattleAnimFunction_Null:
@@ -4228,3 +4229,139 @@ BattleAnim_AbsCosinePrecise: ; unreferenced
 
 BattleAnimSineWave:
 	sine_table 32
+
+BattleAnimFunction_Moon:
+	call BattleAnim_AnonJumptable
+.anon_dw
+	dw Functionce306
+	dw Functionce330
+	dw Functionce34c
+
+BattleAnimFunction_21:
+	call BattleAnim_AnonJumptable
+.anon_dw
+	dw Functioncdcca
+	dw Functioncdced
+Functioncdcca:
+	ldh a, [hBattleTurn]
+	and a
+	jr z, .asm_cdcd9
+	ld hl, BATTLEANIMSTRUCT_PARAM
+	add hl, bc
+	ld a, [hl]
+	cpl
+	add $3
+	ld [hl], a
+.asm_cdcd9
+	call BattleAnim_IncAnonJumptableIndex
+	ld hl, BATTLEANIMSTRUCT_VAR1
+	add hl, bc
+	ld [hl], $8
+	ld hl, BATTLEANIMSTRUCT_PARAM
+	add hl, bc
+	ld a, BATTLEANIMFRAMESET_59
+	add [hl]
+	jp ReinitBattleAnimFrameset
+
+Functioncdced:
+	ld hl, BATTLEANIMSTRUCT_VAR1
+	add hl, bc
+	ld a, [hl]
+	and a
+	jp z, DeinitBattleAnimation
+	dec [hl]
+	ld hl, BATTLEANIMSTRUCT_VAR2
+	add hl, bc
+	ld a, [hl]
+	inc [hl]
+	inc [hl]
+	ld d, $10
+	call Sine
+	ld d, a
+	ld hl, BATTLEANIMSTRUCT_XOFFSET
+	add hl, bc
+	ld [hl], a
+	ld hl, BATTLEANIMSTRUCT_PARAM
+	add hl, bc
+	ld a, [hl]
+	and a
+	jr z, .asm_cdd20
+	dec a
+	ret z
+	ld hl, BATTLEANIMSTRUCT_YOFFSET
+	add hl, bc
+	ld [hl], d
+	ret
+
+.asm_cdd20
+	ld hl, BATTLEANIMSTRUCT_YOFFSET
+	add hl, bc
+	ld a, d
+	cpl
+	inc a
+	ld [hl], a
+	ret
+
+Functionce330:
+	ld hl, BATTLEANIMSTRUCT_VAR2
+	add hl, bc
+	ld a, [hl]
+	and a
+	jr z, .asm_ce33a
+	dec [hl]
+	ret
+
+.asm_ce33a
+	ld [hl], $4
+	ld hl, BATTLEANIMSTRUCT_VAR1
+	add hl, bc
+	ld a, [hl]
+	cpl
+	inc a
+	ld [hl], a
+	ld hl, BATTLEANIMSTRUCT_YOFFSET
+	add hl, bc
+	add [hl]
+	ld [hl], a
+	ret
+
+Functionce34c:
+	ld hl, BATTLEANIMSTRUCT_XCOORD
+	add hl, bc
+	ld a, [hl]
+	cp $84
+	jr nc, .asm_ce35b
+	ld a, $4
+	jp BattleAnim_StepToTarget
+
+.asm_ce35b
+	jp DeinitBattleAnimation
+
+Functionce306:
+	ld hl, BATTLEANIMSTRUCT_YOFFSET
+	add hl, bc
+	ld a, [hl]
+	cp $e0
+	jr nz, .asm_ce319
+	call BattleAnim_IncAnonJumptableIndex
+	ld hl, BATTLEANIMSTRUCT_VAR1
+	add hl, bc
+	ld [hl], $2
+	ret
+
+.asm_ce319
+	ld d, a
+	ld hl, BATTLEANIMSTRUCT_VAR1
+	add hl, bc
+	ld e, [hl]
+	ld hl, hTransferShadowOAM
+	add hl, de
+	ld e, l
+	ld d, h
+	ld hl, BATTLEANIMSTRUCT_YOFFSET
+	add hl, bc
+	ld [hl], d
+	ld hl, BATTLEANIMSTRUCT_VAR1
+	add hl, bc
+	ld [hl], e
+	ret

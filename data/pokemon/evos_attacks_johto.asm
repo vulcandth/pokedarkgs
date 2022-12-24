@@ -116,6 +116,7 @@ ChikoritaEvosAttacks:
 	dbw 36, LIGHT_SCREEN
 	dbw 43, SAFEGUARD
 	dbw 50, SOLARBEAM
+	dbw 56, MOONBLAST
 	db 0 ; no more level-up moves
 
 BayleefEvosAttacks:
@@ -133,6 +134,7 @@ BayleefEvosAttacks:
 	dbw 39, LIGHT_SCREEN
 	dbw 47, SAFEGUARD
 	dbw 55, SOLARBEAM
+	dbw 64, MOONBLAST
 	db 0 ; no more level-up moves
 
 MeganiumEvosAttacks:
@@ -149,6 +151,7 @@ MeganiumEvosAttacks:
 	dbw 41, LIGHT_SCREEN
 	dbw 51, SAFEGUARD
 	dbw 61, SOLARBEAM
+	dbw 80, MOONBLAST
 	db 0 ; no more level-up moves
 
 CyndaquilEvosAttacks:
@@ -272,6 +275,7 @@ HoothootEvosAttacks:
 	dbw 22, REFLECT
 	dbw 28, TAKE_DOWN
 	dbw 34, CONFUSION
+	dbw 43, MOONBLAST
 	dbw 48, DREAM_EATER
 	db 0 ; no more level-up moves
 
@@ -287,6 +291,7 @@ NoctowlEvosAttacks:
 	dbw 25, REFLECT
 	dbw 33, TAKE_DOWN
 	dbw 41, CONFUSION
+	dbw 51, MOONBLAST
 	dbw 57, DREAM_EATER
 	db 0 ; no more level-up moves
 
@@ -514,6 +519,7 @@ BellossomEvosAttacks:
 	dbw 1, SWEET_SCENT
 	dbw 1, STUN_SPORE
 	dbw 1, PETAL_DANCE
+	dbw 49, MOONBLAST
 	dbw 55, SOLARBEAM
 	db 0 ; no more level-up moves
 
@@ -1401,5 +1407,6 @@ CelebiEvosAttacks:
 	dbw 20, ANCIENTPOWER
 	dbw 30, FUTURE_SIGHT
 	dbw 40, BATON_PASS
+	dbw 46, MOONBLAST
 	dbw 50, PERISH_SONG
 	db 0 ; no more level-up moves
