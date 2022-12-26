@@ -150,12 +150,12 @@ $(foreach obj, $(pokesilver_vc_obj), $(eval $(call DEP,$(obj),$(obj:silver_vc.o=
 endif
 
 
-pokegold_opt         = -Cjv -t PM_CRYSTAL -i BYTE -n 1 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
-pokesilver_opt       = -Cjv -t PM_CRYSTAL -i BYTE -n 1 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
-pokegold_debug_opt   = -Cjv -t PM_CRYSTAL -i BYTE -n 1 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
-pokesilver_debug_opt = -Cjv -t PM_CRYSTAL -i BYTE -n 1 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
-pokegold_vc_opt      = -Cjv -t PM_CRYSTAL -i BYTE -n 1 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
-pokesilver_vc_opt    = -Cjv -t PM_CRYSTAL -i BYTE -n 1 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
+pokegold_opt         = -Cjv -t PM_DARKG -i BYTE -n 1 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
+pokesilver_opt       = -Cjv -t PM_DARKS -i BYTE -n 1 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
+pokegold_debug_opt   = -Cjv -t PM_DARKG -i BYTE -n 1 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
+pokesilver_debug_opt = -Cjv -t PM_DARKS -i BYTE -n 1 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
+pokegold_vc_opt      = -Cjv -t PM_DARKG -i BYTE -n 1 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
+pokesilver_vc_opt    = -Cjv -t PM_DARKS -i BYTE -n 1 -k 01 -l 0x33 -m 0x10 -r 3 -p 0
 
 .gbc: tools/bankends
 %.gbc: $$(%_obj) layout.link
