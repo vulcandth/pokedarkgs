@@ -300,7 +300,7 @@ gfx/title/lugia_silver.2bpp: tools/gfx += --interleave --png=$<
 		tools/gfx $(tools/gfx) -d1 -o $@ $@)
 
 %.gbcpal: %.png
-	$(RGBGFX) -p $@ $<
+	$(RGBGFX) -c embedded -p $@ $<
 
 %.dimensions: %.png
 	tools/png_dimensions $< $@
