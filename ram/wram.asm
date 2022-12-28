@@ -2954,6 +2954,11 @@ endr
 
 wCmdQueue:: ds CMDQUEUE_CAPACITY * CMDQUEUE_ENTRY_SIZE
 
+wUsedObjectPals:: db
+for n, 8
+wLoadedObjPal{d:n}:: db 
+endr
+
 wMapObjects::
 wPlayerObject:: map_object wPlayer ; player is map object 0
 ; wMap1Object - wMap15Object
