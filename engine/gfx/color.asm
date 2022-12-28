@@ -1281,32 +1281,32 @@ endr
 CopySpritePal::
 	push af
 	push bc
-	push de
 	push hl
+	push de
 	ld a, [wTimeOfDayPal]
 	maskbits NUM_DAYTIMES
 	ld bc, 8 palettes
 	ld hl, MapObjectPals
 	call AddNTimes
-	ld a, [hUsedSpriteIndex]
-;	cp SPRITE_MOM
-;	jr nz, .done
+	ld a, [wNeededPalIndex]
+;	dec a
 	ld c, a
-	push hl
-	farcall _GetSpritePalette
-	pop hl
+;	push hl
+;	farcall _GetSpritePalette
+;	pop hl
 	ld bc, 1 palettes
 	call AddNTimes
-	ld de, wOBPals2
+;	ld de, wOBPals2
 	ld bc, 1 palettes
-	ld a, BANK(wOBPals2)
+	pop de
+	ld a, BANK(wOBPals1)
 	call FarCopyWRAM
+	call ApplyPals
 	ld a, TRUE
 	ldh [hCGBPalUpdate], a
 .done
 	pop af
 	pop bc
-	pop de
 	pop hl
 	ret
 

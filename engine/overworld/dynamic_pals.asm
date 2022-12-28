@@ -19,10 +19,14 @@ CheckForUsedObjPals::
 	ld a, [hl]
 	and a
 	jr z, .no_sprite_skip
-	ld hl, OBJECT_PALETTE
+	ld hl, OBJECT_PAL_INDEX
 	add hl, de
 	ld a, [hl]
+	ld [wNeededPalIndex], a
 	call MarkUsedPal
+	ld hl, OBJECT_PALETTE
+	add hl, de
+	ld [hl], a
 .no_sprite_skip
 	dec b
 	jr z, .done
@@ -33,6 +37,8 @@ CheckForUsedObjPals::
 	jr .loop
 
 .done
+;	ld a, TRUE
+;	ldh [hCGBPalUpdate], a
 	pop af
 	ld [rSVBK], a
 	pop de
@@ -87,7 +93,18 @@ MarkUsedPal:
 	add hl, bc
 	ld [hl], a
 
+	push bc
+	ld a, c
+	ld bc, 1 palettes
+	ld hl, wOBPals1
+	call AddNTimes
+	ld d, h
+	ld e, l
+	farcall CopySpritePal
+	pop bc
+
 .mark_in_use
+	push bc
 	ld hl, wUsedObjectPals
 	inc c
 	ld a, 1
@@ -99,9 +116,17 @@ MarkUsedPal:
 .load_hl
 	or [hl]
 	ld [hl], a
+	pop bc
+	ld a, c
 
 .done
 	pop de
 	pop bc
 	pop hl
 	ret
+
+ClearSavedObjPals::
+	ld hl, wUsedObjectPals
+	ld bc, wNeededPalIndex - wUsedObjectPals
+	ld a, -1
+	jp ByteFill

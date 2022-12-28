@@ -419,7 +419,8 @@ MACRO object_struct
 \1Field1e::        ds 1
 \1JumpHeight::     db
 \1Range::          db
-	ds 7
+\1PalIndex::       db
+	ds 6
 \1StructEnd::
 ENDM
 
