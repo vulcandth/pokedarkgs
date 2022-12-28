@@ -9403,7 +9403,6 @@
 0f:6ca1 CheckUnownLetter.loop
 0f:6cb5 CheckUnownLetter.next
 0f:6cbd UnlockedUnownLetterSets
-0f:6cc5 UnlockedUnownLetterSets.End
 0f:6cc5 UnlockedUnownLetterSets.Set_A_K
 0f:6cd1 UnlockedUnownLetterSets.Set_L_R
 0f:6cd9 UnlockedUnownLetterSets.Set_S_W
@@ -58408,8 +58407,12 @@
 03:bfcf sNewBoxMons2Mon163OT
 03:bfd6 sNewBoxMons2Mon163End
 03:bfd6 sNewBoxMons2End
-04:a007 s4_a007
-04:a013 s4_a013
+04:a007 sEZChatMessages
+04:a007 sEZChatIntroductionMessage
+04:a013 sEZChatBeginBattleMessage
+04:a013 sEZChatBattleMessages
+04:a01f sEZChatWinBattleMessage
+04:a02b sEZChatLoseBattleMessage
 04:a037 s4_a037
 04:a03b s4_a03b
 04:a603 s4_a603
