@@ -12,7 +12,7 @@ _UpdatePlayerSprite::
 	ldh [hUsedSpriteIndex], a
 	ld a, [wUsedSprites + 1]
 	ldh [hUsedSpriteTile], a
-	jp GetUsedSprite
+	jmp GetUsedSprite
 
 _RefreshSprites: ; mobile
 	ld hl, wSpriteFlags
@@ -129,7 +129,7 @@ LoadUsedSpritesGFX:
 	ld a, MAPCALLBACK_SPRITES
 	call RunMapCallback
 	call GetUsedSprites
-	jp LoadMiscTiles
+	jr LoadMiscTiles
 
 LoadMiscTiles:
 	ld a, [wSpriteFlags]
@@ -237,7 +237,7 @@ GetMonSprite:
 	add hl, de
 	ld a, [hl]
 	and a
-	jp nz, GetMonSprite
+	jr nz, GetMonSprite
 
 .NoBreedmon:
 	ld a, WALKING_SPRITE
@@ -488,7 +488,7 @@ LoadEmote::
 	ld a, c
 	and a
 	ret z
-	jp GetEmote2bpp
+	jmp GetEmote2bpp
 
 INCLUDE "data/sprites/emotes.asm"
 

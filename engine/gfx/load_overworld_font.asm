@@ -6,7 +6,7 @@ LoadOverworldFont::
 	ld de, .OverworldFontSpaceGFX
 	ld hl, vTiles2 tile " "
 	lb bc, BANK(.OverworldFontSpaceGFX), 1
-	jp Get2bpp
+	jmp Get2bpp
 
 .OverworldFontGFX:
 INCBIN "gfx/font/overworld.2bpp"

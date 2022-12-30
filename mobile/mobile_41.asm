@@ -30,7 +30,7 @@ StubbedTrainerRankings_HallOfFame2::
 	call CopyBytes
 
 	call UpdateTrainerRankingsChecksum
-	jp CloseSRAM
+	jmp CloseSRAM
 
 StubbedTrainerRankings_MagikarpLength:
 	ret
@@ -97,7 +97,7 @@ StubbedTrainerRankings_MagikarpLength:
 
 .done
 	call UpdateTrainerRankingsChecksum
-	jp CloseSRAM
+	jmp CloseSRAM
 
 StubbedTrainerRankings_BugContestScore:
 	ret
@@ -125,7 +125,7 @@ StubbedTrainerRankings_BugContestScore:
 
 .done
 	call UpdateTrainerRankingsChecksum
-	jp CloseSRAM
+	jmp CloseSRAM
 
 StubbedTrainerRankings_AddToSlotsWinStreak:
 	ret
@@ -164,7 +164,7 @@ StubbedTrainerRankings_AddToSlotsWinStreak:
 
 .done
 	call UpdateTrainerRankingsChecksum
-	jp CloseSRAM
+	jmp CloseSRAM
 
 StubbedTrainerRankings_EndSlotsWinStreak:
 	ret
@@ -175,7 +175,7 @@ StubbedTrainerRankings_EndSlotsWinStreak:
 	ld [hli], a
 	ld [hl], a
 	call UpdateTrainerRankingsChecksum
-	jp CloseSRAM
+	jmp CloseSRAM
 
 StubbedTrainerRankings_AddToSlotsPayouts:
 	ret
@@ -202,7 +202,7 @@ StubbedTrainerRankings_AddToSlotsPayouts:
 
 .done
 	call UpdateTrainerRankingsChecksum
-	jp CloseSRAM
+	jmp CloseSRAM
 
 StubbedTrainerRankings_AddToBattlePayouts:
 	ret
@@ -231,17 +231,17 @@ StubbedTrainerRankings_AddToBattlePayouts:
 
 .done
 	call UpdateTrainerRankingsChecksum
-	jp CloseSRAM
+	jmp CloseSRAM
 
 StubbedTrainerRankings_StepCount:
 	ret
 	ld hl, sTrainerRankingStepCount
-	jp StubbedTrainerRankings_Increment4Byte
+	jmp StubbedTrainerRankings_Increment4Byte
 
 StubbedTrainerRankings_TMsHMsTaught:
 	ret
 	ld hl, sTrainerRankingTMsHMsTaught
-	jp StubbedTrainerRankings_Increment3Byte
+	jmp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_Battles:
 	ret
@@ -249,7 +249,7 @@ StubbedTrainerRankings_Battles:
 	cp BATTLETYPE_TUTORIAL ; Exclude the Dude’s tutorial battle
 	ret z
 	ld hl, sTrainerRankingBattles
-	jp StubbedTrainerRankings_Increment3Byte
+	jmp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_WildBattles:
 	ret
@@ -257,47 +257,47 @@ StubbedTrainerRankings_WildBattles:
 	cp BATTLETYPE_TUTORIAL ; Exclude the Dude’s tutorial battle
 	ret z
 	ld hl, sTrainerRankingWildBattles
-	jp StubbedTrainerRankings_Increment3Byte
+	jmp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_TrainerBattles:
 	ret
 	ld hl, sTrainerRankingTrainerBattles
-	jp StubbedTrainerRankings_Increment3Byte
+	jmp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_HallOfFame::
 	ret
 	ld hl, sTrainerRankingHOFEntries
-	jp StubbedTrainerRankings_Increment3Byte
+	jmp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_WildMonsCaught:
 	ret
 	ld hl, sTrainerRankingWildMonsCaught
-	jp StubbedTrainerRankings_Increment3Byte
+	jmp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_HookedEncounters:
 	ret
 	ld hl, sTrainerRankingHookedEncounters
-	jp StubbedTrainerRankings_Increment3Byte
+	jmp StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_EggsHatched:
 	ret
 	ld hl, sTrainerRankingEggsHatched
-	jp StubbedTrainerRankings_Increment3Byte
+	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_MonsEvolved:
 	ret
 	ld hl, sTrainerRankingMonsEvolved
-	jp StubbedTrainerRankings_Increment3Byte
+	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_FruitPicked:
 	ret
 	ld hl, sTrainerRankingFruitPicked
-	jp StubbedTrainerRankings_Increment3Byte
+	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_Healings:
 	ret
 	ld hl, sTrainerRankingHealings
-	jp StubbedTrainerRankings_Increment3Byte
+	jr StubbedTrainerRankings_Increment3Byte
 
 StubbedTrainerRankings_MysteryGift:
 	ret
@@ -440,7 +440,7 @@ UpdateTrainerRankingsChecksum2:
 	ld a, BANK(sTrainerRankings)
 	call OpenSRAM
 	call UpdateTrainerRankingsChecksum
-	jp CloseSRAM
+	jmp CloseSRAM
 
 UpdateTrainerRankingsChecksum:
 	push de
@@ -483,7 +483,7 @@ BackupMobileEventIndex:
 	call OpenSRAM
 	pop af
 	ld [sMobileEventIndexBackup], a
-	jp CloseSRAM
+	jmp CloseSRAM
 
 RestoreMobileEventIndex:
 	ld a, BANK(sMobileEventIndexBackup)
@@ -494,14 +494,14 @@ RestoreMobileEventIndex:
 	call OpenSRAM
 	pop af
 	ld [sMobileEventIndex], a
-	jp CloseSRAM
+	jmp CloseSRAM
 
 DeleteMobileEventIndex:
 	ld a, BANK(sMobileEventIndex)
 	call OpenSRAM
 	xor a
 	ld [sMobileEventIndex], a
-	jp CloseSRAM
+	jmp CloseSRAM
 
 _MobilePrintNum::
 ; Supports signed 31-bit integers (up to 10 digits)
@@ -734,7 +734,7 @@ Stubbed_Function106314:
 	call OpenSRAM
 	ld a, c
 	ld [s7_a800], a
-	jp CloseSRAM
+	jmp CloseSRAM
 
 Mobile_AlwaysReturnNotCarry:
 	or a

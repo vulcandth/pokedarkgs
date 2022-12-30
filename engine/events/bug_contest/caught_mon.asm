@@ -15,7 +15,7 @@ BugContest_SetCaughtContestMon:
 	ld [wNamedObjectIndex], a
 	call GetPokemonName
 	ld hl, .ContestCaughtMonText
-	jp PrintText
+	jmp PrintText
 
 .generatestats
 	ld a, [wTempEnemyMonSpecies]
@@ -29,7 +29,7 @@ BugContest_SetCaughtContestMon:
 	xor a
 	ld [wMonType], a
 	ld hl, wContestMon
-	jp GeneratePartyMonStats
+	jmp GeneratePartyMonStats
 
 .ContestCaughtMonText:
 	text_far _ContestCaughtMonText

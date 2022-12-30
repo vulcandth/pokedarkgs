@@ -2,7 +2,7 @@ FieldMoveJumptableReset:
 	xor a
 	ld hl, wFieldMoveData
 	ld bc, wFieldMoveDataEnd - wFieldMoveData
-	jp ByteFill
+	jmp ByteFill
 
 FieldMoveJumptable:
 	ld a, [wFieldMoveJumptableIndex]
@@ -29,7 +29,7 @@ GetPartyNickname:
 ; copy text from wStringBuffer2 to wStringBuffer3
 	ld de, wStringBuffer2
 	ld hl, wStringBuffer3
-	jp CopyName2
+	jmp CopyName2
 
 CheckEngineFlag:
 ; Check engine flag de
@@ -109,7 +109,7 @@ CheckPartyMove:
 
 FieldMoveFailed:
 	ld hl, .CantUseItemText
-	jp MenuTextboxBackup
+	jmp MenuTextboxBackup
 
 .CantUseItemText:
 	text_far _CantUseItemText
@@ -231,7 +231,7 @@ CutDownTreeOrGrass:
 	call GetMovementPermissions
 	call UpdateSprites
 	call DelayFrame
-	jp LoadStandardFont
+	jmp LoadStandardFont
 
 CheckOverworldTileArrays:
 	; Input: c contains the tile you're facing
@@ -304,7 +304,7 @@ FlashFunction:
 
 UseFlash:
 	ld hl, Script_UseFlash
-	jp QueueScript
+	jmp QueueScript
 
 Script_UseFlash:
 	reloadmappart
@@ -995,7 +995,7 @@ SetStrengthFlag:
 	add hl, de
 	ld a, [hl]
 	ld [wStrengthSpecies], a
-	jp GetPartyNickname
+	jmp GetPartyNickname
 
 Script_StrengthFromMenu:
 	reloadmappart
@@ -1182,7 +1182,7 @@ DisappearWhirlpool:
 	ld e, a
 	farcall PlayWhirlpoolSound
 	call BufferScreen
-	jp GetMovementPermissions
+	jmp GetMovementPermissions
 
 TryWhirlpoolOW::
 	ld hl, WHIRLPOOL
@@ -1608,7 +1608,7 @@ PutTheRodAway:
 	ld a, $1
 	ld [wPlayerAction], a
 	call UpdateSprites
-	jp UpdatePlayerSprite
+	jmp UpdatePlayerSprite
 
 RodBiteText:
 	text_far _RodBiteText

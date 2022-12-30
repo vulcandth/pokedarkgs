@@ -255,10 +255,10 @@ MainMenu_PrintCurrentTimeAndDay:
 	hlcoord 0, 14
 	ld b, 2
 	ld c, 18
-	jp Textbox
+	jmp Textbox
 
 .TimeFail:
-	jp SpeechTextbox
+	jmp SpeechTextbox
 
 .PlaceTime:
 	ld a, [wSaveFileExists]
@@ -266,7 +266,7 @@ MainMenu_PrintCurrentTimeAndDay:
 	ret z
 	call CheckRTCStatus
 	and $80
-	jp nz, .PrintTimeNotSet
+	jr nz, .PrintTimeNotSet
 	call UpdateTime
 	call GetWeekday
 	ld b, a
@@ -280,12 +280,12 @@ MainMenu_PrintCurrentTimeAndDay:
 	inc hl
 	ld de, hMinutes
 	lb bc, PRINTNUM_LEADINGZEROS | 1, 2
-	jp PrintNum
+	jmp PrintNum
 
 .PrintTimeNotSet:
 	hlcoord 1, 14
 	ld de, .TimeNotSetString
-	jp PlaceString
+	jmp PlaceString
 
 .TimeNotSetString:
 	db "TIME NOT SET@"
@@ -302,7 +302,7 @@ MainMenu_PrintCurrentTimeAndDay:
 	ld h, b
 	ld l, c
 	ld de, .Day
-	jp PlaceString
+	jmp PlaceString
 
 .Days:
 	db "SUN@"
@@ -321,7 +321,7 @@ ClearTilemapEtc:
 	call ClearTilemap
 	call LoadFontsExtra
 	call LoadStandardFont
-	jp ClearWindowData
+	jmp ClearWindowData
 
 MainMenu_NewGame:
 	farcall NewGame

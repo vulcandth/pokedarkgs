@@ -201,7 +201,7 @@ CmdQueue_Type4:
 	add hl, bc
 	ld a, [hl]
 	ldh [hSCY], a
-	jp _DelCmdQueue
+	jmp _DelCmdQueue
 
 CmdQueue_Type3:
 	call CmdQueues_AnonJumptable

@@ -201,7 +201,7 @@ endr
 	pop de
 	inc de
 	dec c
-	jp nz, .col
+	jr nz, .col
 	; Next metarow
 	pop hl
 	ld de, SURROUNDING_WIDTH * METATILE_WIDTH
@@ -215,7 +215,7 @@ endr
 	inc d
 .ok2
 	dec b
-	jp nz, .row
+	jmp nz, .row
 	ret
 
 ReturnToMapFromSubmenu::
@@ -242,7 +242,7 @@ CheckWarpTile::
 WarpCheck::
 	call GetDestinationWarpNumber
 	ret nc
-	jp CopyWarpData
+	jr CopyWarpData
 
 GetDestinationWarpNumber::
 	farcall CheckWarpCollision
@@ -385,21 +385,21 @@ LoadMapAttributes::
 	call SwitchToMapScriptsBank
 	call ReadMapScripts
 	xor a ; do not skip object events
-	jp ReadMapEvents
+	jr ReadMapEvents
 
 LoadMapAttributes_SkipObjects::
 	call CopyMapPartialAndAttributes
 	call SwitchToMapScriptsBank
 	call ReadMapScripts
 	ld a, TRUE ; skip object events
-	jp ReadMapEvents
+	jr ReadMapEvents
 
 CopyMapPartialAndAttributes::
 	call CopyMapPartial
 	call SwitchToMapAttributesBank
 	call GetMapAttributesPointer
 	call CopyMapAttributes
-	jp GetMapConnections
+	jr GetMapConnections
 
 ReadMapEvents::
 	push af
@@ -417,7 +417,7 @@ ReadMapEvents::
 	and a ; skip object events?
 	ret nz
 
-	jp ReadObjectEvents
+	jmp ReadObjectEvents
 
 ReadMapScripts::
 	ld hl, wMapScriptsPointer
@@ -425,7 +425,7 @@ ReadMapScripts::
 	ld h, [hl]
 	ld l, a
 	call ReadMapSceneScripts
-	jp ReadMapCallbacks
+	jr ReadMapCallbacks
 
 CopyMapAttributes::
 	ld de, wMapAttributes
@@ -495,7 +495,7 @@ ReadMapSceneScripts::
 	ret z
 
 	ld bc, SCENE_SCRIPT_SIZE
-	jp AddNTimes
+	jmp AddNTimes
 
 ReadMapCallbacks::
 	ld a, [hli]
@@ -510,7 +510,7 @@ ReadMapCallbacks::
 	ret z
 
 	ld bc, CALLBACK_SIZE
-	jp AddNTimes
+	jmp AddNTimes
 
 ReadWarps::
 	ld a, [hli]
@@ -524,7 +524,7 @@ ReadWarps::
 	and a
 	ret z
 	ld bc, WARP_EVENT_SIZE
-	jp AddNTimes
+	jmp AddNTimes
 
 ReadCoordEvents::
 	ld a, [hli]
@@ -540,7 +540,7 @@ ReadCoordEvents::
 	ret z
 
 	ld bc, COORD_EVENT_SIZE
-	jp AddNTimes
+	jmp AddNTimes
 
 ReadBGEvents::
 	ld a, [hli]
@@ -556,7 +556,7 @@ ReadBGEvents::
 	ret z
 
 	ld bc, BG_EVENT_SIZE
-	jp AddNTimes
+	jmp AddNTimes
 
 ReadObjectEvents::
 	push hl
@@ -630,7 +630,7 @@ ClearObjectStructs::
 	ld hl, wObject1Struct
 	ld bc, OBJECT_LENGTH * (NUM_OBJECT_STRUCTS - 1)
 	xor a
-	jp ByteFill
+	jmp ByteFill
 
 GetWarpDestCoords::
 	call GetMapScriptsBank
@@ -680,7 +680,7 @@ LoadBlockData::
 	call ChangeMap
 	call FillMapConnections
 	ld a, MAPCALLBACK_TILES
-	jp RunMapCallback
+	jmp RunMapCallback
 
 ChangeMap::
 	ldh a, [hROMBank]
@@ -822,7 +822,7 @@ FillMapConnections::
 	ld b, a
 	ld a, [wEastConnectedMapWidth]
 	ldh [hConnectionStripLength], a
-	jp FillEastConnectionStrip
+	jr FillEastConnectionStrip
 
 FillNorthConnectionStrip::
 FillSouthConnectionStrip::
@@ -1680,7 +1680,7 @@ GetCoordTile::
 
 .nocarry2
 	ld a, [wTilesetCollisionBank]
-	jp GetFarByte
+	jmp GetFarByte
 
 .nope
 	ld a, -1
@@ -1857,7 +1857,7 @@ FadeToMenu::
 	call LoadStandardMenuHeader
 	farcall FadeOutPalettes
 	call ClearSprites
-	jp DisableSpriteUpdates
+	jmp DisableSpriteUpdates
 
 CloseSubmenu::
 	call ClearBGPalettes
@@ -1877,7 +1877,7 @@ FinishExitMenu::
 	farcall LoadOW_BGPal7
 	call WaitBGMap2
 	farcall FadeInPalettes
-	jp EnableSpriteUpdates
+	jmp EnableSpriteUpdates
 
 ReturnToMapWithSpeechTextbox::
 	push af
@@ -1923,7 +1923,7 @@ ReloadTilesetAndPalettes::
 	call SkipMusic
 	pop af
 	rst Bankswitch
-	jp EnableLCD
+	jmp EnableLCD
 
 GetMapPointer::
 	ld a, [wMapGroup]
@@ -1958,7 +1958,7 @@ GetAnyMapPointer::
 	dec c
 	ld b, 0
 	ld a, MAP_LENGTH
-	jp AddNTimes
+	jmp AddNTimes
 
 GetMapField::
 ; Extract data from the current map's group entry.

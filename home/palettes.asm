@@ -318,4 +318,4 @@ ReloadSpritesNoPalettes::
 	ldh [rSVBK], a
 	ld a, TRUE
 	ldh [hCGBPalUpdate], a
-	jp DelayFrame
+	jmp DelayFrame

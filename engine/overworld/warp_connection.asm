@@ -30,13 +30,13 @@ EnterMapConnection:
 ; Return carry if a connection has been entered.
 	ld a, [wPlayerStepDirection]
 	and a ; DOWN
-	jp z, .south
+	jmp z, .south
 	cp UP
-	jp z, .north
+	jmp z, .north
 	cp LEFT
-	jp z, .west
+	jr z, .west
 	cp RIGHT
-	jp z, .east
+	jr z, .east
 	ret
 
 .west
@@ -72,7 +72,7 @@ EnterMapConnection:
 	ld [wOverworldMapAnchor], a
 	ld a, h
 	ld [wOverworldMapAnchor + 1], a
-	jp .done
+	jmp .done
 
 .east
 	ld a, [wEastConnectedMapGroup]
@@ -107,7 +107,7 @@ EnterMapConnection:
 	ld [wOverworldMapAnchor], a
 	ld a, h
 	ld [wOverworldMapAnchor + 1], a
-	jp .done
+	jr .done
 
 .north
 	ld a, [wNorthConnectedMapGroup]
@@ -132,7 +132,7 @@ EnterMapConnection:
 	ld [wOverworldMapAnchor], a
 	ld a, h
 	ld [wOverworldMapAnchor + 1], a
-	jp .done
+	jr .done
 
 .south
 	ld a, [wSouthConnectedMapGroup]
@@ -246,7 +246,7 @@ LoadMapTimeOfDay:
 	farcall UpdateTimeOfDayPal
 	call OverworldTextModeSwitch
 	call .ClearBGMap
-	jp .PushAttrmap
+	jr .PushAttrmap
 
 .ClearBGMap:
 	ld a, HIGH(vBGMap0)
@@ -273,7 +273,7 @@ LoadMapTimeOfDay:
 	ld a, "■"
 	ld bc, vBGMap1 - vBGMap0
 	hlbgcoord 0, 0
-	jp ByteFill
+	jmp ByteFill
 
 .PushAttrmap:
 	decoord 0, 0
@@ -320,7 +320,7 @@ LoadMapGraphics:
 
 LoadMapPalettes:
 	ld b, SCGB_MAPPALS
-	jp GetSGBLayout
+	jmp GetSGBLayout
 
 RefreshMapSprites:
 	call ClearSprites

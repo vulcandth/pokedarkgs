@@ -22,7 +22,7 @@ Function115dc3:
 	ld a, $a0
 	ld hl, wShadowOAMSprite31
 	ld bc, 8 * SPRITEOAMSTRUCT_LENGTH
-	jp ByteFill
+	jmp ByteFill
 
 Function115dd3:
 	ld a, [wc305]
@@ -349,7 +349,7 @@ Function11619d:
 	call ByteFill
 
 .asm_1161b4
-	jp Function1161b8
+	jr Function1161b8
 
 Function1161b8:
 	jumptable .Jumptable, wc319

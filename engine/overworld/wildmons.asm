@@ -46,14 +46,14 @@ FindNest:
 	ld hl, JohtoWaterWildMons
 	call .FindWater
 	call .RoamMon1
-	jp .RoamMon2
+	jmp .RoamMon2
 
 .kanto
 	decoord 0, 0
 	ld hl, KantoGrassWildMons
 	call .FindGrass
 	ld hl, KantoWaterWildMons
-	jp .FindWater
+	jr .FindWater
 
 .FindGrass:
 	ld a, [hl]
@@ -266,9 +266,9 @@ ApplyCleanseTagEffectOnEncounterRate::
 
 ChooseWildEncounter:
 	call LoadWildMonDataPointer
-	jp nc, .nowildbattle
+	jr nc, .nowildbattle
 	call CheckEncounterRoamMon
-	jp c, .startwildbattle
+	jr c, .startwildbattle
 
 	inc hl
 	inc hl
@@ -415,7 +415,7 @@ _GrassWildmonLookup:
 	ld de, KantoGrassWildMons
 	call _JohtoWildmonCheck
 	ld bc, GRASS_WILDDATA_LENGTH
-	jp _NormalWildmonOK
+	jmp _NormalWildmonOK
 
 _WaterWildmonLookup:
 	ld hl, SwarmWaterWildMons
@@ -674,7 +674,7 @@ UpdateRoamMons:
 	ld [wRoamMon3MapNumber], a
 
 .Finished:
-	jp _BackUpMapIndices
+	jmp _BackUpMapIndices
 
 .Update:
 	ld hl, RoamMaps
@@ -764,7 +764,7 @@ JumpRoamMons:
 	ld [wRoamMon3MapNumber], a
 
 .Finished:
-	jp _BackUpMapIndices
+	jr _BackUpMapIndices
 
 JumpRoamMon:
 .loop
@@ -937,7 +937,7 @@ RandomPhoneWildMon:
 	ld hl, wStringBuffer1
 	ld de, wStringBuffer4
 	ld bc, MON_NAME_LENGTH
-	jp CopyBytes
+	jmp CopyBytes
 
 RandomPhoneMon:
 ; Get a random monster owned by the trainer who's calling.
@@ -1028,7 +1028,7 @@ RandomPhoneMon:
 	ld hl, wStringBuffer1
 	ld de, wStringBuffer4
 	ld bc, MON_NAME_LENGTH
-	jp CopyBytes
+	jmp CopyBytes
 
 CheckHabitatMon:
 	call Random

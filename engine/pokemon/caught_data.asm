@@ -1,14 +1,14 @@
 CheckPartyFullAfterContest:
 	ld a, [wContestMonSpecies]
 	and a
-	jp z, .DidntCatchAnything
+	jmp z, .DidntCatchAnything
 	ld [wCurPartySpecies], a
 	ld [wCurSpecies], a
 	call GetBaseData
 	ld hl, wPartyCount
 	ld a, [hl]
 	cp PARTY_LENGTH
-	jp nc, .TryAddToBox
+	jmp nc, .TryAddToBox
 	inc a
 	ld [hl], a
 	ld c, a
@@ -153,7 +153,7 @@ if DEF(_DEBUG)
 endc
 	ld hl, CaughtAskNicknameText
 	call PrintText
-	jp YesNoBox
+	jmp YesNoBox
 
 CaughtAskNicknameText:
 	text_far _CaughtAskNicknameText

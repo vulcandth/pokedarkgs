@@ -103,7 +103,7 @@ DoPoisonStep::
 	call PlaySFX
 	ld b, $2
 	predef LoadPoisonBGPals
-	jp DelayFrame
+	jmp DelayFrame
 
 .Script_MonFaintedToPoison:
 	callasm .PlayPoisonSFX

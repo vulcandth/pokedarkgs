@@ -67,7 +67,7 @@ CheckBugContestContestantFlag:
 	inc hl
 	ld d, [hl]
 	ld b, CHECK_FLAG
-	jp EventFlagAction
+	jmp EventFlagAction
 
 INCLUDE "data/events/bug_contest_flags.asm"
 

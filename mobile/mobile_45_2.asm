@@ -89,7 +89,7 @@ Function1165e3:
 	ld a, $1
 	call Function116780
 	ret c
-	jp Function116797
+	jmp Function116797
 
 Function1165f5:
 	ld a, $1
@@ -130,7 +130,7 @@ Function116623:
 	ld a, $6
 	call Function116780
 	ret c
-	jp Function116797
+	jmp Function116797
 
 Function116635:
 	ld a, $2
@@ -267,7 +267,7 @@ Function1166f4:
 	jr z, .asm_116702
 	ld [hl], a
 	call Function11679c
-	jp Function116797
+	jr Function116797
 
 Function11671f:
 	ld [wc30f], a
@@ -288,7 +288,7 @@ Function11671f:
 	jr z, .asm_11672d
 	ld [hl], a
 	call Function11679c
-	jp Function116797
+	jr Function116797
 
 Function116747:
 	ld hl, wc30e

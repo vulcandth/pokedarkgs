@@ -26,7 +26,7 @@ MobileAPI::
 	ld [wc981], a
 	rst Bankswitch
 
-	jp _MobileAPI
+	jmp _MobileAPI
 
 ReturnMobileAPI::
 ; Return from _MobileAPI
@@ -134,7 +134,7 @@ Function3eea::
 	call Function3f35
 	pop bc
 	pop hl
-	jp MobileHome_PlaceBox
+	jr MobileHome_PlaceBox
 
 Function3f20::
 	hlcoord 0, 0, wAttrmap
@@ -144,7 +144,7 @@ Function3f20::
 	hlcoord 0, 0
 	ld b,  4
 	ld c, 18
-	jp MobileHome_PlaceBox
+	jr MobileHome_PlaceBox
 
 Function3f35::
 	ld a, 6
@@ -173,7 +173,7 @@ MobileHome_PlaceBox:
 	pop bc
 	dec b
 	jr nz, .RowLoop
-	jp .FillBottom
+	jr .FillBottom
 
 .FillTop:
 	ld a, $63
@@ -211,7 +211,7 @@ Function3f7c::
 	call GetMenuBoxDims
 	dec b
 	dec c
-	jp Function3eea
+	jr Function3eea
 
 Function3f88::
 	ld hl, wDecompressScratch

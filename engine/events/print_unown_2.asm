@@ -40,7 +40,7 @@ RotateUnownFrontpic:
 	ldh a, [hROMBank]
 	ld b, a
 	call Get2bpp
-	jp CloseSRAM
+	jmp CloseSRAM
 
 .Copy:
 	ld c, LEN_2BPP_TILE

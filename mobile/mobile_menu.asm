@@ -53,13 +53,13 @@ Function49f16:
 	ld hl, wMenuCursorY
 	ld a, [hl]
 	cp 1
-	jp z, Function4a098
+	jmp z, Function4a098
 	cp 2
-	jp z, Function4a0b9
+	jmp z, Function4a0b9
 	cp 3
-	jp z, Function4a0c2
+	jmp z, Function4a0c2
 	cp 4
-	jp z, Function4a100
+	jmp z, Function4a100
 	ld a, 1
 	call MenuClickSound
 .b_button
@@ -69,7 +69,7 @@ Function49f16:
 	ld a, MUSIC_MAIN_MENU
 	ld [wMapMusic], a
 	ld de, MUSIC_MAIN_MENU
-	jp Function4a6c5
+	jmp Function4a6c5
 
 .next
 	ld hl, wMenuCursorY
@@ -85,7 +85,7 @@ Function49f16:
 	call ClearBox
 	hlcoord 1, 14
 	call PlaceString
-	jp .useless_jump
+	jr .useless_jump
 
 .useless_jump
 	call MobileMenu_InitMenuBuffers
@@ -96,7 +96,7 @@ Function49f16:
 	ld c, $1
 	hlcoord 5, 1
 	call ClearBox
-	jp .joy_loop
+	jr .joy_loop
 
 MobileString1:
 	db   "めいしフォルダー"
@@ -163,13 +163,13 @@ Function4a098:
 	call MG_Mobile_Layout_LoadPals
 	call Function4a485
 	pop bc
-	jp Function49f16
+	jmp Function49f16
 
 Function4a0b9:
 	ld a, 2
 	call MenuClickSound
 	pop bc
-	jp Function4a4c4
+	jmp Function4a4c4
 
 Function4a0c2:
 	ld a, 2
@@ -208,7 +208,7 @@ Function4a100:
 asm_4a111:
 	pop bc
 	call LoadFontsExtra
-	jp Function49f0a
+	jmp Function49f0a
 
 Function4a118:
 	ld hl, w2DMenuCursorInitY
@@ -290,9 +290,9 @@ asm_4a19d:
 	ld hl, wMenuCursorY
 	ld a, [hl]
 	cp $1
-	jp z, Function4a20e
+	jr z, Function4a20e
 	cp $2
-	jp z, Function4a221
+	jr z, Function4a221
 	ld a, $1
 	call MenuClickSound
 .asm_4a1ba
@@ -321,7 +321,7 @@ asm_4a19d:
 	lb bc, 6, 1
 	hlcoord 2, 3
 	call ClearBox
-	jp Function4a195
+	jr Function4a195
 
 String_4a1ef:
 	db   "モバイルセンター¯えらぶ"
@@ -347,11 +347,11 @@ Function4a221:
 	jr .asm_4a235
 .asm_4a235
 	pop bc
-	jp Function4a149
+	jmp Function4a149
 
 Function4a239:
 	pop bc
-	jp Function4a13b
+	jmp Function4a13b
 
 Strings_4a23d:
 	db   "いつも　せつぞく¯する"
@@ -555,16 +555,16 @@ Function4a3aa:
 	call Function4a6d8
 	lb bc, 1, 1
 	ld a, " "
-	jp Function4a6d8
+	jmp Function4a6d8
 
 Function4a485:
 	ld de, MobileMenuGFX
 	ld hl, vTiles2 tile $00
 	lb bc, BANK(MobileMenuGFX), 13
-	jp Get2bpp
+	jmp Get2bpp
 
 Function4a492:
-	jp _CrystalCGB_MobileLayout0
+	jmp _CrystalCGB_MobileLayout0
 
 MainMenu_MobileStudium:
 	ld a, [wStartDay]
@@ -659,20 +659,20 @@ asm_4a54d:
 	ld hl, wMenuCursorY
 	ld a, [hl]
 	cp $1
-	jp z, Function4a6ab
+	jmp z, Function4a6ab
 	cp $2
-	jp z, Function4a6ab
+	jmp z, Function4a6ab
 	cp $3
-	jp z, Function4a6ab
+	jmp z, Function4a6ab
 	cp $4
-	jp z, Function4a6ab
+	jmp z, Function4a6ab
 	ld a, $1
 	call MenuClickSound
 .asm_4a574
 	pop bc
 	call ClearBGPalettes
 	call ClearTilemap
-	jp Function49f0a
+	jmp Function49f0a
 .asm_4a57e
 	ld hl, wMenuCursorY
 	ld a, [hl]
@@ -697,7 +697,7 @@ asm_4a54d:
 	ld e, l
 	hlcoord 1, 16
 	call PlaceString
-	jp Function4a5b0
+	jr Function4a5b0
 
 Function4a5b0:
 	call Function4a680
@@ -708,7 +708,7 @@ Function4a5b0:
 	ld c, $1
 	hlcoord 3, 1
 	call ClearBox
-	jp Function4a545
+	jr Function4a545
 
 String_4a5c5:
 	db "じこしょうかい@"
@@ -773,7 +773,7 @@ Function4a6ab:
 	farcall Function11c1ab
 	pop bc
 	call LoadFontsExtra
-	jp Function4a4c4
+	jmp Function4a4c4
 
 Function4a6c5:
 	ld a, $5
@@ -783,7 +783,7 @@ Function4a6c5:
 	ld a, d
 	ld [wMusicFadeID + 1], a
 	ld c, 22
-	jp DelayFrames
+	jmp DelayFrames
 
 Function4a6d8:
 	push bc

@@ -26,4 +26,4 @@ Mobile_PrintOpponentBattleMessage:
 	ldh [rSVBK], a
 
 	ld c, 180
-	jp DelayFrames
+	jmp DelayFrames

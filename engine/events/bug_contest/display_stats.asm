@@ -76,7 +76,7 @@ DisplayCaughtContestMonStats:
 	call WaitBGMap
 	ld b, SCGB_DIPLOMA
 	call GetSGBLayout
-	jp SetPalettes
+	jmp SetPalettes
 
 .Health:
 	db "HEALTH@"
@@ -92,7 +92,7 @@ ContestAskSwitchText:
 DisplayAlreadyCaughtText:
 	call GetPokemonName
 	ld hl, .ContestAlreadyCaughtText
-	jp PrintText
+	jmp PrintText
 
 .ContestAlreadyCaughtText:
 	text_far _ContestAlreadyCaughtText

@@ -126,22 +126,22 @@ UpdateOverworldMap:
 .step_down
 	call .ScrollOverworldMapDown
 	call LoadMapPart
-	jp ScrollMapDown
+	jmp ScrollMapDown
 
 .step_up
 	call .ScrollOverworldMapUp
 	call LoadMapPart
-	jp ScrollMapUp
+	jmp ScrollMapUp
 
 .step_left
 	call .ScrollOverworldMapLeft
 	call LoadMapPart
-	jp ScrollMapLeft
+	jmp ScrollMapLeft
 
 .step_right
 	call .ScrollOverworldMapRight
 	call LoadMapPart
-	jp ScrollMapRight
+	jmp ScrollMapRight
 
 .ScrollOverworldMapDown:
 	ld a, [wBGMapAnchor]

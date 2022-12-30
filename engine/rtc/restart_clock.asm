@@ -217,7 +217,7 @@ RestartClock:
 .UnusedPlaceCharsFragment: ; unreferenced
 	ld a, [wRestartClockUpArrowYCoord]
 	ld b, a
-	jp Coord2Tile
+	jmp Coord2Tile
 
 .PlaceChars:
 	push de

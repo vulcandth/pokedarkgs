@@ -8,7 +8,7 @@ SelectMonFromParty:
 	call SetPalettes
 	call DelayFrame
 	call PartyMenuSelect
-	jp ReturnToMapWithSpeechTextbox
+	jmp ReturnToMapWithSpeechTextbox
 
 SelectTradeOrDayCareMon:
 	ld a, b
@@ -22,14 +22,14 @@ SelectTradeOrDayCareMon:
 	call SetPalettes
 	call DelayFrame
 	call PartyMenuSelect
-	jp ReturnToMapWithSpeechTextbox
+	jmp ReturnToMapWithSpeechTextbox
 
 InitPartyMenuLayout:
 	call LoadPartyMenuGFX
 	call InitPartyMenuWithCancel
 	call InitPartyMenuGFX
 	call WritePartyMenuTilemap
-	jp PrintPartyMenuText
+	jmp PrintPartyMenuText
 
 LoadPartyMenuGFX:
 	call LoadFontsBattleExtra
@@ -103,7 +103,7 @@ PlacePartyNicknames:
 	dec hl
 	dec hl
 	ld de, .CancelString
-	jp PlaceString
+	jmp PlaceString
 
 .CancelString:
 	db "CANCEL@"
@@ -147,7 +147,7 @@ PlacePartyHPBar:
 	dec c
 	jr nz, .loop
 	ld b, SCGB_PARTY_MENU
-	jp GetSGBLayout
+	jmp GetSGBLayout
 
 PlacePartymonHPBar:
 	ld a, b
@@ -744,7 +744,7 @@ PrintPartyMenuActionText:
 	ld a, [wPartyMenuActionText]
 	and $f
 	ld hl, .MenuActionTexts
-	jp .PrintText
+	jr .PrintText
 
 .MenuActionTexts:
 ; entries correspond to PARTYMENUTEXT_* constants

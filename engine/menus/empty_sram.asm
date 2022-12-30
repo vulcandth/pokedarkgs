@@ -11,4 +11,4 @@ endr
 	ld bc, SRAM_End - SRAM_Begin
 	xor a
 	call ByteFill
-	jp CloseSRAM
+	jmp CloseSRAM

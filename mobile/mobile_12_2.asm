@@ -131,7 +131,7 @@ Function4a9d7:
 	call CopyBytes
 	ld hl, MobileUseTheseThreeMonText
 	call PrintText
-	jp YesNoBox
+	jmp YesNoBox
 
 MobileUseTheseThreeMonText:
 	text_far _MobileUseTheseThreeMonText
@@ -579,9 +579,9 @@ Function4acaa:
 	cp $1
 	jr z, Function4ad17
 	cp $2
-	jp z, Function4ad56
+	jr z, Function4ad56
 	cp $3
-	jp z, Function4ad60
+	jr z, Function4ad60
 	jr .asm_4acf3
 
 .asm_4ad0e
@@ -606,7 +606,7 @@ Function4ad17:
 	ld de, SFX_WRONG
 	call WaitPlaySFX
 	ld hl, MobileOnlyThreeMonMayEnterText
-	jp PrintText
+	jmp PrintText
 
 .asm_4ad39
 	ld a, [wCurPartyMon]
@@ -621,7 +621,7 @@ Function4ad17:
 .asm_4ad4a
 	ld a, $ff
 	ld [hl], a
-	jp Function4adc2
+	jr Function4adc2
 
 MobileOnlyThreeMonMayEnterText:
 	text_far _MobileOnlyThreeMonMayEnterText
@@ -629,7 +629,7 @@ MobileOnlyThreeMonMayEnterText:
 
 Function4ad56:
 	farcall OpenPartyStats
-	jp WaitBGMap2
+	jmp WaitBGMap2
 
 Function4ad60:
 	farcall ManagePokemonMoves
@@ -650,7 +650,7 @@ Function4ad68:
 	ld de, String_4ad9a
 
 .asm_4ad84
-	jp PlaceString
+	jmp PlaceString
 
 String_4ad88:
 	db   "つよさをみる"

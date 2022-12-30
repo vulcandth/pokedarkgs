@@ -9,8 +9,8 @@ BattleCommand_StartHail:
 	ld [wWeatherCount], a
 	call AnimateCurrentMove
 	ld hl, ItStartedToHailText
-	jp StdBattleTextbox
+	jmp StdBattleTextbox
 
 .failed
 	call AnimateFailedMove
-	jp PrintButItFailed
+	jmp PrintButItFailed

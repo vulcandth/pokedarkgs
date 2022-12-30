@@ -307,7 +307,7 @@ MagikarpHouseSign:
 	ld [wMagikarpLength + 1], a
 	call PrintMagikarpLength
 	ld hl, .KarpGuruRecordText
-	jp PrintText
+	jmp PrintText
 
 .KarpGuruRecordText:
 	text_far _KarpGuruRecordText

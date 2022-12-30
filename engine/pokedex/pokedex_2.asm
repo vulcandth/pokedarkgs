@@ -26,7 +26,7 @@ AnimateDexSearchSlowpoke:
 	ld [wDexSearchSlowpokeFrame], a
 	call DoDexSearchSlowpokeFrame
 	ld c, 32
-	jp DelayFrames
+	jmp DelayFrames
 
 .FrameIDs:
 	; frame ID, duration
@@ -219,7 +219,7 @@ DisplayDexEntry:
 	inc de
 	pop af
 	hlcoord 2, 11
-	jp PlaceFarString
+	jmp PlaceFarString
 
 POKeString: ; unreferenced
 	db "#@"

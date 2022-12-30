@@ -34,11 +34,11 @@ GameCornerPrizeMonCheckDex:
 	ld a, [wScriptVar]
 	ld [wNamedObjectIndex], a
 	farcall NewPokedexEntry
-	jp ExitAllMenus
+	jmp ExitAllMenus
 
 UnusedSetSeenMon:
 	ld a, [wScriptVar]
-	jp SetSeenMon
+	jmp SetSeenMon
 
 FindPartyMonAboveLevel:
 	ld a, [wScriptVar]
@@ -84,7 +84,7 @@ NameRival:
 	farcall _NamingScreen
 	ld hl, wRivalName
 	ld de, .DefaultName
-	jp InitName
+	jmp InitName
 
 .DefaultName:
 IF DEF(_GOLD)
@@ -100,17 +100,17 @@ NameRater:
 OverworldTownMap:
 	call FadeToMenu
 	farcall _TownMap
-	jp ExitAllMenus
+	jmp ExitAllMenus
 
 UnownPrinter:
 	call FadeToMenu
 	farcall _UnownPrinter
-	jp ExitAllMenus
+	jmp ExitAllMenus
 
 DisplayLinkRecord:
 	call FadeToMenu
 	farcall _DisplayLinkRecord
-	jp ExitAllMenus
+	jmp ExitAllMenus
 
 PlayersHousePC:
 	xor a
@@ -130,7 +130,7 @@ CheckMysteryGift:
 
 .no
 	ld [wScriptVar], a
-	jp CloseSRAM
+	jmp CloseSRAM
 
 GetMysteryGiftItem:
 	ld a, BANK(sMysteryGiftItem)
@@ -181,28 +181,28 @@ UnownPuzzle:
 	farcall _UnownPuzzle
 	ld a, [wSolvedUnownPuzzle]
 	ld [wScriptVar], a
-	jp ExitAllMenus
+	jmp ExitAllMenus
 
 SlotMachine:
 	call CheckCoinsAndCoinCase
 	ret c
 	ld a, BANK(_SlotMachine)
 	ld hl, _SlotMachine
-	jp StartGameCornerGame
+	jr StartGameCornerGame
 
 CardFlip:
 	call CheckCoinsAndCoinCase
 	ret c
 	ld a, BANK(_CardFlip)
 	ld hl, _CardFlip
-	jp StartGameCornerGame
+	jr StartGameCornerGame
 
 UnusedMemoryGame:
 	call CheckCoinsAndCoinCase
 	ret c
 	ld a, BANK(_MemoryGame)
 	ld hl, _MemoryGame
-	jp StartGameCornerGame
+	jr StartGameCornerGame
 
 StartGameCornerGame:
 	call FarQueueScript
@@ -215,7 +215,7 @@ StartGameCornerGame:
 	ld l, a
 	pop af
 	rst FarCall
-	jp ExitAllMenus
+	jmp ExitAllMenus
 
 CheckCoinsAndCoinCase:
 	ld hl, wCoins
@@ -252,7 +252,7 @@ CheckCoinsAndCoinCase:
 
 ClearBGPalettesBufferScreen:
 	call ClearBGPalettes
-	jp BufferScreen
+	jmp BufferScreen
 
 ScriptReturnCarry:
 	jr c, .carry
@@ -314,7 +314,7 @@ StoreSwarmMapIndices::
 CheckPokerus:
 ; Check if a monster in your party has Pokerus
 	farcall _CheckPokerus
-	jp ScriptReturnCarry
+	jr ScriptReturnCarry
 
 ResetLuckyNumberShowFlag:
 	farcall LoadOrRegenerateLuckyIDNumber
@@ -377,7 +377,7 @@ SnorlaxAwake:
 
 PlayCurMonCry:
 	ld a, [wCurPartySpecies]
-	jp PlayMonCry
+	jmp PlayMonCry
 
 GameboyCheck:
 	ldh a, [hCGB]
@@ -412,16 +412,16 @@ FadeOutMusic:
 Diploma:
 	call FadeToMenu
 	farcall _Diploma
-	jp ExitAllMenus
+	jmp ExitAllMenus
 
 PrintDiploma:
 	call FadeToMenu
 	farcall _PrintDiploma
-	jp ExitAllMenus
+	jmp ExitAllMenus
 
 TrainerHouse:
 	ld a, BANK(sMysteryGiftTrainerHouseFlag)
 	call OpenSRAM
 	ld a, [sMysteryGiftTrainerHouseFlag]
 	ld [wScriptVar], a
-	jp CloseSRAM
+	jmp CloseSRAM

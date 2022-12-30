@@ -3,7 +3,7 @@ _NameRater:
 	ld hl, NameRaterHelloText
 	call PrintText
 	call YesNoBox
-	jp c, .cancel
+	jmp c, .cancel
 ; Select a Pokemon from your party
 	ld hl, NameRaterWhichMonText
 	call PrintText
@@ -75,7 +75,7 @@ _NameRater:
 	ld hl, NameRaterEggText
 
 .done
-	jp PrintText
+	jmp PrintText
 
 CheckIfMonIsYourOT:
 ; Checks to see if the partymon loaded in [wCurPartyMon] has the different OT as you.  Returns carry if not.

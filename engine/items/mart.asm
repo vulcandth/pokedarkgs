@@ -28,7 +28,7 @@ MartDialog:
 	ld [wMartType], a
 	xor a ; STANDARDMART_HOWMAYIHELPYOU
 	ld [wMartJumptableIndex], a
-	jp StandardMart
+	jmp StandardMart
 
 HerbShop:
 	call FarReadMart
@@ -37,7 +37,7 @@ HerbShop:
 	call MartTextbox
 	call BuyMenu
 	ld hl, HerbalLadyComeAgainText
-	jp MartTextbox
+	jmp MartTextbox
 
 BargainShop:
 	ld b, BANK(BargainShopData)
@@ -57,7 +57,7 @@ BargainShop:
 
 .skip_set
 	ld hl, BargainShopComeAgainText
-	jp MartTextbox
+	jmp MartTextbox
 
 Pharmacist:
 	call FarReadMart
@@ -66,7 +66,7 @@ Pharmacist:
 	call MartTextbox
 	call BuyMenu
 	ld hl, PharmacyComeAgainText
-	jp MartTextbox
+	jmp MartTextbox
 
 RooftopSale:
 	ld b, BANK(RooftopSaleMart1)
@@ -85,7 +85,7 @@ RooftopSale:
 	call MartTextbox
 	call BuyMenu
 	ld hl, MartComeAgainText
-	jp MartTextbox
+	jmp MartTextbox
 
 INCLUDE "data/items/rooftop_sale.asm"
 
@@ -339,7 +339,7 @@ BuyMenu:
 .loop
 	call BuyMenuLoop ; menu loop
 	jr nc, .loop
-	jp CloseSubmenu
+	jmp CloseSubmenu
 
 LoadBuyMenuText:
 ; load text from a nested table
@@ -358,7 +358,7 @@ LoadBuyMenuText:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp PrintText
+	jmp PrintText
 
 MartAskPurchaseQuantity:
 	call GetMartDialogGroup ; gets a pointer from GetMartDialogGroup.MartTextFunctionPointers
@@ -366,10 +366,10 @@ MartAskPurchaseQuantity:
 	inc hl
 	ld a, [hl]
 	and a
-	jp z, StandardMartAskPurchaseQuantity
+	jmp z, StandardMartAskPurchaseQuantity
 	cp 1
-	jp z, BargainShopAskPurchaseQuantity
-	jp RooftopSaleAskPurchaseQuantity
+	jmp z, BargainShopAskPurchaseQuantity
+	jmp RooftopSaleAskPurchaseQuantity
 
 GetMartDialogGroup:
 	ld a, [wMartType]
@@ -497,13 +497,13 @@ StandardMartAskPurchaseQuantity:
 	ld a, MARTTEXT_HOW_MANY
 	call LoadBuyMenuText
 	farcall SelectQuantityToBuy
-	jp ExitMenu
+	jmp ExitMenu
 
 MartConfirmPurchase:
 	predef PartyMonItemName
 	ld a, MARTTEXT_COSTS_THIS_MUCH
 	call LoadBuyMenuText
-	jp YesNoBox
+	jmp YesNoBox
 
 BargainShopAskPurchaseQuantity:
 	ld a, 1
@@ -552,7 +552,7 @@ RooftopSaleAskPurchaseQuantity:
 	ld a, MAX_ITEM_STACK
 	ld [wItemQuantity], a
 	farcall RooftopSale_SelectQuantityToBuy
-	jp ExitMenu
+	jmp ExitMenu
 
 .GetSalePrice:
 	ld a, [wMartItemID]
@@ -610,7 +610,7 @@ MenuHeader_Buy:
 	ld bc, SCREEN_WIDTH
 	add hl, bc
 	ld c, PRINTNUM_LEADINGZEROS | PRINTNUM_MONEY | 3
-	jp PrintBCDNumber
+	jmp PrintBCDNumber
 
 HerbShopLadyIntroText:
 	text_far _HerbShopLadyIntroText
@@ -703,7 +703,7 @@ SellMenu:
 	farcall DepositSellPack
 	ld a, [wPackUsedItem]
 	and a
-	jp z, .quit
+	jr z, .quit
 	call .TryToSellItem
 	jr .loop
 
@@ -845,9 +845,9 @@ MartBoughtText:
 PlayTransactionSound:
 	call WaitSFX
 	ld de, SFX_TRANSACTION
-	jp PlaySFX
+	jmp PlaySFX
 
 MartTextbox:
 	call MenuTextbox
 	call JoyWaitAorB
-	jp ExitMenu
+	jmp ExitMenu
