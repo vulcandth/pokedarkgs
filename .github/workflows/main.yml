@@ -61,6 +61,8 @@ jobs:
         if: ${{ github.event_name == 'push' && github.repository_owner == 'vulcandth' }}
         run: |
           cp -v *.sym symbols/
+          cp -v *.map symbols/
+          cp -v bank_ends.txt symbols/
       - name: Update symbols
         if: ${{ github.event_name == 'push' && github.repository_owner == 'vulcandth' }}
         uses: EndBug/add-and-commit@v7
@@ -68,4 +70,6 @@ jobs:
           branch: symbols
           cwd: "./symbols"
           add: "*.sym"
+          add: "*.map"
+          add: "bank_ends.txt"
           message: ${{ github.event.commits[0].message }}

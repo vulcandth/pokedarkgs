@@ -94,6 +94,7 @@ tidy:
 	      $(pokesilver_vc_obj) \
 	      $(pokegold_debug_obj) \
 	      $(pokesilver_debug_obj) \
+	      bank_ends.txt \
 	      rgbdscheck.o
 	$(MAKE) clean -C tools/
 
@@ -162,7 +163,8 @@ pokesilver_vc_opt    = -Cjv -t PM_DARKS -i BYTE -n 1 -k 01 -l 0x33 -m 0x10 -r 3 
 	$(RGBLINK) -M -n $*.sym -m $*.map -l layout.link -o $@ $(filter %.o,$^)
 	$(RGBFIX) $($*_opt) $@
 	tools/stadium $@
-	tools/bankends -q $(basename $@).map
+	echo "$@ " >> bank_ends.txt
+	tools/bankends -q $(basename $@).map >> bank_ends.txt
 
 
 ### LZ compression rules
