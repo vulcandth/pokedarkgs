@@ -69,7 +69,5 @@ jobs:
         with:
           branch: symbols
           cwd: "./symbols"
-          add: "*.sym"
-          add: "*.map"
-          add: "bank_ends.txt"
+          add: "*.sym *.map bank_ends.txt"
           message: ${{ github.event.commits[0].message }}
