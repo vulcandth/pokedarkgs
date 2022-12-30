@@ -1,0 +1,8 @@
+pokesilver_debug.gbc 
+Free space: 424852/2097152 (20.26%)
+pokegold.gbc 
+Free space: 423626/2097152 (20.20%)
+pokesilver.gbc 
+Free space: 424229/2097152 (20.23%)
+pokegold_debug.gbc 
+Free space: 424249/2097152 (20.23%)
