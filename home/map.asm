@@ -153,7 +153,7 @@ _LoadMetatilesOrAttributes:
 	ld e, l
 	ld d, h
 	; Set hl to the address of the current metatile data ([wTilesetBlocksAddress] + (a) tiles).
-	ld l, a
+	ld l, a ; no-optimize hl|bc|de = a * 16 (I think a's value isn't small enough)
 	ld h, 0
 	add hl, hl
 	add hl, hl
@@ -181,9 +181,9 @@ endr
 	ld a, e
 	add SURROUNDING_WIDTH - METATILE_WIDTH
 	ld e, a
-	jr nc, .next\@
-	inc d
-.next\@
+	adc d
+	sub e
+	ld d, a
 endr
 rept METATILE_WIDTH
 	ld a, [hli]
@@ -211,9 +211,9 @@ endr
 	add MAP_CONNECTION_PADDING_WIDTH * 2
 	add e
 	ld e, a
-	jr nc, .ok2
-	inc d
-.ok2
+	adc d
+	sub e
+	ld d, a
 	dec b
 	jmp nz, .row
 	ret
@@ -282,18 +282,16 @@ GetDestinationWarpNumber::
 	jr nz, .next
 	ld a, [hli]
 	cp d
-	jr nz, .next
-	jr .found_warp
+	jr z, .found_warp
 
 .next
 	pop hl
 	ld a, WARP_EVENT_SIZE
 	add l
 	ld l, a
-	jr nc, .okay
-	inc h
-
-.okay
+	adc h
+	sub l
+	ld h, a
 	dec c
 	jr nz, .loop
 	xor a
@@ -577,19 +575,17 @@ ReadObjectEvents::
 ; get NUM_OBJECTS - [wCurMapObjectEventCount] - 1
 	ld a, [wCurMapObjectEventCount]
 	ld c, a
-	ld a, NUM_OBJECTS - 1
+	ld a, NUM_OBJECTS - 1 ; no-optimize a = N - a (breaks the jr z/c)
 	sub c
 	jr z, .skip
 	jr c, .skip
 
-	; could have done "inc hl" instead
-	ld bc, 1
-	add hl, bc
+	inc hl
 	ld bc, MAPOBJECT_LENGTH
 .loop
-	ld [hl],  0
+	ld [hl],  0 ; no-optimize *hl++|*hl-- = N (Can't use a)
 	inc hl
-	ld [hl], -1
+	ld [hl], -1 ; no-optimize *hl++|*hl-- = N (Can't use a)
 	dec hl
 	add hl, bc
 	dec a
@@ -656,10 +652,7 @@ endr
 	; destination warp number
 	ld a, [hli]
 	cp -1
-	jr nz, .skip
-	call .backup
-
-.skip
+	call z, .backup
 	farcall GetMapScreenCoords
 	ret
 
@@ -721,9 +714,9 @@ ChangeMap::
 	ldh a, [hConnectionStripLength]
 	add l
 	ld l, a
-	jr nc, .okay
-	inc h
-.okay
+	adc h
+	sub l
+	ld h, a
 	dec b
 	jr nz, .row
 
@@ -741,10 +734,10 @@ FillMapConnections::
 	ld c, a
 	call GetAnyMapBlocksBank
 
-	ld a, [wNorthConnectionStripPointer]
+	ld hl, wNorthConnectionStripPointer
+	ld a, [hli]
+	ld h, [hl]
 	ld l, a
-	ld a, [wNorthConnectionStripPointer + 1]
-	ld h, a
 	ld a, [wNorthConnectionStripLocation]
 	ld e, a
 	ld a, [wNorthConnectionStripLocation + 1]
@@ -764,10 +757,10 @@ FillMapConnections::
 	ld c, a
 	call GetAnyMapBlocksBank
 
-	ld a, [wSouthConnectionStripPointer]
+	ld hl, wSouthConnectionStripPointer
+	ld a, [hli]
+	ld h, [hl]
 	ld l, a
-	ld a, [wSouthConnectionStripPointer + 1]
-	ld h, a
 	ld a, [wSouthConnectionStripLocation]
 	ld e, a
 	ld a, [wSouthConnectionStripLocation + 1]
@@ -787,10 +780,10 @@ FillMapConnections::
 	ld c, a
 	call GetAnyMapBlocksBank
 
-	ld a, [wWestConnectionStripPointer]
+	ld hl, wWestConnectionStripPointer
+	ld a, [hli]
+	ld h, [hl]
 	ld l, a
-	ld a, [wWestConnectionStripPointer + 1]
-	ld h, a
 	ld a, [wWestConnectionStripLocation]
 	ld e, a
 	ld a, [wWestConnectionStripLocation + 1]
@@ -810,10 +803,10 @@ FillMapConnections::
 	ld c, a
 	call GetAnyMapBlocksBank
 
-	ld a, [wEastConnectionStripPointer]
+	ld hl, wEastConnectionStripPointer
+	ld a, [hli]
+	ld h, [hl]
 	ld l, a
-	ld a, [wEastConnectionStripPointer + 1]
-	ld h, a
 	ld a, [wEastConnectionStripLocation]
 	ld e, a
 	ld a, [wEastConnectionStripLocation + 1]
@@ -851,9 +844,9 @@ FillSouthConnectionStrip::
 	add 6
 	add e
 	ld e, a
-	jr nc, .okay
-	inc d
-.okay
+	adc d
+	sub e
+	ld d, a
 	dec c
 	jr nz, .y
 	ret
@@ -888,9 +881,9 @@ FillEastConnectionStrip::
 	ldh a, [hConnectedMapWidth]
 	add e
 	ld e, a
-	jr nc, .okay
-	inc d
-.okay
+	adc d
+	sub e
+	ld d, a
 	dec b
 	jr nz, .loop
 	ret
@@ -1140,10 +1133,10 @@ ScrollMapDown::
 	hlcoord 0, SCREEN_HEIGHT - 2, wAttrmap
 	ld de, wBGMapPalBuffer
 	call BackupBGMapRow
-	ld a, [wBGMapAnchor]
+	ld hl, wBGMapAnchor
+	ld a, [hli]
+	ld h, [hl]
 	ld l, a
-	ld a, [wBGMapAnchor + 1]
-	ld h, a
 	ld bc, BG_MAP_WIDTH tiles
 	add hl, bc
 ; cap d at HIGH(vBGMap0)
@@ -1218,10 +1211,9 @@ BackupBGMapColumn::
 	ld a, SCREEN_WIDTH - 1
 	add l
 	ld l, a
-	jr nc, .skip
-	inc h
-
-.skip
+	adc h
+	sub l
+	ld h, a
 	dec c
 	jr nz, .loop
 	ret
@@ -1328,8 +1320,7 @@ LoadTilesetGFX::
 	cp TILESET_JOHTO_MODERN
 	jr z, .load_roof
 	cp TILESET_BATTLE_TOWER_OUTSIDE
-	jr z, .load_roof
-	jr .skip_roof
+	jr nz, .skip_roof
 
 .load_roof
 	farcall LoadMapGroupRoof
@@ -1345,8 +1336,7 @@ BufferScreen::
 	ld h, [hl]
 	ld l, a
 	ld de, wScreenSave
-	ld c, SCREEN_META_HEIGHT
-	ld b, SCREEN_META_WIDTH
+	lb bc, SCREEN_META_WIDTH, SCREEN_META_HEIGHT
 .row
 	push bc
 	push hl
@@ -1398,8 +1388,7 @@ SaveScreen::
 .down
 	ld de, wScreenSave
 .vertical
-	ld b, SCREEN_META_WIDTH
-	ld c, SCREEN_META_HEIGHT - 1
+	lb bc, SCREEN_META_WIDTH, SCREEN_META_HEIGHT - 1
 	jr SaveScreen_LoadConnection
 
 .left
@@ -1410,8 +1399,7 @@ SaveScreen::
 .right
 	ld de, wScreenSave
 .horizontal
-	ld b, SCREEN_META_WIDTH - 1
-	ld c, SCREEN_META_HEIGHT
+	lb bc, SCREEN_META_WIDTH - 1, SCREEN_META_HEIGHT
 	jr SaveScreen_LoadConnection
 
 LoadConnectionBlockData::
@@ -1423,8 +1411,7 @@ LoadConnectionBlockData::
 	add 6
 	ldh [hConnectionStripLength], a
 	ld de, wScreenSave
-	ld b, SCREEN_META_WIDTH
-	ld c, SCREEN_META_HEIGHT
+	lb bc, SCREEN_META_WIDTH, SCREEN_META_HEIGHT
 ; fallthrough
 
 SaveScreen_LoadConnection::
@@ -1442,9 +1429,9 @@ SaveScreen_LoadConnection::
 	ld a, e
 	add 6
 	ld e, a
-	jr nc, .okay
-	inc d
-.okay
+	adc d
+	sub e
+	ld d, a
 	pop hl
 	ldh a, [hConnectionStripLength]
 	ld c, a
@@ -1472,11 +1459,10 @@ GetMovementPermissions::
 
 	ld a, [wPlayerTile]
 	and 7
-	ld hl, .MovementPermissionsData
-	add l
+	add LOW(.MovementPermissionsData)
 	ld l, a
-	ld a, 0
-	adc h
+	adc HIGH(.MovementPermissionsData)
+	sub l
 	ld h, a
 	ld a, [hl]
 	ld hl, wTilePermissions
@@ -1754,18 +1740,17 @@ CheckIfFacingTileCoordIsBGEvent::
 	jr nz, .next
 	ld a, [hli]
 	cp d
-	jr nz, .next
-	jr .copysign
+	jr z, .copysign
 
 .next
 	pop hl
 	ld a, BG_EVENT_SIZE
 	add l
 	ld l, a
-	jr nc, .nocarry
-	inc h
+	adc h
+	sub l
+	ld h, a
 
-.nocarry
 	dec c
 	jr nz, .loop
 	xor a
@@ -1826,18 +1811,17 @@ CheckCurrentMapCoordEvents::
 	jr nz, .next
 	ld a, [hli]
 	cp d
-	jr nz, .next
-	jr .copy_coord_event
+	jr z, .copy_coord_event
 
 .next
 	pop hl
 	ld a, COORD_EVENT_SIZE
 	add l
 	ld l, a
-	jr nc, .nocarry
-	inc h
+	adc h
+	sub l
+	ld h, a
 
-.nocarry
 	dec c
 	jr nz, .loop
 	xor a

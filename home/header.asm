@@ -49,7 +49,7 @@ PopBCDEHL::
 	pop bc
 	pop de
 	pop hl
-DoNothing::
+DoNothing:: ; no-optimize Stub function (Used by newbox)
 	ret
 
 ; Game Boy hardware interrupts
@@ -75,7 +75,7 @@ SECTION "Header", ROM0[$0100]
 Start::
 ; Nintendo requires all Game Boy ROMs to begin with a nop ($00) and a jp ($C3)
 ; to the starting address.
-	nop
+	nop ; no-optimize nops (Game Boy Roms begin with a nop)
 	jp _Start
 
 ; The Game Boy cartridge header data is patched over by rgbfix.

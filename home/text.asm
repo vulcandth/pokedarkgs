@@ -135,8 +135,7 @@ TextboxPalette::
 SpeechTextbox::
 ; Standard textbox.
 	hlcoord TEXTBOX_X, TEXTBOX_Y
-	ld b, TEXTBOX_INNERH
-	ld c, TEXTBOX_INNERW
+	lb bc, TEXTBOX_INNERH, TEXTBOX_INNERW
 	jr Textbox
 
 RadioTerminator::
@@ -482,8 +481,7 @@ Paragraph::
 	cp LINK_COLOSSEUM
 	jr z, .linkbattle
 	cp LINK_MOBILE
-	jr z, .linkbattle
-	call LoadBlinkingCursor
+	call nz, LoadBlinkingCursor
 
 .linkbattle
 	call Text_WaitBGMap
@@ -501,8 +499,7 @@ Paragraph::
 _ContText::
 	ld a, [wLinkMode]
 	or a
-	jr nz, .communication
-	call LoadBlinkingCursor
+	call z, LoadBlinkingCursor
 
 .communication
 	call Text_WaitBGMap
@@ -549,8 +546,7 @@ PromptText::
 	cp LINK_COLOSSEUM
 	jr z, .ok
 	cp LINK_MOBILE
-	jr z, .ok
-	call LoadBlinkingCursor
+	call nz, LoadBlinkingCursor
 
 .ok
 	call Text_WaitBGMap
@@ -559,13 +555,12 @@ PromptText::
 	cp LINK_COLOSSEUM
 	jr z, DoneText
 	cp LINK_MOBILE
-	jr z, DoneText
-	call UnloadBlinkingCursor
+	call nz, UnloadBlinkingCursor
 
 DoneText::
 	pop hl
 	ld de, .stop
-	dec de
+	dec de ; no-optimize Redundant inc|dec (TODO: *maybe* consider optimization)
 	ret
 
 .stop:

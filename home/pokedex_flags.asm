@@ -9,9 +9,9 @@ CountSetBits::
 
 .count
 	srl e
-	ld a, 0
-	adc c
-	ld c, a
+	jr nc, .noCarry
+	inc c
+.noCarry
 	dec d
 	jr nz, .count
 
@@ -47,11 +47,11 @@ CountSetBits16::
 	call CountSetBits
 	pop de
 	pop bc
-	add a, c
+	add c
 	ld c, a
-	jr nc, .handle_loop
-	inc b
-.handle_loop
+	adc b
+	sub c
+	ld b, a
 	dec d
 	jr nz, .loop
 	ret

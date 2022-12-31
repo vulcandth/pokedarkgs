@@ -67,8 +67,8 @@ Init::
 	ld hl, WRAM0_Begin
 	ld bc, WRAM0_End - WRAM0_Begin
 .ByteFill:
-	ld [hl], 0
-	inc hl
+	xor a
+	ld [hli], a
 	dec bc
 	ld a, b
 	or c
