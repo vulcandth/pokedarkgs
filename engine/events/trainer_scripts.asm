@@ -26,6 +26,7 @@ StartBattleWithMapTrainerScript:
 	reloadmapafterbattle
 	trainerflagaction SET_FLAG
 	loadmem wRunningTrainerBattleScript, -1
+	callasm CheckActiveFollowerBallAnim
 
 AlreadyBeatenTrainerScript:
 	scripttalkafter

@@ -35,6 +35,15 @@ CheckObjectFlag:
 	ld a, [hl]
 	and a
 	jr z, .masked
+
+	; bad hack, but there should be more sophisticated conditions for sprite appearance than event flags...
+	cp SPRITE_FOLLOWER
+	jr nz, .ok
+	ld a, [wPartyCount]
+	and a
+	jr z, .masked
+.ok
+
 	ld hl, MAPOBJECT_EVENT_FLAG
 	add hl, bc
 	ld a, [hli]

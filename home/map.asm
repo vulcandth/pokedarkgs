@@ -560,7 +560,9 @@ ReadObjectEvents::
 	push hl
 	call ClearObjectStructs
 	pop de
-	ld hl, wMap1Object
+	ld a, -1
+	ld [wMap1Object], a
+	ld hl, wMapObjects + MAPOBJECT_LENGTH * 2
 	ld a, [de]
 	inc de
 	ld [wCurMapObjectEventCount], a
@@ -575,7 +577,7 @@ ReadObjectEvents::
 ; get NUM_OBJECTS - [wCurMapObjectEventCount] - 1
 	ld a, [wCurMapObjectEventCount]
 	ld c, a
-	ld a, NUM_OBJECTS - 1 ; no-optimize a = N - a (breaks the jr z/c)
+	ld a, NUM_OBJECTS - 2 ; no-optimize a = N - a (breaks the jr z/c)
 	sub c
 	jr z, .skip
 	jr c, .skip
@@ -623,8 +625,8 @@ CopyMapObjectEvents::
 	ret
 
 ClearObjectStructs::
-	ld hl, wObject1Struct
-	ld bc, OBJECT_LENGTH * (NUM_OBJECT_STRUCTS - 1)
+	ld hl, wObject2Struct
+	ld bc, OBJECT_LENGTH * (NUM_OBJECT_STRUCTS - 2)
 	xor a
 	jmp ByteFill
 

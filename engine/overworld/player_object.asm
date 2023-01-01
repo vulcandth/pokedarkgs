@@ -22,7 +22,19 @@ SpawnPlayer:
 	ld a, PLAYER
 	ld hl, PlayerObjectTemplate
 	call CopyPlayerObjectTemplate
-	ld b, PLAYER
+
+	call CheckFollowerLoaded
+	jr c, .skip_follower
+	ld a, FOLLOWER
+	ld hl, FollowObjTemplate
+	call CopyPlayerObjectTemplate
+	ld b, FOLLOWER
+	call PlayerSpawn_ConvertCoords
+	xor a
+	ld [wFollowerNextMovement], a
+
+.skip_follower
+	ld b, PLAYER_OBJECT
 	call PlayerSpawn_ConvertCoords
 	ld a, PLAYER_OBJECT
 	call GetMapObject
@@ -55,6 +67,36 @@ PlayerObjectTemplate:
 ; Shorter than the actual amount copied by two bytes.
 ; Said bytes seem to be unused.
 	object_event -4, -4, SPRITE_CHRIS, SPRITEMOVEDATA_PLAYER, 15, 15, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, 0, -1
+
+FollowObjTemplate:
+;_NUM_OBJECT_EVENTS = 0
+	object_event -4, -4, SPRITE_FOLLOWER, SPRITEMOVEDATA_FOLLOWNOTEXACT, 15, 15, -1, -1, 0, OBJECTTYPE_SCRIPT, 0, _FollowerScript, -1
+
+PUSHS
+SECTION "Follower Script Home", ROM0
+_FollowerScript:
+	farjump FollowerScript
+POPS
+
+CheckFollowerLoaded:
+	xor a
+	ret
+	ld hl, wObjectStructs + 1
+	ld bc, MAPOBJECT_LENGTH
+	ld d, NUM_OBJECT_STRUCTS
+.loop
+	ld a, [hl]
+	add hl, bc
+	cp FOLLOWER
+	jr z, .loaded
+	dec d
+	jr nz, .loop
+	xor a
+	ret
+
+.loaded
+	scf
+	ret
 
 CopyDECoordsToMapObject::
 	push de
@@ -98,6 +140,76 @@ WriteObjectXY::
 	ret
 
 RefreshPlayerCoords:
+	call _RefreshPlayerCoords
+	ret
+
+MapPlayerCoordWarped:
+	ld hl, wFollowerFlags
+;	set FOLLOWER_IN_POKEBALL_F, [hl]
+	set FOLLOWER_INVISIBLE_F, [hl]
+	set FOLLOWER_INVISIBLE_ONE_STEP_F, [hl]
+	call _RefreshPlayerCoords
+	ld b, PLAYER
+	ld c, FOLLOWER
+	call MoveToObject
+;	call UpdatedFollowerPositionAfterWarp
+	call MatchFollowerDirection
+	ret
+
+MapPlayerCoordConnected:
+	call _RefreshPlayerCoords
+	ld b, PLAYER
+	ld c, FOLLOWER
+	call MoveToObject
+	ld b, FOLLOWER
+	call GetObjectCoord
+
+	ld a, [wPlayerStepDirection]
+	and a
+	jr z, .south
+	dec a
+	jr z, .north
+	dec a
+	jr z, .west
+	dec a
+	jr z, .east
+	jr .none
+
+.south
+	dec c
+	jr .ok
+.north
+	inc c
+	jr .ok
+.west
+	inc b
+	jr .ok
+.east
+	dec b
+.ok
+	ld a, FOLLOWER
+	call MoveToCoord
+	call MatchFollowerDirection
+.none
+	call RefreshFollowingCoords
+	ret
+
+MatchFollowerDirection:
+	ld a, FOLLOWER
+	call GetObjectStruct
+	push bc
+	ld a, PLAYER
+	call GetObjectStruct
+	ld hl, OBJECT_FACING
+	add hl, bc
+	ld a, [hl]
+	pop bc
+	ld hl, OBJECT_FACING
+	add hl, bc
+	ld [hl], a
+	ret
+
+_RefreshPlayerCoords:
 	ld a, [wXCoord]
 	add 4
 	ld d, a
@@ -126,13 +238,30 @@ RefreshPlayerCoords:
 	ret nz
 	ret
 
+RefreshFollowingCoords::
+	ld b, PLAYER
+	ld c, FOLLOWER
+	call FollowNotExact
+	ret c
+	ld a, FOLLOWER
+	call GetObjectStruct
+	ld hl, OBJECT_MOVEMENT_TYPE
+	add hl, de
+	ld [hl], SPRITEMOVEDATA_FOLLOWEROBJ
+	ret
+
 CopyObjectStruct::
 	call CheckObjectMask
 	and a
 	ret nz ; masked
 
-	ld hl, wObjectStructs + OBJECT_LENGTH * 1
-	ld a, 1
+; if follower object, force into wObject1Struct
+	ldh a, [hMapObjectIndex]
+	cp FOLLOWER
+	jr z, .follower
+
+	ld hl, wObjectStructs + OBJECT_LENGTH * 2
+	ld a, 2
 	ld de, OBJECT_LENGTH
 .loop
 	ldh [hObjectStructIndex], a
@@ -146,6 +275,11 @@ CopyObjectStruct::
 	jr nz, .loop
 	scf
 	ret ; overflow
+
+.follower
+	ld hl, wObject1Struct
+	ld a, FOLLOWER
+	ldh [hObjectStructIndex], a
 
 .done
 	ld d, h
@@ -592,6 +726,56 @@ SurfStartStep:
 	db D_UP,    0, -1
 	db D_LEFT,  0, -1
 	db D_RIGHT, 0, -1
+
+MoveToObject:
+	push bc
+	ld a, c
+	call GetMapObject
+	ld d, b
+	ld e, c
+	pop bc
+	ld a, b
+	call GetMapObject
+	ld hl, MAPOBJECT_X_COORD
+	add hl, bc
+	ld a, [hl]
+	ld hl, MAPOBJECT_X_COORD
+	add hl, de
+	ld [hl], a
+	ld hl, MAPOBJECT_Y_COORD
+	add hl, bc
+	ld a, [hl]
+	ld hl, MAPOBJECT_Y_COORD
+	add hl, de
+	ld [hl], a
+	ret
+
+GetObjectCoord:
+	ld a, b
+	call GetMapObject
+	ld d, b
+	ld e, c
+	ld hl, MAPOBJECT_X_COORD
+	add hl, de
+	ld b, [hl]
+	ld hl, MAPOBJECT_Y_COORD
+	add hl, de
+	ld c, [hl]
+	ret
+
+MoveToCoord:
+	push bc
+	call GetMapObject
+	ld d, b
+	ld e, c
+	pop bc
+	ld hl, MAPOBJECT_X_COORD
+	add hl, de
+	ld [hl], b
+	ld hl, MAPOBJECT_Y_COORD
+	add hl, de
+	ld [hl], c
+	ret
 
 FollowNotExact::
 	push bc

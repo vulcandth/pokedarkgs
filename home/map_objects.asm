@@ -459,7 +459,7 @@ CopySpriteMovementData::
 	push de
 	ld e, a
 	ld d, 0
-	ld hl, SpriteMovementData + SPRITEMOVEATTR_FACING
+	ld hl, SpriteMovementData + SPRITEMOVEATTR_FACING + 1
 rept NUM_SPRITEMOVEDATA_FIELDS
 	add hl, de
 endr
@@ -467,6 +467,15 @@ endr
 	ld c, l
 	pop de
 
+	ld hl, OBJECT_MOVEMENT_TYPE
+	add hl, de
+	ld a, [hl]
+	cp SPRITEMOVEDATA_FOLLOWNOTEXACT
+	jr z, .skip_facing
+	cp SPRITEMOVEDATA_FOLLOWEROBJ
+	jr z, .skip_facing
+
+	dec bc
 	ld a, [bc]
 	inc bc
 	rlca
@@ -476,17 +485,39 @@ endr
 	add hl, de
 	ld [hl], a
 
+.skip_facing
 	ld a, [bc]
 	inc bc
 	ld hl, OBJECT_ACTION
 	add hl, de
 	ld [hl], a
 
+	ld hl, OBJECT_SPRITE
+	add hl, de
+	ld a, [hl]
+	cp SPRITE_FOLLOWER
+	jr nz, .not_follower
+	ld a, [bc]
+	inc bc
+	ld hl, OBJECT_FLAGS1
+	add hl, de
+	push bc
+	ld b, a
+	ld a, [wFollowerFlags]
+	and FOLLOWER_INVISIBLE
+	or b
+	pop bc
+	ld [hl], a
+	jr .flags1_done
+
+.not_follower
 	ld a, [bc]
 	inc bc
 	ld hl, OBJECT_FLAGS1
 	add hl, de
 	ld [hl], a
+
+.flags1_done
 
 	ld a, [bc]
 	inc bc
@@ -569,4 +600,12 @@ GetSpriteDirection::
 	add hl, bc
 	ld a, [hl]
 	maskbits NUM_DIRECTIONS, 2
+	ret
+
+CheckActiveFollowerBallAnim::
+	push hl
+	push bc
+	homecall _CheckActiveFollowerBallAnim
+	pop bc
+	pop hl
 	ret

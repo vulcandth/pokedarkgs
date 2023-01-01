@@ -235,6 +235,15 @@ ScriptCommandTable:
 	dw Script_checkmaplockedmons             ; ab
 	dw Script_givepokemove                   ; ac
 	dw Script_warpfacingreloadmapafterbattle ; ad
+	dw Script_freezefollower                 ; ae
+	dw Script_unfreezefollower               ; af
+	dw Script_getfollowerdirection           ; b0
+	dw Script_followcry                      ; b1
+	dw Script_stowfollower                   ; b2
+	dw Script_appearfollower                 ; b3
+	dw Script_appearfolloweronestep          ; b4
+	dw Script_savefollowercoords             ; b5
+	dw Script_silentstowfollower             ; b6
 	assert_table_length NUM_EVENT_COMMANDS
 
 StartScript:
@@ -766,7 +775,6 @@ GetScriptObject:
 	ret z
 	cp LAST_TALKED
 	ret z
-	dec a
 	ret
 
 Script_setlasttalked:
@@ -928,6 +936,9 @@ Script_variablesprite:
 
 Script_appear:
 	call GetScriptByte
+	ld b, a
+Script_appear_skipinput::
+	ld a, b
 	call GetScriptObject
 	call UnmaskCopyMapObjectStruct
 	ldh a, [hMapObjectIndex]
@@ -1202,7 +1213,7 @@ Script_memcall:
 	ld d, [hl]
 	; fallthrough
 
-ScriptCall:
+ScriptCall::
 	ld hl, wScriptStackSize
 	ld a, [hl]
 	cp 5
@@ -2208,6 +2219,8 @@ Script_deactivatefacing:
 	jr z, .no_time
 	ld [wScriptDelay], a
 .no_time
+; fallthrough
+DoScriptWait:
 	ld a, SCRIPT_WAIT
 	ld [wScriptMode], a
 	jmp StopScript
@@ -2432,3 +2445,41 @@ AppendTMHMMoveName::
 	inc hl
 	ld de, wStringBuffer1
 	jmp CopyName2
+
+Script_freezefollower:
+	farcall _FreezeFollower
+	ret
+
+Script_unfreezefollower:
+	farcall _UnfreezeFollower
+	ret
+
+Script_getfollowerdirection:
+	farcall Script_GetFollowerDirectionFromPlayer
+	ret
+
+Script_followcry:
+	ld a, [wFollowerSpriteID]
+	jp PlayMonCry
+
+Script_stowfollower:
+	farcall _StowFollower
+	jp DoScriptWait
+
+Script_appearfollower:
+	farcall _AppearFollower
+	jp DoScriptWait
+
+Script_appearfolloweronestep:
+	farcall _AppearFollowerOneStep
+	jp DoScriptWait
+
+Script_savefollowercoords:
+	farcall _SaveFollowerCoords
+	ret
+
+Script_silentstowfollower:
+	xor a
+	ld [wScriptDelay], a
+	farcall _SilentStowFollower
+	ret

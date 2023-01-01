@@ -156,14 +156,17 @@ ENDC
 	spriteanimoam $08, .OAMData_GameFreakLogo4_11        ; SPRITE_ANIM_OAMSET_GAMEFREAK_LOGO_9
 	spriteanimoam $04, .OAMData_GameFreakLogo4_11        ; SPRITE_ANIM_OAMSET_GAMEFREAK_LOGO_10
 	spriteanimoam $00, .OAMData_GameFreakLogo4_11        ; SPRITE_ANIM_OAMSET_GAMEFREAK_LOGO_11
-	spriteanimoam $00, .OAMData_PartyMon                 ; SPRITE_ANIM_OAMSET_PARTY_MON_1
-	spriteanimoam $04, .OAMData_PartyMon                 ; SPRITE_ANIM_OAMSET_PARTY_MON_2
 	spriteanimoam $00, .OAMData_PCCursor                 ; SPRITE_ANIM_OAMSET_PC_CURSOR
 	spriteanimoam $00, .OAMData_PCCursorItem             ; SPRITE_ANIM_OAMSET_PC_CURSOR_ITEM
 	spriteanimoam $00, .OAMData_PCQuick                  ; SPRITE_ANIM_OAMSET_PC_QUICK
 	spriteanimoam $00, .OAMData_PCMode                   ; SPRITE_ANIM_OAMSET_PC_MODE
 	spriteanimoam $00, .OAMData_PCMode2                  ; SPRITE_ANIM_OAMSET_PC_MODE2
 	spriteanimoam $00, .OAMData_PCPack                   ; SPRITE_ANIM_OAMSET_PC_PACK
+	spriteanimoam $00, .OAMData_PartyMonWithMail3        ; SPRITE_ANIM_OAMSET_PARTY_MON_WITH_MAIL_3
+	spriteanimoam $00, .OAMData_PartyMonWithItem3        ; SPRITE_ANIM_OAMSET_PARTY_MON_WITH_ITEM_3
+	spriteanimoam $00, .OAMData_PartyMon1                ; SPRITE_ANIM_OAMSET_PARTY_MON_1
+	spriteanimoam $00, .OAMData_PartyMon2                ; SPRITE_ANIM_OAMSET_PARTY_MON_2
+	spriteanimoam $00, .OAMData_PartyMon3                ; SPRITE_ANIM_OAMSET_PARTY_MON_3
 	assert_table_length NUM_SPRITE_ANIM_OAMSETS
 
 .OAMData_1x1_Palette0:
@@ -386,36 +389,29 @@ ENDC
 	db 4
 	dbsprite -1, -1,  0,  0, $00, -1
 	dbsprite  0, -1,  0,  0, $01, -1
-	dbsprite -1,  0,  0,  0, $08, PAL_ICON_RED
+	dbsprite -1,  0,  0,  0, $08, PAL_MON_RED
 	dbsprite  0,  0,  0,  0, $03, -1
 
 .OAMData_PartyMonWithMail2:
 	db 4
 	dbsprite -1, -1,  0,  0, $04, -1
 	dbsprite  0, -1,  0,  0, $05, -1
-	dbsprite -1,  0,  0,  0, $08, PAL_ICON_RED
+	dbsprite -1,  0,  0,  0, $08, PAL_MON_RED
 	dbsprite  0,  0,  0,  0, $07, -1
 
 .OAMData_PartyMonWithItem1:
 	db 4
 	dbsprite -1, -1,  0,  0, $00, -1
 	dbsprite  0, -1,  0,  0, $01, -1
-	dbsprite -1,  0,  0,  0, $09, PAL_ICON_RED
+	dbsprite -1,  0,  0,  0, $09, PAL_MON_RED
 	dbsprite  0,  0,  0,  0, $03, -1
 
 .OAMData_PartyMonWithItem2:
 	db 4
 	dbsprite -1, -1,  0,  0, $04, -1
 	dbsprite  0, -1,  0,  0, $05, -1
-	dbsprite -1,  0,  0,  0, $09, PAL_ICON_RED
+	dbsprite -1,  0,  0,  0, $09, PAL_MON_RED
 	dbsprite  0,  0,  0,  0, $07, -1
-
-.OAMData_PartyMon:
-	db 4
-	dbsprite -1, -1,  0,  0, $00, -1
-	dbsprite  0, -1,  0,  0, $01, -1
-	dbsprite -1,  0,  0,  0, $02, -1
-	dbsprite  0,  0,  0,  0, $03, -1
 
 .OAMData_GSIntroMagikarp:
 	db 6
@@ -1312,3 +1308,39 @@ ENDC
 	dsprite  0,  0,  1,  0, $30, $4 | VRAM_BANK_1
 	dsprite  1,  0,  0,  0, $31, $4 | VRAM_BANK_1
 	dsprite  1,  0,  1,  0, $32, $4 | VRAM_BANK_1
+
+.OAMData_PartyMonWithMail3:
+	db 4
+	dbsprite -1, -1,  0,  0, $05, -2
+	dbsprite  0, -1,  0,  0, $04, -2
+	dbsprite -1,  0,  0,  0, $08, PAL_OW_RED
+	dbsprite  0,  0,  0,  0, $06, -2
+
+.OAMData_PartyMonWithItem3:
+	db 4
+	dbsprite -1, -1,  0,  0, $05, -2
+	dbsprite  0, -1,  0,  0, $04, -2
+	dbsprite -1,  0,  0,  0, $09, PAL_OW_RED
+	dbsprite  0,  0,  0,  0, $06, -2
+
+.OAMData_PartyMon1:
+	db 4
+	dbsprite -1, -1,  0,  0, $00, -1
+	dbsprite  0, -1,  0,  0, $01, -1
+	dbsprite -1,  0,  0,  0, $02, -1
+	dbsprite  0,  0,  0,  0, $03, -1
+
+.OAMData_PartyMon2:
+	db 4
+	dbsprite -1, -1,  0,  0, $04, -1
+	dbsprite  0, -1,  0,  0, $05, -1
+	dbsprite -1,  0,  0,  0, $06, -1
+	dbsprite  0,  0,  0,  0, $07, -1
+
+
+.OAMData_PartyMon3:
+	db 4
+	dbsprite -1, -1,  0,  0, $05, -2
+	dbsprite  0, -1,  0,  0, $04, -2
+	dbsprite -1,  0,  0,  0, $07, -2
+	dbsprite  0,  0,  0,  0, $06, -2

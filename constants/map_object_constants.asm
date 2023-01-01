@@ -35,7 +35,7 @@ DEF OBJECT_JUMP_HEIGHT      rb ; 1f
 DEF OBJECT_RANGE            rb ; 20
                             rb_skip 7
 DEF OBJECT_LENGTH EQU _RS
-DEF NUM_OBJECT_STRUCTS EQU 13 ; see wObjectStructs
+DEF NUM_OBJECT_STRUCTS EQU 14 ; see wObjectStructs
 DEF FIRST_VRAM1_OBJECT_STRUCT EQU 10
 
 ; object_struct OBJECT_DIRECTION values
@@ -117,7 +117,7 @@ DEF MAPOBJECT_SCRIPT_POINTER   rw ; a
 DEF MAPOBJECT_EVENT_FLAG       rw ; c
                                rb_skip 2
 DEF MAPOBJECT_LENGTH EQU _RS
-DEF NUM_OBJECTS EQU 16
+DEF NUM_OBJECTS EQU 17
 DEF PLAYER_OBJECT EQU 0
 
 DEF MAPOBJECT_PALETTE_MASK EQU %11110000
@@ -175,6 +175,9 @@ DEF MAPOBJECT_SCREEN_HEIGHT EQU (SCREEN_HEIGHT / 2) + 2
 	const SPRITEMOVEDATA_BOULDERDUST          ; 22
 	const SPRITEMOVEDATA_GRASS                ; 23
 	const SPRITEMOVEDATA_SWIM_WANDER          ; 24
+	const SPRITEMOVEDATA_FOLLOWEROBJ          ; 25
+	const SPRITEMOVEDATA_POKEBALL_OPENING     ; 26
+	const SPRITEMOVEDATA_POKEBALL_CLOSING     ; 27
 DEF NUM_SPRITEMOVEDATA EQU const_value
 
 ; StepFunction_FromMovement.Pointers indexes (see engine/overworld/map_objects.asm)
@@ -207,6 +210,9 @@ DEF NUM_SPRITEMOVEDATA EQU const_value
 	const SPRITEMOVEFN_SPIN_COUNTERCLOCKWISE ; 19
 	const SPRITEMOVEFN_BOULDERDUST           ; 1a
 	const SPRITEMOVEFN_GRASS                 ; 1b
+	const SPRITEMOVEFN_FOLLOWER_OBJ          ; 1c
+	const SPRITEMOVEFN_POKEBALL_OPENING      ; 1d
+	const SPRITEMOVEFN_POKEBALL_CLOSING      ; 1e
 DEF NUM_SPRITEMOVEFN EQU const_value
 
 ; StepTypesJumptable indexes (see engine/overworld/map_objects.asm)
@@ -237,6 +243,9 @@ DEF NUM_SPRITEMOVEFN EQU const_value
 	const STEP_TYPE_17               ; 17
 	const STEP_TYPE_DELETE           ; 18
 	const STEP_TYPE_SKYFALL_TOP      ; 19
+	const STEP_TYPE_POKEBALL_OPENING ; 1a
+	const STEP_TYPE_POKEBALL_CLOSING ; 1b
+	const STEP_TYPE_NPC_JUMP_INPLACE ; 1c
 DEF NUM_STEP_TYPES EQU const_value
 
 ; ObjectActionPairPointers indexes (see engine/overworld/map_object_action.asm)
@@ -310,3 +319,12 @@ DEF NUM_FACINGS EQU const_value
 	const STEP_WALK_IN_PLACE ; 7
 	const STEP_RUN           ; 8
 DEF NUM_STEPS EQU const_value
+
+; MovementFunction_FollowerObj arguments (engine/overworld/map_objects.asm)
+	const_def
+	const FOLLOWERMOVE_NORMAL       ; 0
+	const FOLLOWERMOVE_SLIDE        ; 1
+	const FOLLOWERMOVE_BIG_STEP     ; 2
+	const FOLLOWERMOVE_STILL        ; 3
+	const FOLLOWERMOVE_PREPARE_JUMP ; 4
+DEF FOLLOWERMOVE_NUM_TYPES EQU const_value

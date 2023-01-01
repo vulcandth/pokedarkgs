@@ -50,12 +50,16 @@ _CheckTrainerBattle::
 	call FacingPlayerDistance_bc
 	jr nc, .next
 
-; ...within their sight range
+; ...within their sight range...
 	ld hl, MAPOBJECT_SIGHT_RANGE
 	add hl, de
 	ld a, [hl]
 	cp b
 	jr c, .next
+
+; ...and no follower in the way
+	call CheckFollowerBetweenObjectAndPlayer
+	jr z, .next
 
 ; And hasn't already been beaten
 	push bc
@@ -124,6 +128,17 @@ LoadTrainer_continue::
 	xor a
 	ld [wRunningTrainerBattleScript], a
 	scf
+	ret
+
+CheckFollowerBetweenObjectAndPlayer::
+	push bc
+	farcall GetFollowerDirectionFromPlayer
+	ld a, c
+	xor 1
+	add a
+	add a
+	pop bc
+	cp c
 	ret
 
 FacingPlayerDistance_bc::

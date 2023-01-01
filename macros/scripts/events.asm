@@ -1104,4 +1104,49 @@ MACRO warpfacingreloadmapafterbattle
 	db \4 ; y
 ENDM
 
+	const freezefollower_command ; $ae
+MACRO freezefollower
+	db freezefollower_command
+ENDM
+
+	const unfreezefollower_command ; $af
+MACRO unfreezefollower
+	db unfreezefollower_command
+ENDM
+
+	const getfollowerdirection_command ; $b0
+MACRO getfollowerdirection
+	db getfollowerdirection_command
+ENDM
+
+	const followcry_command ; $b1
+MACRO followcry
+	db followcry_command
+ENDM
+
+	const stowfollower_command ; $b2
+MACRO stowfollower
+	db stowfollower_command
+ENDM
+
+	const appearfollower_command ; $b3
+MACRO appearfollower
+	db appearfollower_command
+ENDM
+
+	const appearfolloweronestep_command ; $b4
+MACRO appearfolloweronestep
+	db appearfolloweronestep_command
+ENDM
+
+	const savefollowercoords_command ; $b5
+MACRO savefollowercoords
+	db savefollowercoords_command
+ENDM
+
+	const silentstowfollower_command ; $b6
+MACRO silentstowfollower
+	db silentstowfollower_command
+ENDM
+
 DEF NUM_EVENT_COMMANDS EQU const_value

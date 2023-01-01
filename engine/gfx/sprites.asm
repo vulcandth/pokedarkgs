@@ -290,10 +290,22 @@ UpdateAnimFrame:
 	; [de] = GetSpriteOAMAttr([hl])
 	ld a, [hl]
 	cp -1
-	jr z, .skip_attributes
+	jr z, .party_mon
+	cp -2
+	jr z, .party_mon_xflip
 	call GetSpriteOAMAttr
 	ld [de], a
-.skip_attributes
+	jr .attributes_done
+.party_mon
+	ld a, [de]
+	and ~X_FLIP
+	ld [de], a
+	jr .attributes_done
+.party_mon_xflip
+	ld a, [de]
+	or X_FLIP
+	ld [de], a
+.attributes_done
 	inc hl
 	inc de
 	ld a, e

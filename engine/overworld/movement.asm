@@ -95,6 +95,7 @@ MovementPointers:
 	dw Movement_run_step_up           ; 5b
 	dw Movement_run_step_left         ; 5c
 	dw Movement_run_step_right        ; 5d
+	dw Movement_jump_in_place         ; 5e
 	assert_table_length NUM_MOVEMENT_CMDS
 
 Movement_teleport_from:
@@ -770,6 +771,11 @@ SlideStep:
 	ld hl, OBJECT_STEP_TYPE
 	add hl, bc
 	ld [hl], STEP_TYPE_PLAYER_WALK
+	ld a, [wFollowerNextMovement]
+	and a
+	ret nz
+	ld a, FOLLOWERMOVE_SLIDE
+	ld [wFollowerNextMovement], a
 	ret
 
 JumpStep:
@@ -802,4 +808,33 @@ JumpStep:
 	ld hl, OBJECT_STEP_TYPE
 	add hl, bc
 	ld [hl], STEP_TYPE_PLAYER_JUMP
+	ret
+
+Movement_jump_in_place:
+JumpInPlace:
+	ld hl, OBJECT_FLAGS2
+	add hl, bc
+	set HIGH_PRIORITY_F, [hl]
+
+	ld hl, OBJECT_STEP_DURATION
+	add hl, bc
+	ld [hl], 4
+
+	ld hl, OBJECT_JUMP_HEIGHT
+	add hl, bc
+	ld [hl], 0
+
+	ld hl, OBJECT_FLAGS2
+	add hl, bc
+	res OVERHEAD_F, [hl]
+
+	ld hl, OBJECT_ACTION
+	add hl, bc
+	ld [hl], OBJECT_ACTION_STEP
+
+	call SpawnShadow
+
+	ld hl, OBJECT_STEP_TYPE
+	add hl, bc
+	ld [hl], STEP_TYPE_NPC_JUMP_INPLACE
 	ret

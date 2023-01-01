@@ -1,5 +1,6 @@
 ; object constants
 DEF PLAYER      EQU  0
+DEF FOLLOWER    EQU  1
 DEF LAST_TALKED EQU -2
 
 ; string buffer constants
@@ -73,6 +74,7 @@ DEF STRING_BUFFER_LENGTH EQU 19
 	const VAR_BUENASPASSWORD   ; 19
 	const VAR_KENJI_BREAK      ; 1a
 	const VAR_DEXUNCAUGHT      ; 1b
+	const VAR_FOLLOWERSTATE    ; 1c
 DEF NUM_VARS EQU const_value
 
 ; variable action types
@@ -201,6 +203,7 @@ DEF NUM_FLOORS EQU const_value
 	const EMOTE_ROD
 	const EMOTE_BOULDER_DUST
 	const EMOTE_GRASS_RUSTLE
+	const EMOTE_POKE_BALL
 DEF NUM_EMOTES EQU const_value
 DEF EMOTE_FROM_MEM EQU -1
 DEF EMOTE_LENGTH EQU 6

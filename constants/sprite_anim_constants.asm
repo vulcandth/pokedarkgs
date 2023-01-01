@@ -372,12 +372,15 @@ DEF NUM_SPRITE_ANIM_FRAMESETS EQU const_value
 	const SPRITE_ANIM_OAMSET_GAMEFREAK_LOGO_9            ; 89
 	const SPRITE_ANIM_OAMSET_GAMEFREAK_LOGO_10           ; 8a
 	const SPRITE_ANIM_OAMSET_GAMEFREAK_LOGO_11           ; 8b
-	const SPRITE_ANIM_OAMSET_PARTY_MON_1                 ; 8c
-	const SPRITE_ANIM_OAMSET_PARTY_MON_2                 ; 8d
-	const SPRITE_ANIM_OAMSET_PC_CURSOR                   ; 8e
-	const SPRITE_ANIM_OAMSET_PC_CURSOR_ITEM              ; 8f
-	const SPRITE_ANIM_OAMSET_PC_QUICK                    ; 90
-	const SPRITE_ANIM_OAMSET_PC_MODE                     ; 91
-	const SPRITE_ANIM_OAMSET_PC_MODE2                    ; 92
-	const SPRITE_ANIM_OAMSET_PC_PACK                     ; 93
+	const SPRITE_ANIM_OAMSET_PC_CURSOR                   ; 8c
+	const SPRITE_ANIM_OAMSET_PC_CURSOR_ITEM              ; 8d
+	const SPRITE_ANIM_OAMSET_PC_QUICK                    ; 8e
+	const SPRITE_ANIM_OAMSET_PC_MODE                     ; 8f
+	const SPRITE_ANIM_OAMSET_PC_MODE2                    ; 90
+	const SPRITE_ANIM_OAMSET_PC_PACK                     ; 91
+	const SPRITE_ANIM_OAMSET_PARTY_MON_WITH_MAIL_3       ; 92
+	const SPRITE_ANIM_OAMSET_PARTY_MON_WITH_ITEM_3       ; 93
+	const SPRITE_ANIM_OAMSET_PARTY_MON_1                 ; 94
+	const SPRITE_ANIM_OAMSET_PARTY_MON_2                 ; 95
+	const SPRITE_ANIM_OAMSET_PARTY_MON_3                 ; 96
 DEF NUM_SPRITE_ANIM_OAMSETS EQU const_value

@@ -68,6 +68,7 @@ PushWindow::
 ExitMenu::
 	push af
 	callfar _ExitMenu
+	call UpdateFollowPalette
 	pop af
 	ret
 
@@ -81,6 +82,12 @@ CloseWindow::
 	call ApplyTilemap
 	call UpdateSprites
 	pop af
+	ret
+
+UpdateFollowPalette:
+	ld a, SPRITE_FOLLOWER
+	call GetSpritePalette
+	ld [wObject1Palette], a
 	ret
 
 RestoreTileBackup::

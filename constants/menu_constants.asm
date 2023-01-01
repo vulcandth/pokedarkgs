@@ -112,3 +112,14 @@ DEF NUM_PARTYMENUACTIONS EQU const_value
 	const NAME_6 ; duplicate of NAME_MON
 	const NAME_7 ; duplicate of NAME_MON
 DEF NUM_NAME_TYPES EQU const_value
+
+; party menu mon palettes
+	const_def
+	const PAL_MON_RED    ; 0
+	const PAL_MON_BLUE   ; 1
+	const PAL_MON_GREEN  ; 2
+	const PAL_MON_BROWN  ; 3
+	const PAL_MON_PINK   ; 4
+	const PAL_MON_GRAY   ; 5
+	const PAL_MON_TEAL   ; 6
+	const PAL_MON_PURPLE ; 7

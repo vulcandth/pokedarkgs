@@ -142,6 +142,7 @@ CheckUpdatePlayerSprite:
 .surfing
 	ld a, PLAYER_NORMAL
 	ld [wPlayerState], a
+	ld [wFollowerState], a
 	scf
 	ret
 

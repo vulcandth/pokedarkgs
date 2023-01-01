@@ -274,6 +274,15 @@ WillObjectBumpIntoSomeoneElse:
 	ld e, [hl]
 	jr IsNPCAtCoord
 
+IsObjectStandingOnSomeoneElse:
+	ld hl, OBJECT_LAST_MAP_X
+	add hl, bc
+	ld d, [hl]
+	ld hl, OBJECT_LAST_MAP_Y
+	add hl, bc
+	ld e, [hl]
+	jr IsNPCAtCoord
+
 IsObjectFacingSomeoneElse: ; unreferenced
 	ldh a, [hMapObjectIndex]
 	call GetObjectStruct
