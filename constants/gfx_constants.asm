@@ -55,3 +55,7 @@ DEF SPRITE_GFX_LIST_CAPACITY EQU 32 ; see wUsedSprites
 	const ANIM_MON_HOF
 	const ANIM_MON_EGG1
 	const ANIM_MON_EGG2
+
+; wMonIconFlags constants
+	const_def
+	const BILLS_PC_ICON_F ; 0

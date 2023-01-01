@@ -111,7 +111,9 @@ wDontPlayMapMusicOnReload:: db
 
 SECTION "WRAM", WRAM0
 
-	ds 4
+	ds 3
+
+wMonIconFlags:: db
 
 wBoxAlignment:: db
 

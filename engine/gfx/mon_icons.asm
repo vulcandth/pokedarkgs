@@ -467,6 +467,7 @@ endr
 
 	ld de, vTiles0
 	add hl, de
+GetIconStorage:
 	push hl
 
 	ld a, [wCurIcon]
@@ -535,6 +536,11 @@ endr
 
 	push bc
 	call GetGFXUnlessMobile
+	push hl
+	ld hl, wMonIconFlags
+	bit BILLS_PC_ICON_F, [hl]
+	pop hl
+	jr nz, .pc_storage_done
 	ld bc, 16 * 4
 	add hl, bc
 	push hl
@@ -548,13 +554,21 @@ endr
 	pop bc
 	call GetGFXUnlessMobile
 
+.done
+	pop hl
+	ret
+
+.pc_storage_done
+	ld hl, wMonIconFlags
+	res BILLS_PC_ICON_F, [hl]
+	pop bc
 	pop hl
 	ret
 
 GetGFXUnlessMobile:
 	ld a, [wLinkMode]
 	cp LINK_MOBILE
-	jmp nz, .not_mobile
+	jr nz, .not_mobile
 	jmp Get2bppViaHDMA
 
 .not_mobile
@@ -581,12 +595,11 @@ endr
 	; fallthrough
 GetStorageIcon:
 	push hl
-	ld a, [wCurIcon]
-;	call _LoadOverworldMonIcon TODO FIXME!
-	call GetIcon_a
-	ld c, 4
+	ld hl, wMonIconFlags
+	set BILLS_PC_ICON_F, [hl]
 	pop hl
-	newfarjp BillsPC_SafeGet2bpp
+	ld a, [wCurIcon]
+	jp GetIconStorage
 
 FreezeMonIcons:
 	ld hl, wSpriteAnimationStructs
