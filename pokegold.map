@@ -24,42 +24,42 @@ ROM0 bank #0:
 	SECTION: $0060-$0062 ($0003 bytes) ["joypad"]
 	EMPTY: $0063-$00ff ($009d bytes)
 	SECTION: $0100-$014f ($0050 bytes) ["Header"]
-	SECTION: $0150-$3f1b ($3dcc bytes) ["Home"]
-	EMPTY: $3f1c-$3fff ($00e4 bytes)
-	TOTAL EMPTY: $01b0 bytes
+	SECTION: $0150-$3e65 ($3d16 bytes) ["Home"]
+	EMPTY: $3e66-$3fff ($019a bytes)
+	TOTAL EMPTY: $0266 bytes
 
 ROMX bank #1:
-	SECTION: $4000-$745e ($345f bytes) ["bank1"]
-	SECTION: $745f-$7c3a ($07dc bytes) ["Title Screen"]
-	SECTION: $7c3b-$7f80 ($0346 bytes) ["Magnet Train"]
-	EMPTY: $7f81-$7fff ($007f bytes)
-	TOTAL EMPTY: $007f bytes
+	SECTION: $4000-$73ec ($33ed bytes) ["bank1"]
+	SECTION: $73ed-$7bc8 ($07dc bytes) ["Title Screen"]
+	SECTION: $7bc9-$7fe2 ($041a bytes) ["Title Screen 2"]
+	EMPTY: $7fe3-$7fff ($001d bytes)
+	TOTAL EMPTY: $001d bytes
 
 ROMX bank #2:
-	SECTION: $4000-$7a41 ($3a42 bytes) ["bank2"]
-	SECTION: $7a42-$7f4d ($050c bytes) ["VWF"]
-	EMPTY: $7f4e-$7fff ($00b2 bytes)
-	TOTAL EMPTY: $00b2 bytes
+	SECTION: $4000-$7a3c ($3a3d bytes) ["bank2"]
+	SECTION: $7a3d-$7f48 ($050c bytes) ["VWF"]
+	EMPTY: $7f49-$7fff ($00b7 bytes)
+	TOTAL EMPTY: $00b7 bytes
 
 ROMX bank #3:
-	SECTION: $4000-$7584 ($3585 bytes) ["bank3"]
-	SECTION: $7585-$7cb5 ($0731 bytes) ["Enemy Trainer Parties 1"]
-	SECTION: $7cb6-$7f0f ($025a bytes) ["Prism tilemap copy functions"]
-	EMPTY: $7f10-$7fff ($00f0 bytes)
-	TOTAL EMPTY: $00f0 bytes
+	SECTION: $4000-$7572 ($3573 bytes) ["bank3"]
+	SECTION: $7573-$7ca3 ($0731 bytes) ["Enemy Trainer Parties 1"]
+	SECTION: $7ca4-$7fe7 ($0344 bytes) ["Magnet Train"]
+	EMPTY: $7fe8-$7fff ($0018 bytes)
+	TOTAL EMPTY: $0018 bytes
 
 ROMX bank #4:
-	SECTION: $4000-$7dc1 ($3dc2 bytes) ["bank4"]
-	SECTION: $7dc2-$7f06 ($0145 bytes) ["Pics 20"]
-	EMPTY: $7f07-$7fff ($00f9 bytes)
-	TOTAL EMPTY: $00f9 bytes
+	SECTION: $4000-$7baa ($3bab bytes) ["bank4"]
+	SECTION: $7bab-$7e04 ($025a bytes) ["Prism tilemap copy functions"]
+	SECTION: $7e05-$7f49 ($0145 bytes) ["Pics 20"]
+	EMPTY: $7f4a-$7fff ($00b6 bytes)
+	TOTAL EMPTY: $00b6 bytes
 
 ROMX bank #5:
-	SECTION: $4000-$707c ($307d bytes) ["bank5"]
-	SECTION: $707d-$7496 ($041a bytes) ["Title Screen 2"]
-	SECTION: $7497-$7596 ($0100 bytes) ["Battle Weather Images"]
-	EMPTY: $7597-$7fff ($0a69 bytes)
-	TOTAL EMPTY: $0a69 bytes
+	SECTION: $4000-$7072 ($3073 bytes) ["bank5"]
+	SECTION: $7073-$7172 ($0100 bytes) ["Battle Weather Images"]
+	EMPTY: $7173-$7fff ($0e8d bytes)
+	TOTAL EMPTY: $0e8d bytes
 
 ROMX bank #6:
 	SECTION: $4000-$7731 ($3732 bytes) ["Tileset Data 1"]
@@ -82,20 +82,20 @@ ROMX bank #8:
 	TOTAL EMPTY: $0256 bytes
 
 ROMX bank #9:
-	SECTION: $4000-$7b26 ($3b27 bytes) ["bank9"]
-	EMPTY: $7b27-$7fff ($04d9 bytes)
-	TOTAL EMPTY: $04d9 bytes
+	SECTION: $4000-$7afe ($3aff bytes) ["bank9"]
+	EMPTY: $7aff-$7fff ($0501 bytes)
+	TOTAL EMPTY: $0501 bytes
 
 ROMX bank #10:
-	SECTION: $4000-$64c0 ($24c1 bytes) ["bankA"]
-	SECTION: $64c1-$6767 ($02a7 bytes) ["Trainer Backpics"]
-	EMPTY: $6768-$7fff ($1898 bytes)
-	TOTAL EMPTY: $1898 bytes
+	SECTION: $4000-$64bc ($24bd bytes) ["bankA"]
+	SECTION: $64bd-$6763 ($02a7 bytes) ["Trainer Backpics"]
+	EMPTY: $6764-$7fff ($189c bytes)
+	TOTAL EMPTY: $189c bytes
 
 ROMX bank #11:
-	SECTION: $4000-$6ffa ($2ffb bytes) ["bankB"]
-	EMPTY: $6ffb-$7fff ($1005 bytes)
-	TOTAL EMPTY: $1005 bytes
+	SECTION: $4000-$6fef ($2ff0 bytes) ["bankB"]
+	EMPTY: $6ff0-$7fff ($1010 bytes)
+	TOTAL EMPTY: $1010 bytes
 
 ROMX bank #12:
 	SECTION: $4000-$695f ($2960 bytes) ["Tileset Data 4"]
@@ -103,54 +103,54 @@ ROMX bank #12:
 	TOTAL EMPTY: $16a0 bytes
 
 ROMX bank #13:
-	SECTION: $4000-$7f83 ($3f84 bytes) ["Effect Commands"]
-	EMPTY: $7f84-$7fff ($007c bytes)
-	TOTAL EMPTY: $007c bytes
+	SECTION: $4000-$7f5a ($3f5b bytes) ["Effect Commands"]
+	EMPTY: $7f5b-$7fff ($00a5 bytes)
+	TOTAL EMPTY: $00a5 bytes
 
 ROMX bank #14:
-	SECTION: $4000-$5ac9 ($1aca bytes) ["Enemy Trainers"]
-	SECTION: $5aca-$73a1 ($18d8 bytes) ["Map Attributes"]
-	EMPTY: $73a2-$7fff ($0c5e bytes)
-	TOTAL EMPTY: $0c5e bytes
+	SECTION: $4000-$5a98 ($1a99 bytes) ["Enemy Trainers"]
+	SECTION: $5a99-$7370 ($18d8 bytes) ["Map Attributes"]
+	EMPTY: $7371-$7fff ($0c8f bytes)
+	TOTAL EMPTY: $0c8f bytes
 
 ROMX bank #15:
-	SECTION: $4000-$7fe9 ($3fea bytes) ["Battle Core"]
-	EMPTY: $7fea-$7fff ($0016 bytes)
-	TOTAL EMPTY: $0016 bytes
+	SECTION: $4000-$7fac ($3fad bytes) ["Battle Core"]
+	EMPTY: $7fad-$7fff ($0053 bytes)
+	TOTAL EMPTY: $0053 bytes
 
 ROMX bank #16:
-	SECTION: $4000-$66e7 ($26e8 bytes) ["bank10"]
-	SECTION: $66e8-$66f2 ($000b bytes) ["Evolutions and Attacks Pointers"]
-	SECTION: $66f3-$7a8a ($1398 bytes) ["Evolutions and Attacks 1"]
-	EMPTY: $7a8b-$7fff ($0575 bytes)
-	TOTAL EMPTY: $0575 bytes
+	SECTION: $4000-$66de ($26df bytes) ["bank10"]
+	SECTION: $66df-$66e9 ($000b bytes) ["Evolutions and Attacks Pointers"]
+	SECTION: $66ea-$7a81 ($1398 bytes) ["Evolutions and Attacks 1"]
+	EMPTY: $7a82-$7fff ($057e bytes)
+	TOTAL EMPTY: $057e bytes
 
 ROMX bank #17:
-	SECTION: $4000-$4a8e ($0a8f bytes) ["bank11"]
-	SECTION: $4a8f-$688d ($1dff bytes) ["Newbox"]
-	SECTION: $688e-$69fb ($016e bytes) ["Bill's PC Graphics"]
-	EMPTY: $69fc-$7fff ($1604 bytes)
-	TOTAL EMPTY: $1604 bytes
+	SECTION: $4000-$4a8c ($0a8d bytes) ["bank11"]
+	SECTION: $4a8d-$6882 ($1df6 bytes) ["Newbox"]
+	SECTION: $6883-$69f0 ($016e bytes) ["Bill's PC Graphics"]
+	EMPTY: $69f1-$7fff ($160f bytes)
+	TOTAL EMPTY: $160f bytes
 
 ROMX bank #18:
-	SECTION: $4000-$6ba6 ($2ba7 bytes) ["Crystal Features 1"]
-	SECTION: $6ba7-$6e8a ($02e4 bytes) ["Egg Moves 2"]
-	SECTION: $6e8b-$7aeb ($0c61 bytes) ["Evolutions and Attacks 2"]
-	EMPTY: $7aec-$7fff ($0514 bytes)
-	TOTAL EMPTY: $0514 bytes
+	SECTION: $4000-$6b93 ($2b94 bytes) ["Crystal Features 1"]
+	SECTION: $6b94-$6e77 ($02e4 bytes) ["Egg Moves 2"]
+	SECTION: $6e78-$7ad8 ($0c61 bytes) ["Evolutions and Attacks 2"]
+	EMPTY: $7ad9-$7fff ($0527 bytes)
+	TOTAL EMPTY: $0527 bytes
 
 ROMX bank #19:
 	SECTION: $4000-$443f ($0440 bytes) ["bank13"]
 	SECTION: $4440-$44e2 ($00a3 bytes) ["Shrink Pics"]
-	SECTION: $44e3-$61ed ($1d0b bytes) ["bank13_2"]
-	EMPTY: $61ee-$7fff ($1e12 bytes)
-	TOTAL EMPTY: $1e12 bytes
+	SECTION: $44e3-$61e0 ($1cfe bytes) ["bank13_2"]
+	EMPTY: $61e1-$7fff ($1e1f bytes)
+	TOTAL EMPTY: $1e1f bytes
 
 ROMX bank #20:
-	SECTION: $4000-$7bcd ($3bce bytes) ["bank14"]
-	SECTION: $7bce-$7c56 ($0089 bytes) ["Unused Egg Pic"]
-	EMPTY: $7c57-$7fff ($03a9 bytes)
-	TOTAL EMPTY: $03a9 bytes
+	SECTION: $4000-$7bc9 ($3bca bytes) ["bank14"]
+	SECTION: $7bca-$7c52 ($0089 bytes) ["Unused Egg Pic"]
+	EMPTY: $7c53-$7fff ($03ad bytes)
+	TOTAL EMPTY: $03ad bytes
 
 ROMX bank #21:
 	SECTION: $4000-$7169 ($316a bytes) ["Map Scripts 1"]
@@ -208,36 +208,36 @@ ROMX bank #31:
 	TOTAL EMPTY: $09d6 bytes
 
 ROMX bank #32:
-	SECTION: $4000-$5982 ($1983 bytes) ["bank20"]
-	SECTION: $5983-$7efb ($2579 bytes) ["Enemy Trainer Parties 2"]
-	EMPTY: $7efc-$7fff ($0104 bytes)
-	TOTAL EMPTY: $0104 bytes
+	SECTION: $4000-$5980 ($1981 bytes) ["bank20"]
+	SECTION: $5981-$7ef9 ($2579 bytes) ["Enemy Trainer Parties 2"]
+	EMPTY: $7efa-$7fff ($0106 bytes)
+	TOTAL EMPTY: $0106 bytes
 
 ROMX bank #33:
-	SECTION: $4000-$64b3 ($24b4 bytes) ["bank21"]
-	EMPTY: $64b4-$7fff ($1b4c bytes)
-	TOTAL EMPTY: $1b4c bytes
+	SECTION: $4000-$64a7 ($24a8 bytes) ["bank21"]
+	EMPTY: $64a8-$7fff ($1b58 bytes)
+	TOTAL EMPTY: $1b58 bytes
 
 ROMX bank #34:
-	SECTION: $4000-$795d ($395e bytes) ["Crystal Features 2"]
-	EMPTY: $795e-$7fff ($06a2 bytes)
-	TOTAL EMPTY: $06a2 bytes
+	SECTION: $4000-$7951 ($3952 bytes) ["Crystal Features 2"]
+	EMPTY: $7952-$7fff ($06ae bytes)
+	TOTAL EMPTY: $06ae bytes
 
 ROMX bank #35:
-	SECTION: $4000-$6f4b ($2f4c bytes) ["bank23"]
-	EMPTY: $6f4c-$7fff ($10b4 bytes)
-	TOTAL EMPTY: $10b4 bytes
+	SECTION: $4000-$6f44 ($2f45 bytes) ["bank23"]
+	EMPTY: $6f45-$7fff ($10bb bytes)
+	TOTAL EMPTY: $10bb bytes
 
 ROMX bank #36:
-	SECTION: $4000-$7be3 ($3be4 bytes) ["bank24"]
-	EMPTY: $7be4-$7fff ($041c bytes)
-	TOTAL EMPTY: $041c bytes
+	SECTION: $4000-$7bcf ($3bd0 bytes) ["bank24"]
+	EMPTY: $7bd0-$7fff ($0430 bytes)
+	TOTAL EMPTY: $0430 bytes
 
 ROMX bank #37:
 	SECTION: $4000-$4f5b ($0f5c bytes) ["Map Headers"]
-	SECTION: $4f5c-$6880 ($1925 bytes) ["Events"]
-	EMPTY: $6881-$7fff ($177f bytes)
-	TOTAL EMPTY: $177f bytes
+	SECTION: $4f5c-$686c ($1911 bytes) ["Events"]
+	EMPTY: $686d-$7fff ($1793 bytes)
+	TOTAL EMPTY: $1793 bytes
 
 ROMX bank #38:
 	SECTION: $4000-$7026 ($3027 bytes) ["Map Scripts 11"]
@@ -280,9 +280,9 @@ ROMX bank #45:
 	TOTAL EMPTY: $059f bytes
 
 ROMX bank #46:
-	SECTION: $4000-$5ef4 ($1ef5 bytes) ["bank2E"]
-	EMPTY: $5ef5-$7fff ($210b bytes)
-	TOTAL EMPTY: $210b bytes
+	SECTION: $4000-$5eed ($1eee bytes) ["bank2E"]
+	EMPTY: $5eee-$7fff ($2112 bytes)
+	TOTAL EMPTY: $2112 bytes
 
 ROMX bank #47:
 	SECTION: $4000-$66f5 ($26f6 bytes) ["Phone Scripts 2"]
@@ -300,21 +300,21 @@ ROMX bank #49:
 	TOTAL EMPTY: $0080 bytes
 
 ROMX bank #50:
-	SECTION: $4000-$7d21 ($3d22 bytes) ["bank32"]
-	SECTION: $7d22-$7e21 ($0100 bytes) ["The End"]
-	EMPTY: $7e22-$7fff ($01de bytes)
-	TOTAL EMPTY: $01de bytes
+	SECTION: $4000-$7d17 ($3d18 bytes) ["bank32"]
+	SECTION: $7d18-$7e17 ($0100 bytes) ["The End"]
+	EMPTY: $7e18-$7fff ($01e8 bytes)
+	TOTAL EMPTY: $01e8 bytes
 
 ROMX bank #51:
-	SECTION: $4000-$7e76 ($3e77 bytes) ["Move Animations"]
-	SECTION: $7e77-$7fdc ($0166 bytes) ["Extra Songs 2"]
-	EMPTY: $7fdd-$7fff ($0023 bytes)
-	TOTAL EMPTY: $0023 bytes
+	SECTION: $4000-$7e68 ($3e69 bytes) ["Move Animations"]
+	SECTION: $7e69-$7fce ($0166 bytes) ["Extra Songs 2"]
+	EMPTY: $7fcf-$7fff ($0031 bytes)
+	TOTAL EMPTY: $0031 bytes
 
 ROMX bank #52:
-	SECTION: $4000-$7c41 ($3c42 bytes) ["Pic Animations 1"]
-	EMPTY: $7c42-$7fff ($03be bytes)
-	TOTAL EMPTY: $03be bytes
+	SECTION: $4000-$7c39 ($3c3a bytes) ["Pic Animations 1"]
+	EMPTY: $7c3a-$7fff ($03c6 bytes)
+	TOTAL EMPTY: $03c6 bytes
 
 ROMX bank #53:
 	SECTION: $4000-$6339 ($233a bytes) ["Pic Animations 2"]
@@ -333,21 +333,21 @@ ROMX bank #55:
 	TOTAL EMPTY: $0323 bytes
 
 ROMX bank #56:
-	SECTION: $4000-$62a2 ($22a3 bytes) ["bank38"]
-	EMPTY: $62a3-$7fff ($1d5d bytes)
-	TOTAL EMPTY: $1d5d bytes
+	SECTION: $4000-$6296 ($2297 bytes) ["bank38"]
+	EMPTY: $6297-$7fff ($1d69 bytes)
+	TOTAL EMPTY: $1d69 bytes
 
 ROMX bank #57:
 	SECTION: $4000-$41cf ($01d0 bytes) ["Copyright"]
-	SECTION: $41d0-$7169 ($2f9a bytes) ["bank39"]
-	EMPTY: $716a-$7fff ($0e96 bytes)
-	TOTAL EMPTY: $0e96 bytes
+	SECTION: $41d0-$7165 ($2f96 bytes) ["bank39"]
+	EMPTY: $7166-$7fff ($0e9a bytes)
+	TOTAL EMPTY: $0e9a bytes
 
 ROMX bank #58:
-	SECTION: $4000-$54cd ($14ce bytes) ["Audio"]
-	SECTION: $54ce-$7fa7 ($2ada bytes) ["Songs 1"]
-	EMPTY: $7fa8-$7fff ($0058 bytes)
-	TOTAL EMPTY: $0058 bytes
+	SECTION: $4000-$54c9 ($14ca bytes) ["Audio"]
+	SECTION: $54ca-$7fa3 ($2ada bytes) ["Songs 1"]
+	EMPTY: $7fa4-$7fff ($005c bytes)
+	TOTAL EMPTY: $005c bytes
 
 ROMX bank #59:
 	SECTION: $4000-$7ee7 ($3ee8 bytes) ["Songs 2"]
@@ -377,21 +377,21 @@ ROMX bank #63:
 	TOTAL EMPTY: $2e1a bytes
 
 ROMX bank #64:
-	SECTION: $4000-$77a4 ($37a5 bytes) ["mobile40"]
-	EMPTY: $77a5-$7fff ($085b bytes)
-	TOTAL EMPTY: $085b bytes
+	SECTION: $4000-$7781 ($3782 bytes) ["mobile40"]
+	EMPTY: $7782-$7fff ($087e bytes)
+	TOTAL EMPTY: $087e bytes
 
 ROMX bank #65:
-	SECTION: $4000-$6c07 ($2c08 bytes) ["bank41"]
-	EMPTY: $6c08-$7fff ($13f8 bytes)
-	TOTAL EMPTY: $13f8 bytes
+	SECTION: $4000-$6beb ($2bec bytes) ["bank41"]
+	EMPTY: $6bec-$7fff ($1414 bytes)
+	TOTAL EMPTY: $1414 bytes
 
 ROMX bank #66:
-	SECTION: $4000-$52d8 ($12d9 bytes) ["mobile42"]
-	SECTION: $52d9-$5696 ($03be bytes) ["Intro Logo"]
-	SECTION: $5697-$74a2 ($1e0c bytes) ["Credits"]
-	EMPTY: $74a3-$7fff ($0b5d bytes)
-	TOTAL EMPTY: $0b5d bytes
+	SECTION: $4000-$52d1 ($12d2 bytes) ["mobile42"]
+	SECTION: $52d2-$568f ($03be bytes) ["Intro Logo"]
+	SECTION: $5690-$7498 ($1e09 bytes) ["Credits"]
+	EMPTY: $7499-$7fff ($0b67 bytes)
+	TOTAL EMPTY: $0b67 bytes
 
 ROMX bank #67:
 	SECTION: $4000-$4145 ($0146 bytes) ["Title"]
@@ -400,25 +400,25 @@ ROMX bank #67:
 	TOTAL EMPTY: $00ba bytes
 
 ROMX bank #68:
-	SECTION: $4000-$7f52 ($3f53 bytes) ["Mobile Adapter SDK"]
-	EMPTY: $7f53-$7fff ($00ad bytes)
-	TOTAL EMPTY: $00ad bytes
+	SECTION: $4000-$7f3d ($3f3e bytes) ["Mobile Adapter SDK"]
+	EMPTY: $7f3e-$7fff ($00c2 bytes)
+	TOTAL EMPTY: $00c2 bytes
 
 ROMX bank #69:
-	SECTION: $4000-$5d8d ($1d8e bytes) ["Mobile Adapter SDK Mail"]
-	SECTION: $5d8e-$7cc6 ($1f39 bytes) ["mobile45"]
-	EMPTY: $7cc7-$7fff ($0339 bytes)
-	TOTAL EMPTY: $0339 bytes
+	SECTION: $4000-$5d88 ($1d89 bytes) ["Mobile Adapter SDK Mail"]
+	SECTION: $5d89-$7cbd ($1f35 bytes) ["mobile45"]
+	EMPTY: $7cbe-$7fff ($0342 bytes)
+	TOTAL EMPTY: $0342 bytes
 
 ROMX bank #70:
-	SECTION: $4000-$7a72 ($3a73 bytes) ["mobile46"]
-	EMPTY: $7a73-$7fff ($058d bytes)
-	TOTAL EMPTY: $058d bytes
+	SECTION: $4000-$7a65 ($3a66 bytes) ["mobile46"]
+	EMPTY: $7a66-$7fff ($059a bytes)
+	TOTAL EMPTY: $059a bytes
 
 ROMX bank #71:
-	SECTION: $4000-$73d0 ($33d1 bytes) ["Battle Tower"]
-	EMPTY: $73d1-$7fff ($0c2f bytes)
-	TOTAL EMPTY: $0c2f bytes
+	SECTION: $4000-$73cf ($33d0 bytes) ["Battle Tower"]
+	EMPTY: $73d0-$7fff ($0c30 bytes)
+	TOTAL EMPTY: $0c30 bytes
 
 ROMX bank #72:
 	SECTION: $4000-$45f9 ($05fa bytes) ["Pic Pointers"]
@@ -519,14 +519,14 @@ ROMX bank #90:
 	TOTAL EMPTY: $17ec bytes
 
 ROMX bank #91:
-	SECTION: $4000-$79a3 ($39a4 bytes) ["bank5B"]
-	EMPTY: $79a4-$7fff ($065c bytes)
-	TOTAL EMPTY: $065c bytes
+	SECTION: $4000-$7990 ($3991 bytes) ["bank5B"]
+	EMPTY: $7991-$7fff ($066f bytes)
+	TOTAL EMPTY: $066f bytes
 
 ROMX bank #92:
-	SECTION: $4000-$72fa ($32fb bytes) ["mobile5C"]
-	EMPTY: $72fb-$7fff ($0d05 bytes)
-	TOTAL EMPTY: $0d05 bytes
+	SECTION: $4000-$72f4 ($32f5 bytes) ["mobile5C"]
+	EMPTY: $72f5-$7fff ($0d0b bytes)
+	TOTAL EMPTY: $0d0b bytes
 
 ROMX bank #93:
 	SECTION: $4000-$7560 ($3561 bytes) ["Crystal Phone Text 2"]
@@ -537,14 +537,14 @@ ROMX bank #94:
 	SECTION: $4000-$401e ($001f bytes) ["UpdateBattleHUDs"]
 	SECTION: $401f-$582c ($180e bytes) ["Songs 5"]
 	SECTION: $582d-$59ee ($01c2 bytes) ["Crystal Sound Effects"]
-	SECTION: $59ef-$761c ($1c2e bytes) ["mobile5E"]
-	EMPTY: $761d-$7fff ($09e3 bytes)
-	TOTAL EMPTY: $09e3 bytes
+	SECTION: $59ef-$7615 ($1c27 bytes) ["mobile5E"]
+	EMPTY: $7616-$7fff ($09ea bytes)
+	TOTAL EMPTY: $09ea bytes
 
 ROMX bank #95:
-	SECTION: $4000-$7dc9 ($3dca bytes) ["mobile5F"]
-	EMPTY: $7dca-$7fff ($0236 bytes)
-	TOTAL EMPTY: $0236 bytes
+	SECTION: $4000-$7dc2 ($3dc3 bytes) ["mobile5F"]
+	EMPTY: $7dc3-$7fff ($023d bytes)
+	TOTAL EMPTY: $023d bytes
 
 ROMX bank #96:
 	SECTION: $4000-$5694 ($1695 bytes) ["Map Scripts 13"]
@@ -833,8 +833,8 @@ HRAM bank #0:
 	TOTAL EMPTY: $0000 bytes
 
 SUMMARY:
-	ROM0: 15952 bytes used / 432 free
-	ROMX: 1641530 bytes used / 439238 free in 127 banks
+	ROM0: 15770 bytes used / 614 free
+	ROMX: 1640296 bytes used / 440472 free in 127 banks
 	SRAM: 50158 bytes used / 15378 free in 8 banks
 	WRAM0: 4059 bytes used / 37 free
 	WRAMX: 20656 bytes used / 8016 free in 7 banks
