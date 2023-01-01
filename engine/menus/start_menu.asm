@@ -89,7 +89,7 @@ StartMenu::
 	call ExitMenu
 .ReturnEnd2:
 	call CloseText
-	jp UpdateTimePals
+	jmp UpdateTimePals
 
 .GetInput:
 ; Return carry on exit, and no-carry on selection.
@@ -140,7 +140,7 @@ StartMenu::
 
 .ReturnRedraw:
 	call .Clear
-	jp .Reopen
+	jmp .Reopen
 
 .Clear:
 	call ClearBGPalettes
@@ -150,7 +150,7 @@ StartMenu::
 	call DrawVariableLengthMenuBox
 	call .DrawBugContestStatus
 	call UpdateSprites
-	jp FinishExitMenu
+	jmp FinishExitMenu
 
 .MenuHeader:
 	db MENU_BACKUP_TILES ; flags
@@ -247,7 +247,7 @@ StartMenu::
 	ld d, [hl]
 	ld e, a
 	pop hl
-	jp PlaceString
+	jmp PlaceString
 
 .MenuDesc:
 	push de
@@ -262,7 +262,7 @@ endr
 	ld d, [hl]
 	ld e, a
 	pop hl
-	jp PlaceString
+	jmp PlaceString
 .none
 	pop de
 	ret
@@ -356,14 +356,14 @@ endr
 	ret
 
 .DrawMenuAccount:
-	jp ._DrawMenuAccount
+	jr ._DrawMenuAccount
 
 .PrintMenuAccount:
 	call .IsMenuAccountOn
 	ret z
 	call ._DrawMenuAccount
 	decoord 0, 14
-	jp .MenuDesc
+	jmp .MenuDesc
 
 ._DrawMenuAccount:
 	call .IsMenuAccountOn
@@ -374,7 +374,7 @@ endr
 	hlcoord 0, 13
 	ld b, 3
 	ld c, 8
-	jp TextboxPalette
+	jmp TextboxPalette
 
 .IsMenuAccountOn:
 	ld a, [wOptions2]

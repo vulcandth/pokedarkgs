@@ -23,11 +23,11 @@ _ResetClock:
 	ld [sRTCStatusFlags], a
 	call CloseSRAM
 	ld hl, .PasswordAskResetText
-	jp PrintText
+	jmp PrintText
 
 .wrongpassword
 	ld hl, .PasswordWrongText
-	jp PrintText
+	jmp PrintText
 
 .PasswordAskResetText:
 	text_far _PasswordAskResetText
@@ -225,7 +225,7 @@ ClockResetPassword:
 	ld hl, sPlayerData + (wMoney - wPlayerData)
 	ld c, 3
 	call .ComponentFromNumber
-	jp CloseSRAM
+	jmp CloseSRAM
 
 .ComponentFromNumber:
 	ld a, [hli]

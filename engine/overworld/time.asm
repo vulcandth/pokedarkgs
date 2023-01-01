@@ -1,5 +1,5 @@
 _InitializeStartDay:
-	jp InitializeStartDay
+	jmp InitializeStartDay
 
 ClearDailyTimers:
 	xor a
@@ -24,7 +24,7 @@ NextCallReceiveDelay:
 	ld hl, .ReceiveCallDelays
 	add hl, de
 	ld a, [hl]
-	jp RestartReceiveCallDelay
+	jr RestartReceiveCallDelay
 
 .ReceiveCallDelays:
 	db 20, 10, 5, 3
@@ -52,7 +52,7 @@ InitNDaysCountdown:
 	call UpdateTime
 	pop hl
 	inc hl
-	jp CopyDayToHL
+	jmp CopyDayToHL
 
 CheckDayDependentEventHL:
 	inc hl
@@ -61,25 +61,25 @@ CheckDayDependentEventHL:
 	call GetDaysSince
 	pop hl
 	dec hl
-	jp UpdateTimeRemaining
+	jmp UpdateTimeRemaining
 
 RestartReceiveCallDelay:
 	ld hl, wReceiveCallDelay_MinsRemaining
 	ld [hl], a
 	call UpdateTime
 	ld hl, wReceiveCallDelay_StartTime
-	jp CopyDayHourMinToHL
+	jmp CopyDayHourMinToHL
 
 CheckReceiveCallDelay:
 	ld hl, wReceiveCallDelay_StartTime
 	call CalcMinsHoursDaysSince
 	call GetMinutesSinceIfLessThan60
 	ld hl, wReceiveCallDelay_MinsRemaining
-	jp UpdateTimeRemaining
+	jmp UpdateTimeRemaining
 
 RestartDailyResetTimer:
 	ld hl, wDailyResetTimer
-	jp InitOneDayCountdown
+	jr InitOneDayCountdown
 
 CheckDailyResetTimer::
 	ld hl, wDailyResetTimer
@@ -130,7 +130,7 @@ StartBugContestTimer:
 	ld [wBugContestSecsRemaining], a
 	call UpdateTime
 	ld hl, wBugContestStartTime
-	jp CopyDayHourMinSecToHL
+	jmp CopyDayHourMinSecToHL
 
 CheckBugContestTimer::
 	ld hl, wBugContestStartTime
@@ -169,7 +169,7 @@ CheckBugContestTimer::
 InitializeStartDay:
 	call UpdateTime
 	ld hl, wTimerEventStartDay
-	jp CopyDayToHL
+	jmp CopyDayToHL
 
 CheckPokerusTick::
 	ld hl, wTimerEventStartDay
@@ -189,14 +189,14 @@ SetUnusedTwoDayTimer: ; unreferenced
 	ld [hl], a
 	call UpdateTime
 	ld hl, wUnusedTwoDayTimerStartDate
-	jp CopyDayToHL
+	jmp CopyDayToHL
 
 CheckUnusedTwoDayTimer:
 	ld hl, wUnusedTwoDayTimerStartDate
 	call CalcDaysSince
 	call GetDaysSince
 	ld hl, wUnusedTwoDayTimer
-	jp UpdateTimeRemaining
+	jr UpdateTimeRemaining
 
 UnusedSetSwarmFlag: ; unreferenced
 	ld hl, wDailyFlags1
@@ -214,7 +214,7 @@ UnusedCheckSwarmFlag: ; unreferenced
 RestartLuckyNumberCountdown:
 	call .GetDaysUntilNextFriday
 	ld hl, wLuckyNumberDayTimer
-	jp InitNDaysCountdown
+	jmp InitNDaysCountdown
 
 .GetDaysUntilNextFriday:
 	call GetWeekday
@@ -232,7 +232,7 @@ RestartLuckyNumberCountdown:
 
 _CheckLuckyNumberShowFlag:
 	ld hl, wLuckyNumberDayTimer
-	jp CheckDayDependentEventHL
+	jmp CheckDayDependentEventHL
 
 DoMysteryGiftIfDayHasPassed:
 	ld a, BANK(sMysteryGiftTimer)
@@ -260,7 +260,7 @@ DoMysteryGiftIfDayHasPassed:
 	ld [sMysteryGiftTimer], a
 	ld a, [hl]
 	ld [sMysteryGiftTimer + 1], a
-	jp CloseSRAM
+	jmp CloseSRAM
 
 UpdateTimeRemaining:
 ; If the amount of time elapsed exceeds the capacity of its

@@ -545,7 +545,7 @@ AI_Smart_LockOn:
 
 .dismiss
 	pop hl
-	jp AIDiscourageMove
+	jmp AIDiscourageMove
 
 AI_Smart_Selfdestruct:
 ; Selfdestruct, Explosion
@@ -599,7 +599,7 @@ AI_Smart_EvasionUp:
 ; Dismiss this move if enemy's evasion can't raise anymore.
 	ld a, [wEnemyEvaLevel]
 	cp MAX_STAT_LEVEL
-	jp nc, AIDiscourageMove
+	jmp nc, AIDiscourageMove
 
 ; If enemy's HP is full...
 	call AICheckEnemyMaxHP
@@ -737,7 +737,7 @@ AI_Smart_MirrorMove:
 	ret nc
 
 ; ...or dismiss this move if enemy is faster than player.
-	jp AIDiscourageMove
+	jmp AIDiscourageMove
 
 ; If the player did use a move last turn...
 .usedmove
@@ -990,7 +990,7 @@ AI_Smart_Ohko:
 	ld b, a
 	ld a, [wEnemyMonLevel]
 	cp b
-	jp c, AIDiscourageMove
+	jmp c, AIDiscourageMove
 	call AICheckPlayerHalfHP
 	ret c
 	inc [hl]
@@ -1243,7 +1243,7 @@ AI_Smart_Substitute:
 
 	call AICheckEnemyHalfHP
 	ret c
-	jp AIDiscourageMove
+	jmp AIDiscourageMove
 
 AI_Smart_HyperBeam:
 	call AICheckEnemyHalfHP
@@ -1350,7 +1350,7 @@ AI_Smart_Mimic:
 .dismiss
 ; Dismiss this move if the enemy is faster than the player.
 	call AICompareSpeed
-	jp c, AIDiscourageMove
+	jmp c, AIDiscourageMove
 
 .discourage
 	inc [hl]
@@ -1425,7 +1425,7 @@ AI_Smart_Encore:
 
 	ld a, [wLastPlayerMove]
 	and a
-	jp z, AIDiscourageMove
+	jmp z, AIDiscourageMove
 
 	call AIGetEnemyMove
 
@@ -1530,7 +1530,7 @@ AI_Smart_Spite:
 	jr nz, .usedmove
 
 	call AICompareSpeed
-	jp c, AIDiscourageMove
+	jmp c, AIDiscourageMove
 
 	call AI_50_50
 	ret c
@@ -1581,7 +1581,7 @@ AI_Smart_Spite:
 	ret
 
 .dismiss ; unreferenced
-	jp AIDiscourageMove
+	jmp AIDiscourageMove
 
 AI_Smart_DestinyBond:
 AI_Smart_Reversal:
@@ -1647,7 +1647,7 @@ AI_Smart_HealBell:
 	ld a, [wEnemyMonStatus]
 	and a
 	ret nz
-	jp AIDiscourageMove
+	jmp AIDiscourageMove
 
 
 AI_Smart_PriorityHit:
@@ -1657,7 +1657,7 @@ AI_Smart_PriorityHit:
 ; Dismiss this move if the player is flying or underground.
 	ld a, [wPlayerSubStatus3]
 	and 1 << SUBSTATUS_FLYING | 1 << SUBSTATUS_UNDERGROUND
-	jp nz, AIDiscourageMove
+	jmp nz, AIDiscourageMove
 
 ; Greatly encourage this move if it will KO the player.
 	ld a, 1
@@ -1761,7 +1761,7 @@ AI_Smart_MeanLook:
 	push hl
 	call AICheckLastPlayerMon
 	pop hl
-	jp z, AIDiscourageMove
+	jmp z, AIDiscourageMove
 
 ; 80% chance to greatly encourage this move if the enemy is badly poisoned.
 	ld a, [wPlayerSubStatus5]
@@ -1878,7 +1878,7 @@ AI_Smart_Curse:
 .ghost_curse
 	ld a, [wPlayerSubStatus1]
 	bit SUBSTATUS_CURSE, a
-	jp nz, AIDiscourageMove
+	jmp nz, AIDiscourageMove
 
 	push hl
 	farcall FindAliveEnemyMons
@@ -1900,7 +1900,7 @@ AI_Smart_Curse:
 
 .ghost_continue
 	call AICheckEnemyQuarterHP
-	jp nc, .approve
+	jr nc, .approve
 
 	call AICheckEnemyHalfHP
 	jr nc, .greatly_encourage
@@ -3339,4 +3339,4 @@ AI_CheckMoveInList:
 	ld c, l
 	pop hl
 	ld de, 2
-	jp IsInWordArray
+	jmp IsInWordArray

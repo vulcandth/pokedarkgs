@@ -6,7 +6,7 @@ WaitBGMap::
 	ldh [hBGMapMode], a
 ; Wait for it to do its magic
 	ld c, 4
-	jp DelayFrames
+	jmp DelayFrames
 
 WaitBGMap2::
 	ldh a, [hCGB]
@@ -22,7 +22,7 @@ WaitBGMap2::
 	ld a, 1
 	ldh [hBGMapMode], a
 	ld c, 4
-	jp DelayFrames
+	jmp DelayFrames
 
 IsCGB::
 	ldh a, [hCGB]
@@ -56,7 +56,7 @@ ApplyTilemap::
 	ld a, 1
 	ldh [hBGMapMode], a
 	ld c, 4
-	jp DelayFrames
+	jmp DelayFrames
 
 CGBOnly_CopyTilemapAtOnce::
 	ldh a, [hCGB]
@@ -110,8 +110,7 @@ CopyTilemapAtOnce::
 	ld l, 0
 	ld a, SCREEN_HEIGHT
 	ldh [hTilesPerCycle], a
-	ld b, 1 << 1 ; not in v/hblank
-	ld c, LOW(rSTAT)
+	lb bc, 1 << 1, LOW(rSTAT) ; not in v/hblank
 
 .loop
 rept SCREEN_WIDTH / 2

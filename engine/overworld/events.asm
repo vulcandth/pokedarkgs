@@ -99,7 +99,7 @@ EnterMap:
 
 UnusedWait30Frames: ; unreferenced
 	ld c, 30
-	jp DelayFrames
+	jmp DelayFrames
 
 HandleMap:
 	call HandleMapTimeAndJoypad
@@ -131,7 +131,7 @@ NextOverworldFrame:
 	; of a busy LY overflow, perform that now.
 	ld a, [hDelayFrameLY]
 	inc a
-	jp nz, DelayFrame
+	jmp nz, DelayFrame
 	xor a
 	ld [hDelayFrameLY], a
 	ret
@@ -143,12 +143,12 @@ HandleMapTimeAndJoypad:
 
 	call UpdateTime
 	call GetJoypad
-	jp TimeOfDayPals
+	jmp TimeOfDayPals
 
 HandleMapObjects:
 	farcall HandleNPCStep
 	farcall _HandlePlayerStep
-	jp _CheckObjectEnteringVisibleRange
+	jr _CheckObjectEnteringVisibleRange
 
 HandleMapBackground:
 	farcall _UpdateSprites
@@ -308,7 +308,7 @@ CheckTileEvent:
 	ld h, [hl]
 	ld l, a
 	call GetMapScriptsBank
-	jp CallScript
+	jmp CallScript
 
 CheckWildEncounterCooldown::
 	ld hl, wWildEncounterCooldown
@@ -336,7 +336,7 @@ SetMinTwoStepWildEncounterCooldown:
 	ret
 
 Dummy_CheckScriptFlags2Bit5:
-	jp CheckBit5_ScriptFlags2
+	jmp CheckBit5_ScriptFlags2
 
 RunSceneScript:
 	ld a, [wCurMapSceneScriptCount]
@@ -528,7 +528,7 @@ ObjectEventTypeArray:
 	ld h, [hl]
 	ld l, a
 	call GetMapScriptsBank
-	jp CallScript
+	jmp CallScript
 
 .itemball
 	ld hl, MAPOBJECT_SCRIPT_POINTER
@@ -611,7 +611,7 @@ BGEventJumptable:
 	ld a, [wPlayerDirection]
 	and %1100
 	cp b
-	jp nz, .dontread
+	jr nz, .dontread
 .read:
 	call PlayTalkObject
 	ld hl, wCurBGEventScriptAddr
@@ -625,7 +625,7 @@ BGEventJumptable:
 
 .itemifset:
 	call CheckBGEventFlag
-	jp nz, .dontread
+	jr nz, .dontread
 	call PlayTalkObject
 	call GetMapScriptsBank
 	ld de, wHiddenItemData

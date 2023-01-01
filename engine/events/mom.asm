@@ -171,11 +171,11 @@ BankOfMom:
 
 .InsufficientFundsInWallet:
 	ld hl, MomInsufficientFundsInWalletText
-	jp PrintText
+	jmp PrintText
 
 .NotEnoughRoomInBank:
 	ld hl, MomNotEnoughRoomInBankText
-	jp PrintText
+	jmp PrintText
 
 .CancelDeposit:
 	ld a, $7
@@ -235,11 +235,11 @@ BankOfMom:
 
 .InsufficientFundsInBank:
 	ld hl, MomHaventSavedThatMuchText
-	jp PrintText
+	jmp PrintText
 
 .NotEnoughRoomInWallet:
 	ld hl, MomNotEnoughRoomInWalletText
-	jp PrintText
+	jmp PrintText
 
 .CancelWithdraw:
 	ld a, $7
@@ -302,7 +302,7 @@ DSTChecks:
 	call .ClearBox
 	bccoord 1, 14
 	ld hl, .MomLostGearBookletText
-	jp PlaceHLTextAtBC
+	jmp PlaceHLTextAtBC
 
 .loop
 	call .ClearBox
@@ -321,7 +321,7 @@ DSTChecks:
 	call .ClearBox
 	bccoord 1, 14
 	ld hl, .TimesetNotDSTText
-	jp PlaceHLTextAtBC
+	jmp PlaceHLTextAtBC
 
 .SetDST:
 	ld hl, .TimesetAskDSTText
@@ -335,7 +335,7 @@ DSTChecks:
 	call .ClearBox
 	bccoord 1, 14
 	ld hl, .TimesetDSTText
-	jp PlaceHLTextAtBC
+	jmp PlaceHLTextAtBC
 
 .SetClockForward:
 	ld a, [wStartHour]
@@ -369,7 +369,7 @@ DSTChecks:
 .ClearBox:
 	hlcoord 1, 14
 	lb bc, 3, 18
-	jp ClearBox
+	jmp ClearBox
 
 .TimesetAskAdjustDSTText:
 	text_far _TimesetAskAdjustDSTText
@@ -430,11 +430,11 @@ Mom_ContinueMenuSetup:
 	lb bc, PRINTNUM_MONEY | PRINTNUM_LEADINGZEROS | 3, 6
 	call PrintNum
 	call UpdateSprites
-	jp CGBOnly_CopyTilemapAtOnce
+	jmp CGBOnly_CopyTilemapAtOnce
 
 Mom_Wait10Frames:
 	ld c, 10
-	jp DelayFrames
+	jmp DelayFrames
 
 Mom_WithdrawDepositMenuJoypad:
 .loop

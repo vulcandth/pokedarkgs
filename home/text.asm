@@ -31,7 +31,7 @@ ClearTilemap::
 	ldh a, [rLCDC]
 	bit rLCDC_ENABLE, a
 	ret z
-	jp WaitBGMap
+	jmp WaitBGMap
 
 ClearScreen::
 	ld a, PAL_BG_TEXT
@@ -135,9 +135,8 @@ TextboxPalette::
 SpeechTextbox::
 ; Standard textbox.
 	hlcoord TEXTBOX_X, TEXTBOX_Y
-	ld b, TEXTBOX_INNERH
-	ld c, TEXTBOX_INNERW
-	jp Textbox
+	lb bc, TEXTBOX_INNERH, TEXTBOX_INNERW
+	jr Textbox
 
 RadioTerminator::
 	ld hl, .stop
@@ -160,7 +159,7 @@ BuenaPrintText::
 
 PrintTextboxText::
 	bccoord TEXTBOX_INNERX, TEXTBOX_INNERY
-	jp PlaceHLTextAtBC
+	jmp PlaceHLTextAtBC
 
 SetUpTextbox::
 	push hl
@@ -223,7 +222,7 @@ PlaceNextChar::
 
 NextChar::
 	inc de
-	jp PlaceNextChar
+	jr PlaceNextChar
 
 CheckDict::
 MACRO dict
@@ -285,13 +284,13 @@ ENDM
 
 	ld [hli], a
 	call PrintLetterDelay
-	jp NextChar
+	jmp NextChar
 
 MobileScriptChar::
 	ld c, l
 	ld b, h
 	farcall RunMobileScript
-	jp PlaceNextChar
+	jmp PlaceNextChar
 
 MACRO print_name
 	push de
@@ -394,7 +393,7 @@ PlaceCommandCharacter::
 	ld h, b
 	ld l, c
 	pop de
-	jp NextChar
+	jmp NextChar
 
 TMCharText::      db "TM@"
 TrainerCharText:: db "TRAINER@"
@@ -419,14 +418,14 @@ NextLineChar::
 	ld bc, SCREEN_WIDTH * 2
 	add hl, bc
 	push hl
-	jp NextChar
+	jmp NextChar
 
 LineFeedChar::
 	pop hl
 	ld bc, SCREEN_WIDTH
 	add hl, bc
 	push hl
-	jp NextChar
+	jmp NextChar
 
 CarriageReturnChar::
 	pop hl
@@ -467,13 +466,13 @@ CarriageReturnChar::
 	ld b, 0
 	add hl, bc
 	push hl
-	jp NextChar
+	jmp NextChar
 
 LineChar::
 	pop hl
 	hlcoord TEXTBOX_INNERX, TEXTBOX_INNERY + 2
 	push hl
-	jp NextChar
+	jmp NextChar
 
 Paragraph::
 	push de
@@ -482,8 +481,7 @@ Paragraph::
 	cp LINK_COLOSSEUM
 	jr z, .linkbattle
 	cp LINK_MOBILE
-	jr z, .linkbattle
-	call LoadBlinkingCursor
+	call nz, LoadBlinkingCursor
 
 .linkbattle
 	call Text_WaitBGMap
@@ -496,13 +494,12 @@ Paragraph::
 	call DelayFrames
 	hlcoord TEXTBOX_INNERX, TEXTBOX_INNERY
 	pop de
-	jp NextChar
+	jmp NextChar
 
 _ContText::
 	ld a, [wLinkMode]
 	or a
-	jr nz, .communication
-	call LoadBlinkingCursor
+	call z, LoadBlinkingCursor
 
 .communication
 	call Text_WaitBGMap
@@ -522,7 +519,7 @@ _ContTextNoPause::
 	call TextScroll
 	hlcoord TEXTBOX_INNERX, TEXTBOX_INNERY + 2
 	pop de
-	jp NextChar
+	jmp NextChar
 
 ContText::
 	push de
@@ -533,7 +530,7 @@ ContText::
 	ld h, b
 	ld l, c
 	pop de
-	jp NextChar
+	jmp NextChar
 
 .cont: db "<_CONT>@"
 
@@ -549,8 +546,7 @@ PromptText::
 	cp LINK_COLOSSEUM
 	jr z, .ok
 	cp LINK_MOBILE
-	jr z, .ok
-	call LoadBlinkingCursor
+	call nz, LoadBlinkingCursor
 
 .ok
 	call Text_WaitBGMap
@@ -559,13 +555,12 @@ PromptText::
 	cp LINK_COLOSSEUM
 	jr z, DoneText
 	cp LINK_MOBILE
-	jr z, DoneText
-	call UnloadBlinkingCursor
+	call nz, UnloadBlinkingCursor
 
 DoneText::
 	pop hl
 	ld de, .stop
-	dec de
+	dec de ; no-optimize Redundant inc|dec (TODO: *maybe* consider optimization)
 	ret
 
 .stop:
@@ -575,7 +570,7 @@ NullChar::
 	ld a, "?"
 	ld [hli], a
 	call PrintLetterDelay
-	jp NextChar
+	jmp NextChar
 
 TextScroll::
 	hlcoord TEXTBOX_INNERX, TEXTBOX_INNERY
@@ -606,7 +601,7 @@ TextScroll::
 	ld bc, TEXTBOX_INNERW
 	call ByteFill
 	ld c, 5
-	jp DelayFrames
+	jmp DelayFrames
 
 Text_WaitBGMap::
 	push bc
@@ -818,9 +813,9 @@ TextCommand_PROMPT_BUTTON::
 ; wait for button press; show arrow
 	ld a, [wLinkMode]
 	cp LINK_COLOSSEUM
-	jp z, TextCommand_WAIT_BUTTON
+	jmp z, TextCommand_WAIT_BUTTON
 	cp LINK_MOBILE
-	jp z, TextCommand_WAIT_BUTTON
+	jmp z, TextCommand_WAIT_BUTTON
 
 	push hl
 	call LoadBlinkingCursor

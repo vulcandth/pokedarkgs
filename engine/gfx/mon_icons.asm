@@ -10,7 +10,7 @@ _LoadOverworldMonIcon:
 	ld a, [hli]
 	ld e, a
 	ld d, [hl]
-	jp GetIconBank
+	jmp GetIconBank
 
 SetMenuMonIconColor:
 	push hl
@@ -200,7 +200,7 @@ LoadMenuMonIcon:
 Unused_GetPartyMenuMonIcon:
 	call InitPartyMenuIcon
 	call .GetPartyMonItemGFX
-	jp SetPartyMonIconAnimSpeed
+	jmp SetPartyMonIconAnimSpeed
 
 .GetPartyMonItemGFX:
 	push bc
@@ -273,7 +273,7 @@ Mobile_InitPartyMenuBGPal71:
 PartyMenu_InitAnimatedMonIcon:
 	call InitPartyMenuIcon
 	call .SpawnItemIcon
-	jp SetPartyMonIconAnimSpeed
+	jr SetPartyMonIconAnimSpeed
 
 .SpawnItemIcon:
 	push bc
@@ -403,7 +403,7 @@ Trade_LoadMonIconGFX:
 	ld [wCurIcon], a
 	ld a, $62
 	ld [wCurIconTile], a
-	jp GetMemIconGFX
+	jr GetMemIconGFX
 
 GetSpeciesIcon:
 ; Load species icon into VRAM at tile a
@@ -415,7 +415,7 @@ GetSpeciesIcon:
 	ld [wCurIcon], a
 	pop de
 	ld a, e
-	jp GetIconGFX
+	jr GetIconGFX
 
 FlyFunction_GetMonIcon:
 	push de
@@ -517,8 +517,8 @@ GetIconBank:
 GetGFXUnlessMobile:
 	ld a, [wLinkMode]
 	cp LINK_MOBILE
-	jp nz, Request2bpp
-	jp Get2bppViaHDMA
+	jmp nz, Request2bpp
+	jmp Get2bppViaHDMA
 
 
 GetStorageIcon_a:

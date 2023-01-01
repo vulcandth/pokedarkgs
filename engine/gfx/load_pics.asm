@@ -15,7 +15,7 @@ GetMonFrontpic:
 	call _GetFrontpic
 	pop af
 	ldh [rSVBK], a
-	jp CloseSRAM
+	jmp CloseSRAM
 
 GetAnimatedFrontpic:
 	ld a, [wCurPartySpecies]
@@ -34,7 +34,7 @@ GetAnimatedFrontpic:
 	ldh [rVBK], a
 	pop af
 	ldh [rSVBK], a
-	jp CloseSRAM
+	jmp CloseSRAM
 
 PrepareFrontpic:
 	ldh a, [rSVBK]
@@ -135,7 +135,7 @@ GetPicIndirectPointer:
 	ld d, BANK(PokemonPicPointers)
 .done
 	ld a, 6
-	jp AddNTimes
+	jmp AddNTimes
 
 .unown
 	ld a, [wUnownLetter]
@@ -214,7 +214,7 @@ GetAnimatedEnemyFrontpic:
 	ld a, [sEnemyFrontPicTileCount]
 	ld c, a
 .finish
-	jp Get2bpp
+	jmp Get2bpp
 
 LoadFrontpicTiles:
 	ld hl, wDecompressScratch
@@ -294,7 +294,7 @@ Intro_GetMonFrontpic:
 	call GetFarWord
 	pop af
 	pop de
-	jp FarDecompress
+	jmp FarDecompress
 
 GetTrainerPic:
 	ld a, [wTrainerClass]
@@ -440,7 +440,7 @@ PadFrontpic:
 	jr nz, .five_loop
 	ld c, 7 << 4
 	xor a
-	jp .Fill
+	jr .Fill
 
 .Fill:
 	ld [hli], a

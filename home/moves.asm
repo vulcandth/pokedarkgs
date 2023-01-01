@@ -1,7 +1,7 @@
 GetMoveAttribute::
 ; Return attribute a of move l in a; clobbers hl.
 ; Replaces the old GetMoveAttr (renamed to avoid confusion).
-	sub 1
+	sub 1 ; no-optimize a++|a-- (Need carry flag)
 	push bc
 	ld c, a
 	ld a, l
@@ -33,4 +33,4 @@ GetMoveData::
 	inc de
 	call GetMoveAddress
 	ld bc, MOVE_LENGTH - 1
-	jp FarCopyBytes
+	jmp FarCopyBytes

@@ -7,37 +7,37 @@ Unused_AnimateMon_Slow_Normal:
 	jr z, .wild
 	ld e, ANIM_MON_SLOW
 	ld d, $0
-	jp AnimateFrontpic
+	jr AnimateFrontpic
 
 .wild
 	ld e, ANIM_MON_NORMAL
 	ld d, $0
-	jp AnimateFrontpic
+	jr AnimateFrontpic
 
 AnimateMon_Menu:
 	ld e, ANIM_MON_MENU
 	ld d, $0
-	jp AnimateFrontpic
+	jr AnimateFrontpic
 
 AnimateMon_Trade:
 	ld e, ANIM_MON_TRADE
 	ld d, $0
-	jp AnimateFrontpic
+	jr AnimateFrontpic
 
 AnimateMon_Evolve:
 	ld e, ANIM_MON_EVOLVE
 	ld d, $0
-	jp AnimateFrontpic
+	jr AnimateFrontpic
 
 AnimateMon_Hatch:
 	ld e, ANIM_MON_HATCH
 	ld d, $0
-	jp AnimateFrontpic
+	jr AnimateFrontpic
 
 AnimateMon_HOF:
 	ld e, ANIM_MON_HOF
 	ld d, $0
-	jp AnimateFrontpic
+	jr AnimateFrontpic
 
 MACRO pokeanim
 	rept _NARG
@@ -92,7 +92,7 @@ LoadMonAnimation:
 	ld b, [hl]
 	ld c, a
 	pop hl
-	jp PokeAnim_InitPicAttributes
+	jmp PokeAnim_InitPicAttributes
 
 SetUpPokeAnim:
 	ldh a, [rSVBK]
@@ -378,7 +378,7 @@ PokeAnim_DoAnimScript:
 	dec a
 	ld [wPokeAnimWaitCounter], a
 	ret nz
-	jp PokeAnim_StopWaitAnim
+	jr PokeAnim_StopWaitAnim
 
 .SetRepeat:
 	ld a, [wPokeAnimParameter]
@@ -428,7 +428,7 @@ PokeAnim_GetFrame:
 	push hl
 	call PokeAnim_CopyBitmaskToBuffer
 	pop hl
-	jp PokeAnim_ConvertAndApplyBitmask
+	jmp PokeAnim_ConvertAndApplyBitmask
 
 PokeAnim_StartWaitAnim:
 	ld a, [wPokeAnimJumptableIndex]
@@ -518,7 +518,7 @@ PokeAnim_CopyBitmaskToBuffer:
 	pop bc
 	ld de, wPokeAnimBitmaskBuffer
 	ld a, [wPokeAnimBitmaskBank]
-	jp FarCopyBytes
+	jmp FarCopyBytes
 
 .GetSize:
 	push hl
@@ -816,7 +816,7 @@ PokeAnim_PlaceGraphic:
 	ld l, a
 	ld b, 7
 	ld c, 7
-	jp ClearBox
+	jmp ClearBox
 
 PokeAnim_SetVBank1:
 	ldh a, [rSVBK]

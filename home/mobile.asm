@@ -26,7 +26,7 @@ MobileAPI::
 	ld [wc981], a
 	rst Bankswitch
 
-	jp _MobileAPI
+	jmp _MobileAPI
 
 ReturnMobileAPI::
 ; Return from _MobileAPI
@@ -134,17 +134,15 @@ Function3eea::
 	call Function3f35
 	pop bc
 	pop hl
-	jp MobileHome_PlaceBox
+	jr MobileHome_PlaceBox
 
 Function3f20::
 	hlcoord 0, 0, wAttrmap
-	ld b,  6
-	ld c, 20
+	lb bc, 6, 20
 	call Function3f35
 	hlcoord 0, 0
-	ld b,  4
-	ld c, 18
-	jp MobileHome_PlaceBox
+	lb bc, 4, 18
+	jr MobileHome_PlaceBox
 
 Function3f35::
 	ld a, 6
@@ -173,24 +171,21 @@ MobileHome_PlaceBox:
 	pop bc
 	dec b
 	jr nz, .RowLoop
-	jp .FillBottom
+	jr .FillBottom
 
 .FillTop:
 	ld a, $63
-	ld d, $62
-	ld e, $64
+	lb de, $62, $64
 	jr .FillRow
 
 .FillBottom:
 	ld a, $68
-	ld d, $67
-	ld e, $69
+	lb de, $67, $69
 	jr .FillRow
 
 .FillMiddle:
 	ld a, $7f
-	ld d, $65
-	ld e, $66
+	lb de, $65, $66
 
 .FillRow:
 	push hl
@@ -211,7 +206,7 @@ Function3f7c::
 	call GetMenuBoxDims
 	dec b
 	dec c
-	jp Function3eea
+	jr Function3eea
 
 Function3f88::
 	ld hl, wDecompressScratch
@@ -223,7 +218,7 @@ Function3f88::
 	ld a, [de]
 	inc de
 	cpl
-	ld [hl], 0
+	ld [hl], 0 ; no-optimize *hl++|*hl-- = N (Can't use a)
 	inc hl
 	ld [hli], a
 	dec c
@@ -243,7 +238,7 @@ Function3f9f::
 	inc de
 	inc de
 	cpl
-	ld [hl], $0
+	ld [hl], $0 ; no-optimize *hl++|*hl-- = N (Can't use a)
 	inc hl
 	ld [hli], a
 	dec c

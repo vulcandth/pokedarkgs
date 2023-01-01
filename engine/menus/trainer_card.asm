@@ -116,7 +116,7 @@ TrainerCard_Page1_LoadGFX:
 	lb bc, BANK(CardStatusGFX), 86
 	call Request2bpp
 	call TrainerCard_Page1_PrintDexCaught_GameTime
-	jp TrainerCard_IncrementJumptable
+	jr TrainerCard_IncrementJumptable
 
 TrainerCard_Page1_Joypad:
 	call TrainerCard_Page1_PrintGameTime
@@ -151,7 +151,7 @@ TrainerCard_Page2_LoadGFX:
 	call Request2bpp
 	ld hl, TrainerCard_JohtoBadgesOAM
 	call TrainerCard_Page2_3_InitObjectsAndStrings
-	jp TrainerCard_IncrementJumptable
+	jr TrainerCard_IncrementJumptable
 
 TrainerCard_Page2_Joypad:
 	ld hl, TrainerCard_JohtoBadgesOAM
@@ -208,7 +208,7 @@ TrainerCard_Page3_LoadGFX:
 	lb bc, BANK(BadgeGFX2), 44
 	call Request2bpp
 	call TrainerCard_Page2_3_InitObjectsAndStrings
-	jp TrainerCard_IncrementJumptable
+	jmp TrainerCard_IncrementJumptable
 
 TrainerCard_Page3_Joypad:
 	ld hl, TrainerCard_KantoBadgesOAM
@@ -304,7 +304,7 @@ TrainerCard_Page1_PrintDexCaught_GameTime:
 	ret nz
 	hlcoord 1, 9
 	lb bc, 2, 17
-	jp ClearBox
+	jmp ClearBox
 
 .Dex_PlayTime:
 	db   "#DEX"
@@ -344,7 +344,7 @@ endr
 	xor a
 	ld [wTrainerCardBadgeFrameCounter], a
 	pop hl
-	jp TrainerCard_Page2_3_OAMUpdate
+	jmp TrainerCard_Page2_3_OAMUpdate
 
 .BadgesTilemap:
 	db $79, $7a, $7b, $7c, $7d, -1 ; "BADGES"

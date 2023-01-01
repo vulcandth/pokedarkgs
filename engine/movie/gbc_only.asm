@@ -56,7 +56,7 @@ DrawGBCOnlyScreen:
 
 	ld de, GBCOnlyString
 	hlcoord 1, 10
-	jp PlaceString
+	jmp PlaceString
 
 DrawGBCOnlyBorder:
 	hlcoord 0, 0

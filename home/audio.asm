@@ -366,9 +366,7 @@ PlayMapMusicBike::
 	ld de, MUSIC_BICYCLE
 	ld a, [wPlayerState]
 	cp PLAYER_BIKE
-	jr z, .play
-	call GetMapMusic_MaybeSpecial
-.play
+	call nz, GetMapMusic_MaybeSpecial
 	push de
 	ld de, MUSIC_NONE
 	call PlayMusic
@@ -454,7 +452,7 @@ SpecialMapMusic::
 GetMapMusic_MaybeSpecial::
 	call SpecialMapMusic
 	ret c
-	jp GetMapMusic
+	jmp GetMapMusic
 
 CheckSFX::
 ; Return carry if any SFX channels are active.

@@ -57,7 +57,7 @@ LoadPokeComPalette:
 	ld de, wBGPals1
 	ld hl, PokeComPalette
 	ld bc, 8 palettes
-	jp FarCopyWRAM
+	jmp FarCopyWRAM
 
 PokeComPalette:
 INCLUDE "gfx/tilesets/pokecom_center.pal"
@@ -67,7 +67,7 @@ LoadBattleTowerInsidePalette:
 	ld de, wBGPals1
 	ld hl, BattleTowerInsidePalette
 	ld bc, 8 palettes
-	jp FarCopyWRAM
+	jmp FarCopyWRAM
 
 BattleTowerInsidePalette:
 INCLUDE "gfx/tilesets/battle_tower_inside.pal"
@@ -77,7 +77,7 @@ LoadIcePathPalette:
 	ld de, wBGPals1
 	ld hl, IcePathPalette
 	ld bc, 8 palettes
-	jp FarCopyWRAM
+	jmp FarCopyWRAM
 
 IcePathPalette:
 INCLUDE "gfx/tilesets/ice_path.pal"
@@ -87,7 +87,7 @@ LoadHousePalette:
 	ld de, wBGPals1
 	ld hl, HousePalette
 	ld bc, 8 palettes
-	jp FarCopyWRAM
+	jmp FarCopyWRAM
 
 HousePalette:
 INCLUDE "gfx/tilesets/house.pal"
@@ -97,7 +97,7 @@ LoadRadioTowerPalette:
 	ld de, wBGPals1
 	ld hl, RadioTowerPalette
 	ld bc, 8 palettes
-	jp FarCopyWRAM
+	jmp FarCopyWRAM
 
 RadioTowerPalette:
 INCLUDE "gfx/tilesets/radio_tower.pal"
@@ -125,7 +125,7 @@ LoadMansionPalette:
 	ld de, wBGPals1 palette PAL_BG_ROOF
 	ld hl, MansionPalette1 palette 8
 	ld bc, 1 palettes
-	jp FarCopyWRAM
+	jmp FarCopyWRAM
 
 MansionPalette2:
 INCLUDE "gfx/tilesets/mansion_2.pal"

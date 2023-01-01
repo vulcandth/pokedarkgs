@@ -6,13 +6,13 @@ BattleStart_TrainerHuds:
 	ld a, [wBattleMode]
 	dec a
 	ret z
-	jp ShowOTTrainerMonsRemaining
+	jr ShowOTTrainerMonsRemaining
 
 EnemySwitch_TrainerHud:
 	ld a, $e4
 	ldh [rOBP0], a
 	call LoadBallIconGFX
-	jp ShowOTTrainerMonsRemaining
+	jr ShowOTTrainerMonsRemaining
 
 ShowPlayerMonsRemaining:
 	call DrawPlayerPartyIconHUDBorder
@@ -27,7 +27,7 @@ ShowPlayerMonsRemaining:
 	ld a, 8
 	ld [wPlaceBallsDirection], a
 	ld hl, wShadowOAMSprite00
-	jp LoadTrainerHudOAM
+	jmp LoadTrainerHudOAM
 
 ShowOTTrainerMonsRemaining:
 	call DrawEnemyHUDBorder
@@ -42,7 +42,7 @@ ShowOTTrainerMonsRemaining:
 	ld a, -8
 	ld [wPlaceBallsDirection], a
 	ld hl, wShadowOAMSprite00 + PARTY_LENGTH * SPRITEOAMSTRUCT_LENGTH
-	jp LoadTrainerHudOAM
+	jmp LoadTrainerHudOAM
 
 StageBallTilesData:
 	ld a, [de]
@@ -197,7 +197,7 @@ LinkBattle_TrainerHuds:
 	ld [hli], a
 	ld [hl], 13 * 8
 	ld hl, wShadowOAMSprite00 + PARTY_LENGTH * SPRITEOAMSTRUCT_LENGTH
-	jp LoadTrainerHudOAM
+	jr LoadTrainerHudOAM
 
 LoadTrainerHudOAM:
 	ld de, wBattleHUDTiles
@@ -225,7 +225,7 @@ LoadBallIconGFX:
 	ld de, .gfx
 	ld hl, vTiles0 tile $31
 	lb bc, BANK(LoadBallIconGFX), 4
-	jp Get2bppViaHDMA
+	jmp Get2bppViaHDMA
 
 .gfx
 INCBIN "gfx/battle/balls.2bpp"

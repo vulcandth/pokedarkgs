@@ -1,6 +1,6 @@
 _Diploma:
 	call PlaceDiplomaOnScreen
-	jp WaitPressAorB_BlinkCursor
+	jmp WaitPressAorB_BlinkCursor
 
 PlaceDiplomaOnScreen:
 	call ClearBGPalettes
@@ -31,7 +31,7 @@ PlaceDiplomaOnScreen:
 	ld b, SCGB_DIPLOMA
 	call GetSGBLayout
 	call SetPalettes
-	jp DelayFrame
+	jmp DelayFrame
 
 .Player:
 	db "PLAYER@"
@@ -70,7 +70,7 @@ PrintDiplomaPage2:
 	inc hl
 	ld de, wGameTimeMinutes
 	lb bc, PRINTNUM_LEADINGZEROS | 1, 2
-	jp PrintNum
+	jmp PrintNum
 
 .PlayTime: db "PLAY TIME@"
 .GameFreak: db "GAME FREAK@"

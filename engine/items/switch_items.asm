@@ -16,7 +16,7 @@ SwitchItemsInBag:
 	dec a
 	ld [wSwitchItem], a
 	call .try_combining_stacks
-	jp c, .combine_stacks
+	jmp c, .combine_stacks
 	ld a, [wScrollingMenuCursorPosition]
 	ld c, a
 	ld a, [wSwitchItem]
@@ -183,7 +183,7 @@ ItemSwitch_CopyItemToBuffer:
 	call ItemSwitch_GetNthItem
 	ld de, wSwitchItemBuffer
 	call ItemSwitch_GetItemFormatSize
-	jp CopyBytes
+	jmp CopyBytes
 
 ItemSwitch_CopyBufferToItem:
 	call ItemSwitch_GetNthItem
@@ -191,7 +191,7 @@ ItemSwitch_CopyBufferToItem:
 	ld e, l
 	ld hl, wSwitchItemBuffer
 	call ItemSwitch_GetItemFormatSize
-	jp CopyBytes
+	jmp CopyBytes
 
 ItemSwitch_GetNthItem:
 	push af
@@ -202,7 +202,7 @@ ItemSwitch_GetNthItem:
 	ld l, a
 	inc hl
 	pop af
-	jp AddNTimes
+	jmp AddNTimes
 
 ItemSwitch_GetItemOffset:
 	push hl

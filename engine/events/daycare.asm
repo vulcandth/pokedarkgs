@@ -35,7 +35,7 @@ DayCareMan:
 	ld hl, wDayCareMan
 	set DAYCAREMAN_HAS_MON_F, [hl]
 	call DayCare_DepositPokemonText
-	jp DayCare_InitBreeding
+	jmp DayCare_InitBreeding
 
 .AskWithdrawMon:
 	farcall GetBreedMon1LevelGrowth
@@ -55,7 +55,7 @@ DayCareMan:
 
 .cancel
 	ld a, DAYCARETEXT_COME_AGAIN
-	jp PrintDayCareText
+	jmp PrintDayCareText
 
 DayCareLady:
 	ld hl, wDayCareLady
@@ -71,7 +71,7 @@ DayCareLady:
 	ld hl, wDayCareLady
 	set DAYCARELADY_HAS_MON_F, [hl]
 	call DayCare_DepositPokemonText
-	jp DayCare_InitBreeding
+	jmp DayCare_InitBreeding
 
 .AskWithdrawMon:
 	farcall GetBreedMon2LevelGrowth
@@ -92,7 +92,7 @@ DayCareLady:
 
 .cancel
 	ld a, DAYCARETEXT_COME_AGAIN
-	jp PrintDayCareText
+	jmp PrintDayCareText
 
 DayCareLadyIntroText:
 	bit DAYCARELADY_ACTIVE_F, [hl]
@@ -101,12 +101,12 @@ DayCareLadyIntroText:
 	inc a
 .okay
 	call PrintDayCareText
-	jp YesNoBox
+	jmp YesNoBox
 
 DayCareManIntroText:
 	set DAYCAREMAN_ACTIVE_F, [hl]
 	call PrintDayCareText
-	jp YesNoBox
+	jmp YesNoBox
 
 DayCareAskDepositPokemon:
 	ld a, [wPartyCount]
@@ -170,7 +170,7 @@ DayCare_DepositPokemonText:
 	ld a, [wCurPartySpecies]
 	call PlayMonCry
 	ld a, DAYCARETEXT_COME_BACK_LATER
-	jp PrintDayCareText
+	jmp PrintDayCareText
 
 DayCare_AskWithdrawBreedMon:
 	ld a, [wStringBuffer2 + 1]
@@ -227,7 +227,7 @@ DayCare_GetBackMonForMoney:
 	ld a, [wCurPartySpecies]
 	call PlayMonCry
 	ld a, DAYCARETEXT_GOT_BACK
-	jp PrintDayCareText
+	jr PrintDayCareText
 
 GetPriceToRetrieveBreedmon:
 	ld a, b
@@ -260,7 +260,7 @@ PrintDayCareText:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp PrintText
+	jmp PrintText
 
 .TextTable:
 ; entries correspond to DAYCARETEXT_* constants
@@ -370,7 +370,7 @@ DayCareManOutside:
 	bit DAYCAREMAN_HAS_EGG_F, [hl]
 	jr nz, .AskGiveEgg
 	ld hl, .NotYetText
-	jp PrintText
+	jmp PrintText
 
 .NotYetText:
 	text_far _NotYetText
@@ -533,7 +533,7 @@ DayCare_InitBreeding:
 	cp 150
 	jr c, .loop
 	ld [wStepsToEgg], a
-	jp .UselessJump
+	jr .UselessJump
 
 .UselessJump:
 	xor a

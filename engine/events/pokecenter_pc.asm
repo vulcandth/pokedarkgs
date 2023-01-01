@@ -37,7 +37,7 @@ PokemonCenterPC:
 .shutdown
 	call PC_PlayShutdownSound
 	call ExitMenu
-	jp CloseWindow
+	jmp CloseWindow
 
 .TopMenu:
 	db MENU_BACKUP_TILES | MENU_NO_CLICK_SFX ; flags
@@ -184,7 +184,7 @@ PC_PlayBootSound:
 PC_PlayShutdownSound:
 	ld de, SFX_SHUT_DOWN_PC
 	call PC_WaitPlaySFX
-	jp WaitSFX
+	jmp WaitSFX
 
 PC_PlayChoosePCSound:
 	ld de, SFX_CHOOSE_PC_OPTION
@@ -199,7 +199,7 @@ PC_WaitPlaySFX:
 	push de
 	call WaitSFX
 	pop de
-	jp PlaySFX
+	jmp PlaySFX
 
 _PlayersHousePC:
 	call PC_PlayBootSound
@@ -231,7 +231,7 @@ _PlayersPC:
 	ld hl, PlayersPCAskWhatDoText
 	call PC_DisplayTextWaitMenu
 	call .PlayersPC
-	jp ExitMenu
+	jmp ExitMenu
 
 .PlayersPC:
 	xor a
@@ -251,7 +251,7 @@ _PlayersPC:
 	xor a
 
 .done
-	jp ExitMenu
+	jmp ExitMenu
 
 PlayersPCMenuData:
 	db MENU_BACKUP_TILES ; flags
@@ -393,11 +393,11 @@ PlayerWithdrawItemMenu:
 	call MenuTextbox
 	xor a
 	ldh [hBGMapMode], a
-	jp ExitMenu
+	jmp ExitMenu
 
 .PackFull:
 	ld hl, .PlayersPCNoRoomWithdrawText
-	jp MenuTextboxBackup
+	jmp MenuTextboxBackup
 
 .done
 	ret
@@ -549,11 +549,11 @@ PlayerDepositItemMenu:
 	call TossItem
 	predef PartyMonItemName
 	ld hl, .PlayersPCDepositItemsText
-	jp PrintText
+	jmp PrintText
 
 .NoRoomInPC:
 	ld hl, .PlayersPCNoRoomDepositText
-	jp PrintText
+	jmp PrintText
 
 .DeclinedToDeposit:
 	and a
@@ -633,7 +633,7 @@ PCItemsJoypad:
 .select_1
 	farcall SwitchItemsInBag
 .next
-	jp .loop
+	jr .loop
 
 .a_1
 	farcall ScrollingMenu_ClearLeftColumn
@@ -662,7 +662,7 @@ PCItemsJoypad:
 
 PC_DisplayText:
 	call MenuTextbox
-	jp ExitMenu
+	jmp ExitMenu
 
 PokecenterPCTurnOnText:
 	text_far _PokecenterPCTurnOnText

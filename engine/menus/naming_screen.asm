@@ -7,7 +7,7 @@ DEF NAMINGSCREEN_UNDERLINE  EQU "☎" ; $d9
 _NamingScreen:
 	call DisableSpriteUpdates
 	call NamingScreen
-	jp ReturnToMapWithSpeechTextbox
+	jmp ReturnToMapWithSpeechTextbox
 
 NamingScreen:
 	ld hl, wNamingScreenDestinationPointer
@@ -39,7 +39,7 @@ NamingScreen:
 	ldh [hMapAnims], a
 	pop af
 	ld [wOptions], a
-	jp ClearJoypad
+	jmp ClearJoypad
 
 .SetUpNamingScreen:
 	call ClearBGPalettes
@@ -54,7 +54,7 @@ NamingScreen:
 	call WaitBGMap
 	call WaitTop
 	call SetPalettes
-	jp NamingScreen_InitNameEntry
+	jmp NamingScreen_InitNameEntry
 
 .GetNamingScreenSetup:
 	ld a, [wNamingScreenType]
@@ -124,7 +124,7 @@ NamingScreen:
 	hlcoord 1, 2
 	ld [hl], a
 .genderless
-	jp .StoreMonIconParams
+	jmp .StoreMonIconParams
 
 .NicknameStrings:
 	db "'S@"
@@ -136,7 +136,7 @@ NamingScreen:
 	hlcoord 5, 2
 	ld de, .PlayerNameString
 	call PlaceString
-	jp .StoreSpriteIconParams
+	jmp .StoreSpriteIconParams
 
 .PlayerNameString:
 	db "YOUR NAME?@"
@@ -148,7 +148,7 @@ NamingScreen:
 	hlcoord 5, 2
 	ld de, .RivalNameString
 	call PlaceString
-	jp .StoreSpriteIconParams
+	jmp .StoreSpriteIconParams
 
 .RivalNameString:
 	db "RIVAL'S NAME?@"
@@ -160,7 +160,7 @@ NamingScreen:
 	hlcoord 5, 2
 	ld de, .MomNameString
 	call PlaceString
-	jp .StoreSpriteIconParams
+	jmp .StoreSpriteIconParams
 
 .MomNameString:
 	db "MOTHER'S NAME?@"
@@ -183,7 +183,7 @@ NamingScreen:
 	hlcoord 5, 2
 	ld de, .BoxNameString
 	call PlaceString
-	jp .StoreBoxIconParams
+	jr .StoreBoxIconParams
 
 .BoxNameString:
 	db "BOX NAME?@"
@@ -192,7 +192,7 @@ NamingScreen:
 	hlcoord 3, 2
 	ld de, .oTomodachi_no_namae_sutoringu
 	call PlaceString
-	jp .StoreSpriteIconParams
+	jr .StoreSpriteIconParams
 
 .oTomodachi_no_namae_sutoringu
 	db "おともだち　の　なまえは？@"
@@ -226,7 +226,7 @@ NamingScreen:
 .not_kris
 	ld a, b
 	depixel 4, 4, 4, 0
-	jp InitSpriteAnimStruct
+	jmp InitSpriteAnimStruct
 
 .StoreMonIconParams:
 	ld a, MON_NAME_LENGTH - 1
@@ -445,7 +445,7 @@ NamingScreenJoypadLoop:
 	ret
 
 .b
-	jp NamingScreen_DeleteCharacter
+	jmp NamingScreen_DeleteCharacter
 
 .end
 	call NamingScreen_StoreEntry
@@ -460,11 +460,11 @@ NamingScreenJoypadLoop:
 	ld [hl], a
 	jr z, .upper
 	ld de, NameInputLower
-	jp NamingScreen_ApplyTextInputMode
+	jmp NamingScreen_ApplyTextInputMode
 
 .upper
 	ld de, NameInputUpper
-	jp NamingScreen_ApplyTextInputMode
+	jmp NamingScreen_ApplyTextInputMode
 
 .GetCursorPosition:
 	ld hl, wNamingScreenCursorObjectPointer
@@ -1129,11 +1129,11 @@ INCBIN "gfx/naming_screen/mail.2bpp"
 	ld [hl], a
 	jr nz, .switch_to_lowercase
 	ld de, MailEntry_Uppercase
-	jp .PlaceMailCharset
+	jmp .PlaceMailCharset
 
 .switch_to_lowercase
 	ld de, MailEntry_Lowercase
-	jp .PlaceMailCharset
+	jmp .PlaceMailCharset
 
 ; called from engine/gfx/sprite_anims.asm
 
@@ -1315,7 +1315,7 @@ ComposeMail_GetCursorPosition:
 
 MailComposition_TryAddLastCharacter:
 	ld a, [wNamingScreenLastCharacter]
-	jp MailComposition_TryAddCharacter
+	jmp MailComposition_TryAddCharacter
 
 .one_back
 	push hl
@@ -1329,7 +1329,7 @@ MailComposition_TryAddLastCharacter:
 .loop
 	ld a, [hli]
 	cp -1 ; end?
-	jp z, NamingScreen_AdvanceCursor_CheckEndOfString
+	jmp z, NamingScreen_AdvanceCursor_CheckEndOfString
 	cp c
 	jr z, .done
 	inc hl
@@ -1337,6 +1337,6 @@ MailComposition_TryAddLastCharacter:
 
 .done
 	ld a, [hl]
-	jp NamingScreen_LoadNextCharacter
+	jmp NamingScreen_LoadNextCharacter
 
 INCLUDE "data/text/mail_input_chars.asm"

@@ -87,13 +87,13 @@ SGB_ApplyCreditsPals: ; unreferenced
 	ld hl, wSGBPals
 	call PushSGBPals
 	ld hl, BlkPacket_AllPal0
-	jp PushSGBPals
+	jmp PushSGBPals
 
 InitPartyMenuPalettes:
 	ld hl, PalPacket_PartyMenu + 1
 	call CopyFourPalettes
 	call InitPartyMenuOBPals
-	jp WipeAttrmap
+	jmp WipeAttrmap
 
 ; SGB layout for SCGB_PARTY_MENU_HP_BARS
 SGB_ApplyPartyMenuHPPals:
@@ -157,7 +157,7 @@ Intro_LoadAllPal0: ; unreferenced
 	and a
 	ret z
 	ld hl, BlkPacket_AllPal0
-	jp PushSGBPals
+	jmp PushSGBPals
 
 Intro_LoadBetaIntroVenusaurPalettes: ; unreferenced
 	call CheckCGB
@@ -166,13 +166,13 @@ Intro_LoadBetaIntroVenusaurPalettes: ; unreferenced
 	and a
 	ret z
 	ld hl, PalPacket_BetaIntroVenusaur
-	jp PushSGBPals
+	jmp PushSGBPals
 
 .cgb
 	ld de, wOBPals1
 	ld a, PREDEFPAL_BETA_INTRO_VENUSAUR
 	call GetPredefPal
-	jp LoadHLPaletteIntoDE
+	jmp LoadHLPaletteIntoDE
 
 Intro_LoadPackPalettes: ; unreferenced
 	call CheckCGB
@@ -181,13 +181,13 @@ Intro_LoadPackPalettes: ; unreferenced
 	and a
 	ret z
 	ld hl, PalPacket_Pack
-	jp PushSGBPals
+	jmp PushSGBPals
 
 .cgb
 	ld de, wOBPals1
 	ld a, PREDEFPAL_PACK
 	call GetPredefPal
-	jp LoadHLPaletteIntoDE
+	jmp LoadHLPaletteIntoDE
 
 Intro_LoadMonPalette:
 	call CheckCGB
@@ -212,13 +212,13 @@ Intro_LoadMonPalette:
 	ld a, [hl]
 	ld [wSGBPals + 6], a
 	ld hl, wSGBPals
-	jp PushSGBPals
+	jmp PushSGBPals
 
 .cgb
 	ld de, wOBPals1
 	ld a, c
 	call GetMonPalettePointer
-	jp LoadPalette_White_Col1_Col2_Black
+	jmp LoadPalette_White_Col1_Col2_Black
 
 LoadTrainerClassPaletteAsNthBGPal:
 	ld a, [wTrainerClass]
@@ -253,14 +253,14 @@ LoadNthMiddleBGPal:
 	ld e, l
 	ld d, h
 	pop hl
-	jp LoadPalette_White_Col1_Col2_Black
+	jmp LoadPalette_White_Col1_Col2_Black
 
 LoadBetaPokerPalettes: ; unreferenced
 	ldh a, [hCGB]
 	and a
 	jr nz, .cgb
 	ld hl, wBetaPokerSGBPals
-	jp PushSGBPals
+	jmp PushSGBPals
 
 .cgb
 	ld a, [wBetaPokerSGBCol]
@@ -282,7 +282,7 @@ LoadBetaPokerPalettes: ; unreferenced
 	ld a, [wBetaPokerSGBAttr]
 	and $3
 	call FillBoxCGB
-	jp CopyTilemapAtOnce
+	jmp CopyTilemapAtOnce
 
 ApplyMonOrTrainerPals:
 	call CheckCGB
@@ -303,7 +303,7 @@ ApplyMonOrTrainerPals:
 	call LoadPalette_White_Col1_Col2_Black
 	call WipeAttrmap
 	call ApplyAttrmap
-	jp ApplyPals
+	jmp ApplyPals
 
 ApplyHPBarPals:
 	ld a, [wWhichHPBar]
@@ -352,7 +352,7 @@ ApplyHPBarPals:
 .done
 	lb bc, 2, 8
 	ld a, e
-	jp FillBoxCGB
+	jmp FillBoxCGB
 
 LoadStatsScreenPals:
 	call CheckCGB
@@ -407,7 +407,7 @@ LoadMailPalettes:
 	ld hl, wSGBPals
 	call PushSGBPals
 	ld hl, BlkPacket_AllPal0
-	jp PushSGBPals
+	jmp PushSGBPals
 
 .cgb
 	ld de, wBGPals1
@@ -416,7 +416,7 @@ LoadMailPalettes:
 	call FarCopyWRAM
 	call ApplyPals
 	call WipeAttrmap
-	jp ApplyAttrmap
+	jmp ApplyAttrmap
 
 .MailPals:
 INCLUDE "gfx/mail/mail.pal"
@@ -555,14 +555,14 @@ WipeAttrmap:
 	hlcoord 0, 0, wAttrmap
 	ld bc, SCREEN_WIDTH * SCREEN_HEIGHT
 	xor a
-	jp ByteFill
+	jmp ByteFill
 
 ApplyPals:
 	ld hl, wBGPals1
 	ld de, wBGPals2
 	ld bc, 16 palettes
 	ld a, BANK(wGBCPalettes)
-	jp FarCopyWRAM
+	jmp FarCopyWRAM
 
 ApplyAttrmap:
 	ldh a, [rLCDC]
@@ -630,14 +630,14 @@ CGB_ApplyPartyMenuHPPals:
 .done
 	lb bc, 2, 8
 	ld a, e
-	jp FillBoxCGB
+	jmp FillBoxCGB
 
 InitPartyMenuOBPals:
 	ld hl, PartyMenuOBPals
 	ld de, wOBPals1
 	ld bc, 8 palettes
 	ld a, BANK(wOBPals1)
-	jp FarCopyWRAM
+	jmp FarCopyWRAM
 
 SetFirstOBJPalette::
 ; input: e must contain the offset of the selected palette from PartyMenuOBPals
@@ -650,7 +650,7 @@ SetFirstOBJPalette::
 	call FarCopyWRAM
 	ld a, TRUE
 	ldh [hCGBPalUpdate], a
-	jp ApplyPals
+	jmp ApplyPals
 
 GetBattlemonBackpicPalettePointer:
 	push de
@@ -674,7 +674,7 @@ GetEnemyFrontpicPalettePointer:
 
 GetPlayerOrMonPalettePointer:
 	and a
-	jp nz, GetMonNormalOrShinyPalettePointer
+	jmp nz, GetMonNormalOrShinyPalettePointer
 	ld a, [wPlayerSpriteSetupFlags]
 	bit PLAYERSPRITESETUP_FEMALE_TO_MALE_F, a
 	jr nz, .male
@@ -690,7 +690,7 @@ GetPlayerOrMonPalettePointer:
 
 GetFrontpicPalettePointer:
 	and a
-	jp nz, GetMonNormalOrShinyPalettePointer
+	jmp nz, GetMonNormalOrShinyPalettePointer
 	ld a, [wTrainerClass]
 
 GetTrainerPalettePointer:
@@ -703,7 +703,7 @@ GetTrainerPalettePointer:
 	ret
 
 GetMonPalettePointer:
-	jp _GetMonPalettePointer
+	jr _GetMonPalettePointer
 
 CGBCopyBattleObjectPals: ; unreferenced
 ; dummied out
@@ -723,7 +723,7 @@ CGBCopyBattleObjectPals: ; unreferenced
 	ld de, wOBPals1 palette 2
 	ld bc, 2 palettes
 	ld a, BANK(wOBPals1)
-	jp FarCopyWRAM
+	jmp FarCopyWRAM
 
 BattleObjectPals:
 INCLUDE "gfx/battle_anims/battle_anims.pal"
@@ -738,7 +738,7 @@ CGBCopyTwoPredefObjectPals: ; unreferenced
 	call .PushPalette
 	ld a, PREDEFPAL_RB_GREENMON
 	call GetPredefPal
-	jp .PushPalette
+	jr .PushPalette
 
 .PushPalette:
 	ld c, 1 palettes
@@ -958,7 +958,7 @@ PushSGBBorder:
 	push de
 	call SGBBorder_YetMorePalPushing
 	pop hl
-	jp SGBBorder_MorePalPushing
+	jmp SGBBorder_MorePalPushing
 
 .LoadSGBBorderPointers:
 	ld hl, SGBBorderGFX
@@ -969,7 +969,7 @@ SGB_ClearVRAM:
 	ld hl, VRAM_Begin
 	ld bc, VRAM_End - VRAM_Begin
 	xor a
-	jp ByteFill
+	jmp ByteFill
 
 PushSGBBorderPalsAndWait:
 	ld hl, MltReq2Packet
@@ -1020,7 +1020,7 @@ endr
 	ld hl, MltReq1Packet
 	call _PushSGBPals
 	vc_hook Unknown_network_reset ; Unknown why this hook is here, doesn't seem to be needed
-	jp SGBDelayCycles
+	jmp SGBDelayCycles
 
 SGBBorder_PushBGPals:
 	call DisableLCD
@@ -1276,7 +1276,7 @@ endr
 	ld de, wBGPals1 palette PAL_BG_ROOF color 1
 	ld bc, 4
 	ld a, BANK(wBGPals1)
-	jp FarCopyWRAM
+	jmp FarCopyWRAM
 
 INCLUDE "data/maps/environment_colors.asm"
 

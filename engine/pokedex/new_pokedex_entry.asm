@@ -48,4 +48,4 @@ NewPokedexEntry:
 	ld [wTempMonDVs + 2], a
 	ld b, SCGB_TRAINER_OR_MON_FRONTPIC_PALS
 	call GetSGBLayout
-	jp SetPalettes
+	jmp SetPalettes

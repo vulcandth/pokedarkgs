@@ -19,7 +19,7 @@ _LoadStandardFont::
 	ld de, Font + 96 * LEN_1BPP_TILE
 	ld hl, vTiles1 tile $60
 	lb bc, BANK(Font), 32 ; "'" to "9"
-	jp Get1bppViaHDMA
+	jmp Get1bppViaHDMA
 
 _LoadFontsExtra1::
 	jr LoadFrame
@@ -48,7 +48,7 @@ LoadFrame:
 	ld hl, vTiles2 tile " " ; $7f
 	ld de, TextboxSpaceGFX
 	lb bc, BANK(TextboxSpaceGFX), 1
-	jp Get1bppViaHDMA
+	jmp Get1bppViaHDMA
 
 LoadBattleFontsHPBar:
 	ld de, FontBattleExtra
@@ -77,7 +77,7 @@ LoadHPBar:
 	ld de, MobilePhoneTilesGFX + 7 tiles ; mobile phone icon
 	ld hl, vTiles2 tile $5e
 	lb bc, BANK(MobilePhoneTilesGFX), 2
-	jp Get2bppViaHDMA
+	jmp Get2bppViaHDMA
 
 StatsScreen_LoadFont:
 	call _LoadFontsBattleExtra
@@ -101,4 +101,4 @@ LoadStatsScreenPageTilesGFX:
 	ld de, StatsScreenPageTilesGFX
 	ld hl, vTiles2 tile $31
 	lb bc, BANK(StatsScreenPageTilesGFX), 17
-	jp Get2bppViaHDMA
+	jmp Get2bppViaHDMA

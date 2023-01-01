@@ -38,7 +38,7 @@ CheckWarpFacingDown:
 	ld de, 1
 	ld hl, .blocks
 	ld a, [wPlayerTile]
-	jp IsInArray
+	jmp IsInArray
 
 .blocks
 	db COLL_DOOR
@@ -56,7 +56,7 @@ CheckGrassCollision::
 	ld a, [wPlayerTile]
 	ld hl, .blocks
 	ld de, 1
-	jp IsInArray
+	jmp IsInArray
 
 .blocks
 	db COLL_CUT_08
@@ -75,7 +75,7 @@ CheckCutCollision:
 	ld a, c
 	ld hl, .blocks
 	ld de, 1
-	jp IsInArray
+	jmp IsInArray
 
 .blocks
 	db COLL_CUT_TREE

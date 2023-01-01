@@ -74,7 +74,7 @@ NPCTrade::
 	ld l, LOCKED_MON_ID_TRADE_SEND
 	call LockPokemonID
 	ld l, LOCKED_MON_ID_TRADE_RECEIVE
-	jp LockPokemonID
+	jmp LockPokemonID
 
 .TradeAnimation:
 	call DisableSpriteUpdates
@@ -88,7 +88,7 @@ NPCTrade::
 	ld [wTradeDialog], a
 	pop af
 	ld [wJumptableIndex], a
-	jp ReturnToMapWithSpeechTextbox
+	jmp ReturnToMapWithSpeechTextbox
 
 CheckTradeGender:
 	xor a
@@ -319,7 +319,7 @@ GetTradeAttr:
 
 Trade_GetAttributeOfCurrentPartymon:
 	ld a, [wCurPartyMon]
-	jp AddNTimes
+	jmp AddNTimes
 
 Trade_GetAttributeOfLastPartymon:
 	ld a, [wPartyCount]
@@ -424,7 +424,7 @@ PrintTradeText:
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	jp PrintText
+	jmp PrintText
 
 TradeTexts:
 ; entries correspond to TRADE_DIALOG_* × TRADE_DIALOGSET_* constants

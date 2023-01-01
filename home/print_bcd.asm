@@ -20,7 +20,7 @@ PrintBCDNumber::
 	jr z, .loop
 	bit PRINTNUM_LEADINGZEROS_F, b
 	jr nz, .loop ; skip currency symbol
-	ld [hl], "¥"
+	ld [hl], "¥" ; no-optimize *hl++|*hl-- = N (Can't use a)
 	inc hl
 .loop
 	ld a, [de]
@@ -41,7 +41,7 @@ PrintBCDNumber::
 .skipLeftAlignmentAdjustment
 	bit PRINTNUM_MONEY_F, b
 	jr z, .skipCurrencySymbol
-	ld [hl], "¥" ; currency symbol
+	ld [hl], "¥" ; no-optimize *hl++|*hl-- = N (Can't use a)
 	inc hl
 .skipCurrencySymbol
 	ld [hl], "0"
@@ -51,7 +51,6 @@ PrintBCDNumber::
 
 PrintBCDDigit::
 	and %00001111
-	and a
 	jr z, .zeroDigit
 ; nonzero digit
 	bit PRINTNUM_LEADINGZEROS_F, b ; have any non-space characters been printed?
@@ -59,7 +58,7 @@ PrintBCDDigit::
 ; if bit 7 is set, then no numbers have been printed yet
 	bit PRINTNUM_MONEY_F, b
 	jr z, .skipCurrencySymbol
-	ld [hl], "¥"
+	ld [hl], "¥" ; no-optimize *hl++|*hl-- = N (Can't use a)
 	inc hl
 	res PRINTNUM_MONEY_F, b
 .skipCurrencySymbol
@@ -67,7 +66,7 @@ PrintBCDDigit::
 .outputDigit
 	add "0"
 	ld [hli], a
-	jp PrintLetterDelay
+	jmp PrintLetterDelay
 
 .zeroDigit
 	bit PRINTNUM_LEADINGZEROS_F, b ; either printing leading zeroes or already reached a nonzero digit?

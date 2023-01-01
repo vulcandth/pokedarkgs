@@ -15,7 +15,7 @@ IsHMMove::
 	ld c, l
 	ld hl, .HMMoves
 	ld de, 2
-	jp IsInWordArray
+	jmp IsInWordArray
 
 .HMMoves:
 	dw CUT

@@ -109,7 +109,7 @@ PlayStereoCry::
 	ld [wStereoPanningMask], a
 	pop af
 	call _PlayMonCry
-	jp WaitSFX
+	jmp WaitSFX
 
 PlayStereoCry2::
 ; Don't wait for the cry to end.
@@ -118,11 +118,11 @@ PlayStereoCry2::
 	ld a, 1
 	ld [wStereoPanningMask], a
 	pop af
-	jp _PlayMonCry
+	jr _PlayMonCry
 
 PlayMonCry::
 	call PlayMonCry2
-	jp WaitSFX
+	jmp WaitSFX
 
 PlayMonCry2::
 ; Don't wait for the cry to end.
@@ -207,7 +207,7 @@ PrintLevel::
 
 	ld a, [wTempMonLevel]
 _PrintLevel::
-	ld [hl], "<LV>"
+	ld [hl], "<LV>" ; no-optimize *hl++|*hl-- = N (Can't use reg a without TODO: rewrite)
 	inc hl
 
 ; How many digits?
@@ -222,15 +222,15 @@ _PrintLevel::
 
 PrintLevel_Force3Digits::
 ; Print :L and all 3 digits
-	ld [hl], "<LV>"
+	ld [hl], "<LV>" ; no-optimize *hl++|*hl-- = N (Can't use reg a without TODO: rewrite)
 	inc hl
 	ld c, 3
-
+; fallthrough
 Print8BitNumLeftAlign::
 	ld [wTextDecimalByte], a
 	ld de, wTextDecimalByte
 	ld b, PRINTNUM_LEFTALIGN | 1
-	jp PrintNum
+	jmp PrintNum
 
 GetBaseData::
 	push bc

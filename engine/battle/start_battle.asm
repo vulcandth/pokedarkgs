@@ -9,7 +9,7 @@ ShowLinkBattleParticipants:
 	ld c, 150
 	call DelayFrames
 	call ClearTilemap
-	jp ClearSprites
+	jmp ClearSprites
 
 FindFirstAliveMonAndStartBattle:
 	xor a
@@ -43,9 +43,9 @@ PlayBattleMusic:
 	ld a, [wBattleType]
 	cp BATTLETYPE_SUICUNE
 	ld de, MUSIC_SUICUNE_BATTLE
-	jp z, .done
+	jmp z, .done
 	cp BATTLETYPE_ROAMING
-	jp z, .done
+	jmp z, .done
 
 	; Are we fighting a trainer?
 	ld a, [wOtherTrainerClass]

@@ -28,7 +28,7 @@ DrawHP:
 	ld e, a
 	ld a, 6
 	ld d, a
-	jp .fainted
+	jr .fainted
 
 .at_least_1_hp
 	ld a, [wTempMonMaxHP]
@@ -127,7 +127,7 @@ PrintTempMonStats:
 	ld de, wTempMonDVs + 1
 	ld a, [de]
 	and $f
-	jp .PrintDV
+	jr .PrintDV
 
 .prep:
 	push bc

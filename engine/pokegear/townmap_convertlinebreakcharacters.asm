@@ -17,4 +17,4 @@ TownMap_ConvertLineBreakCharacters:
 .end
 	ld de, wStringBuffer1
 	hlcoord 9, 0
-	jp PlaceString
+	jmp PlaceString

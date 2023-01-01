@@ -7,7 +7,7 @@ Intro_MainMenu:
 	ld [wMapMusic], a
 	call PlayMusic
 	farcall MainMenu
-	jp StartTitleScreen
+	jmp StartTitleScreen
 
 PrintDayOfWeek:
 	push de
@@ -21,7 +21,7 @@ PrintDayOfWeek:
 	ld h, b
 	ld l, c
 	ld de, .Day
-	jp PlaceString
+	jmp PlaceString
 
 .Days:
 	db "SUN@"
@@ -41,7 +41,7 @@ NewGame_ClearTilemapEtc:
 	call ClearTilemap
 	call LoadFontsExtra
 	call LoadStandardFont
-	jp ClearWindowData
+	jmp ClearWindowData
 
 MysteryGift:
 	call UpdateTime
@@ -70,7 +70,7 @@ NewGame:
 
 	ld a, MAPSETUP_WARP
 	ldh [hMapEntryMethod], a
-	jp FinishContinueFunction
+	jmp FinishContinueFunction
 
 AreYouABoyOrAreYouAGirl:
 	farcall Mobile_AlwaysReturnNotCarry ; mobile
@@ -86,7 +86,7 @@ AreYouABoyOrAreYouAGirl:
 ResetWRAM:
 	xor a
 	ldh [hBGMapMode], a
-	jp _ResetWRAM
+	jr _ResetWRAM
 
 _ResetWRAM:
 	ld a, BANK("16-bit WRAM tables")
@@ -217,7 +217,7 @@ endc
 
 	farcall DeleteMobileEventIndex
 
-	jp ResetGameTime
+	jmp ResetGameTime
 
 .InitList:
 ; Loads 0 in the count and -1 in the first item or mon slot.
@@ -234,7 +234,7 @@ InitializeMagikarpHouse:
 	ld a, $6
 	ld [hli], a
 	ld de, .Ralph
-	jp CopyName2
+	jmp CopyName2
 
 .Ralph:
 	db "RALPH@"
@@ -257,7 +257,7 @@ InitializeNPCNames:
 
 .Copy:
 	ld bc, NAME_LENGTH
-	jp CopyBytes
+	jmp CopyBytes
 
 .Rival:  db "???@"
 .Red:    db "RED@"
@@ -294,7 +294,7 @@ LoadOrRegenerateLuckyIDNumber:
 	ld a, c
 	ld [wLuckyIDNumber + 1], a
 	ld [sLuckyIDNumber + 1], a
-	jp CloseSRAM
+	jmp CloseSRAM
 
 Continue:
 	farcall TryLoadSaveFile
@@ -338,7 +338,7 @@ Continue:
 	jr z, .SpawnAfterE4
 	ld a, MAPSETUP_CONTINUE
 	ldh [hMapEntryMethod], a
-	jp FinishContinueFunction
+	jmp FinishContinueFunction
 
 .FailToLoad:
 	ret
@@ -347,7 +347,7 @@ Continue:
 	ld a, SPAWN_NEW_BARK
 	ld [wDefaultSpawnpoint], a
 	call PostCreditsSpawn
-	jp FinishContinueFunction
+	jr FinishContinueFunction
 
 SpawnAfterRed:
 	ld a, SPAWN_MT_SILVER
@@ -387,7 +387,7 @@ Continue_MobileAdapterMenu:
 	ld a, HIGH(MUSIC_NONE)
 	ld [wMusicFadeID + 1], a
 	ld c, 35
-	jp DelayFrames
+	jmp DelayFrames
 
 ConfirmContinue:
 .loop
@@ -433,7 +433,7 @@ FinishContinueFunction:
 	ld a, [wSpawnAfterChampion]
 	cp SPAWN_RED
 	jr z, .AfterRed
-	jp Reset
+	jmp Reset
 
 .AfterRed:
 	call SpawnAfterRed
@@ -444,11 +444,11 @@ DisplaySaveInfoOnContinue:
 	and %10000000
 	jr z, .clock_ok
 	lb de, 4, 8
-	jp DisplayContinueDataWithRTCError
+	jr DisplayContinueDataWithRTCError
 
 .clock_ok
 	lb de, 4, 8
-	jp DisplayNormalContinueData
+	jr DisplayNormalContinueData
 
 DisplaySaveInfoOnSave:
 	lb de, 4, 0
@@ -459,14 +459,14 @@ DisplayNormalContinueData:
 	call Continue_DisplayBadgesDexPlayerName
 	call Continue_PrintGameTime
 	call LoadFontsExtra
-	jp UpdateSprites
+	jmp UpdateSprites
 
 DisplayContinueDataWithRTCError:
 	call Continue_LoadMenuHeader
 	call Continue_DisplayBadgesDexPlayerName
 	call Continue_UnknownGameTime
 	call LoadFontsExtra
-	jp UpdateSprites
+	jmp UpdateSprites
 
 Continue_LoadMenuHeader:
 	xor a
@@ -480,7 +480,7 @@ Continue_LoadMenuHeader:
 .show_menu
 	call _OffsetMenuHeader
 	call MenuBox
-	jp PlaceVerticalMenuItems
+	jmp PlaceVerticalMenuItems
 
 .MenuHeader_Dex:
 	db MENU_BACKUP_TILES ; flags
@@ -536,13 +536,13 @@ Continue_DisplayBadgesDexPlayerName:
 Continue_PrintGameTime:
 	decoord 9, 8, 0
 	add hl, de
-	jp Continue_DisplayGameTime
+	jr Continue_DisplayGameTime
 
 Continue_UnknownGameTime:
 	decoord 9, 8, 0
 	add hl, de
 	ld de, .three_question_marks
-	jp PlaceString
+	jmp PlaceString
 
 .three_question_marks
 	db " ???@"
@@ -555,7 +555,7 @@ Continue_DisplayBadgeCount:
 	pop hl
 	ld de, wNumSetBits
 	lb bc, 1, 2
-	jp PrintNum
+	jmp PrintNum
 
 Continue_DisplayPokedexNumCaught:
 	ld a, [wStatusFlags]
@@ -588,7 +588,7 @@ Continue_DisplayGameTime:
 	inc hl
 	ld de, wGameTimeMinutes
 	lb bc, PRINTNUM_LEADINGZEROS | 1, 2
-	jp PrintNum
+	jmp PrintNum
 
 OakSpeech:
 	farcall InitClock
@@ -668,7 +668,7 @@ endc
 	call PrintText
 	call NamePlayer
 	ld hl, OakText7
-	jp PrintText
+	jmp PrintText
 
 OakText1:
 	text_far _OakText1
@@ -741,7 +741,7 @@ NamePlayer:
 	jr z, .Male
 	ld de, .Kris
 .Male:
-	jp InitName
+	jmp InitName
 
 .Chris:
 	db "CHRIS@@@@@@"
@@ -755,7 +755,7 @@ StorePlayerName:
 	call ByteFill
 	ld hl, wPlayerName
 	ld de, wStringBuffer2
-	jp CopyName2
+	jmp CopyName2
 
 ShrinkPlayer:
 	ldh a, [hROMBank]
@@ -806,7 +806,7 @@ ShrinkPlayer:
 	call DelayFrames
 
 	call RotateThreePalettesRight
-	jp ClearTilemap
+	jmp ClearTilemap
 
 Intro_RotatePalettesLeftFrontpic:
 	ld hl, IntroFadePalettes
@@ -1014,7 +1014,7 @@ ENDC
 	ld a, [hl]
 	dec a
 	ld bc, 2 * SCREEN_WIDTH
-	jp ByteFill
+	jmp ByteFill
 
 TitleScreenScene:
 	ld e, a
@@ -1169,11 +1169,11 @@ TitleScreenEnd:
 
 DeleteSaveData:
 	farcall _DeleteSaveData
-	jp Init
+	jmp Init
 
 ResetClock:
 	farcall _ResetClock
-	jp Init
+	jmp Init
 
 UpdateTitleTrailSprite:
 	; If bit 0 or 1 of [wTitleScreenTimer] is set, we don't need to be here.
@@ -1208,7 +1208,7 @@ ELIF DEF(_SILVER)
 	depixel 15, 11, 4, 0
 ENDC
 	ld a, SPRITE_ANIM_INDEX_GS_TITLE_TRAIL
-	jp InitSpriteAnimStruct
+	jmp InitSpriteAnimStruct
 
 IF DEF(_GOLD)
 .TitleTrailCoords:
@@ -1240,7 +1240,7 @@ Copyright:
 	call Request2bpp
 	hlcoord 2, 7
 	ld de, CopyrightString
-	jp PlaceString
+	jmp PlaceString
 
 CopyrightString:
 	; ©1995-2001 Nintendo
@@ -1272,4 +1272,4 @@ GameInit::
 	ld a, $90
 	ldh [hWY], a
 	call WaitBGMap
-	jp IntroSequence
+	jmp IntroSequence
