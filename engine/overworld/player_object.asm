@@ -200,11 +200,11 @@ MatchFollowerDirection:
 	push bc
 	ld a, PLAYER
 	call GetObjectStruct
-	ld hl, OBJECT_FACING
+	ld hl, OBJECT_DIRECTION
 	add hl, bc
 	ld a, [hl]
 	pop bc
-	ld hl, OBJECT_FACING
+	ld hl, OBJECT_DIRECTION
 	add hl, bc
 	ld [hl], a
 	ret
