@@ -102,7 +102,7 @@ MapSetupScript_Train:
 	mapsetup LoadMapAttributes
 	mapsetup GetWarpDestCoords
 	mapsetup HandleNewMap
-	mapsetup MapPlayerCoordConnected
+	mapsetup MapPlayerCoordWarped
 	mapsetup LoadBlockData
 	mapsetup BufferScreen
 	mapsetup DisableLCD
