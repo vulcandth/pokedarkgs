@@ -2,7 +2,7 @@ GBCOnlyScreen:
 	ldh a, [hCGB]
 	and a
 	ret nz
-
+Crash::
 	ld de, MUSIC_NONE
 	call PlayMusic
 

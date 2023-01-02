@@ -278,7 +278,7 @@ DoFollowerInteraction:
 	jmp .do_row
 
 .crash
-	db $FD
+	farcall Crash
 	jr .crash
 
 StoreFollowerNickInBuffer:
