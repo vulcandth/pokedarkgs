@@ -5,7 +5,7 @@ FollowerScript::
 	end
 
 MACRO interaction
-	db \1 ; species
+	dw \1 ; species
 	db \2 ; type inclusion
 	db \3 ; type exclusion
 	db \4 ; landmark
@@ -16,7 +16,17 @@ MACRO interaction
 	dw \9 ; script
 ENDM
 
-DEF FOLLOWER_INT_TABLE_ROW_LENGTH EQU 11
+rsreset
+DEF FOLLOWER_INT_SPECIES  rw
+DEF FOLLOWER_INT_TYPE_INC rb
+DEF FOLLOWER_INT_TYPE_EXC rb
+DEF FOLLOWER_INT_LANDMARK rb
+DEF FOLLOWER_INT_MAP_ID   rb
+DEF FOLLOWER_INT_TIME     rb
+DEF FOLLOWER_INT_STATUS   rb
+DEF FOLLOWER_INT_EVENT    rw
+DEF FOLLOWER_INT_SCRIPT   rw
+DEF FOLLOWER_INT_TABLE_ROW_LENGTH EQU _RS
 
 FollowerInteractionTable:
 ; uses the first interaction that matches all of its conditions.
@@ -101,147 +111,175 @@ FollowerInteractionTable:
 	interaction -1,         GHOST,        -1,       LANDMARK_LAVENDER_TOWN,  -1,                       -1,       -1,         -1,                          LavendarTownInteraction
 	; Note: the Default Interaction should always be last!
 	interaction -1,         -1,           -1,       -1,                      -1,                       -1,       -1,         -1,                          DefaultInteraction
+.End:
 
 DoFollowerInteraction:
+; bc = row
+; hl = row index
+; de = misc
 	call StoreFollowerNickInBuffer
-	ld hl, FollowerInteractionTable
 	ld a, [wFollowerSpriteID]
 	ld [wCurSpecies], a
 	ld c, a
 	call GetBaseData
+	ld bc, FollowerInteractionTable
+
+.do_row
+.species_check
+	ld hl, FOLLOWER_INT_SPECIES
+	add hl, bc
+	ld a, -1
+	cp [hl]
+	jr nz, :+
+	inc hl ; += Species High
+	cp [hl]
+	dec hl ; -= Species Low
+	jr z, .type_inclusion_check
+:
+	; Check species
+	ld a, [wCurSpecies]
+	call GetPokemonIndexFromID
+	ld d, h
+	ld e, l
+	ld hl, FOLLOWER_INT_SPECIES
+	add hl, bc
+	ld a, e
+	cp [hl]
+	jmp nz, .skip_row
+	inc hl ; += Species High
+	ld a, d
+	cp [hl]
+	jmp nz, .skip_row
+
+.type_inclusion_check
+	ld hl, FOLLOWER_INT_TYPE_INC
+	add hl, bc
+	ld a, -1
+	cp [hl]
+	jr z, .type_exclusion_check
+	; Check type inclusion
 	ld a, [wBaseType1]
-	ld d, a
+	cp [hl]
+	jr z, .type_exclusion_check
 	ld a, [wBaseType2]
-	ld e, a
-.get_row
-	ld b, FOLLOWER_INT_TABLE_ROW_LENGTH
-	ld a, [hli]
-	dec b
-	inc a
-	jr z, .check_type_inclusion
-	dec a
-	cp c
-	jp nz, .next_row
-.check_type_inclusion
-	ld a, [hli]
-	dec b
-	inc a
-	jr z, .check_type_exclusion
-	dec a
-	cp d
-	jr z, .check_type_exclusion
-	cp e
-	jp nz, .next_row
-.check_type_exclusion
-	ld a, [hli]
-	dec b
-	inc a
-	jr z, .check_landmark
-	dec a
-	cp d
-	jr z, .next_row
-	cp e
-	jr z, .next_row
-.check_landmark
-	ld a, [hli]
-	dec b
-	inc a
-	jr z, .check_map_id
-	dec a
-	push bc
-	ld c, a
+	cp [hl]
+	jmp nz, .skip_row
+
+.type_exclusion_check
+	ld hl, FOLLOWER_INT_TYPE_EXC
+	add hl, bc
+	ld a, -1
+	cp [hl]
+	jr z, .landmark_check
+	; Check type exclusion
+	ld a, [wBaseType1]
+	cp [hl]
+	jr z, .skip_row
+	ld a, [wBaseType2]
+	cp [hl]
+	jr z, .skip_row
+
+.landmark_check
+	ld hl, FOLLOWER_INT_LANDMARK
+	add hl, bc
+	ld a, -1
+	cp [hl]
+	jr z, .map_id_check
+	; check landmark
 	ld a, [wCurLandmark]
-	cp c
-	pop bc
-	jr nz, .next_row
-.check_map_id
-	ld a, [hli]
-	dec b
-	inc a
-	jr z, .check_time
-	dec a
-	push bc
-	ld c, a
+	cp [hl]
+	jr nz, .skip_row
+
+.map_id_check
+	ld hl, FOLLOWER_INT_MAP_ID
+	add hl, bc
+	ld a, -1
+	cp [hl]
+	jr z, .time_check
+	; Check mapid
 	ld a, [wMapNumber]
-	cp c
-	pop bc
-	jr nz, .next_row
-.check_time
-	ld a, [hli]
-	dec b
-	inc a
-	jr z, .check_status
-	dec a
-	push bc
-	ld c, a
+	cp [hl]
+	jr nz, .skip_row
+
+.time_check
+	ld hl, FOLLOWER_INT_TIME
+	add hl, bc
+	ld a, -1
+	cp [hl]
+	jr z, .status_check
+	; Check time
 	ld a, [wTimeOfDay]
-	and c
-	pop bc
-	jr z, .next_row
-.check_status
-	ld a, [hli]
-	dec b
-	inc a
-	jr z, .check_event
-	dec a
-	push bc
-	ld c, a
+	cp [hl]
+	jr nz, .skip_row
+
+.status_check
+	ld hl, FOLLOWER_INT_STATUS
+	add hl, bc
+	ld a, -1
+	cp [hl]
+	jr z, .event_check
 	ld a, [wFollowerPartyNum]
+	dec a
 	ld [wCurPartyMon], a
 	ld a, MON_STATUS
 	push hl
 	call GetPartyParamLocation
 	ld a, [hl]
 	pop hl
-	and c
-	pop bc
-	jr z, .next_row
-.check_event
-	ld a, [hli]
-	dec b
-	dec b
-	inc a
-	ld a, [hli]
-	jr nz, .continue
-	inc a
-	jr z, .run_script
-	dec a
-.continue
-	dec hl
-	dec hl
-	push de
-	ld d, a
-	ld a, [hl]
-	ld e, a
+	and [hl]
+	jr z, .skip_row
+
+.event_check
+	ld hl, FOLLOWER_INT_EVENT
+	add hl, bc
+	ld a, -1
+	cp [hl]
+	jr nz, :+
 	inc hl
-	inc hl
+	cp [hl]
+	dec hl
+	jr z, .done_and_jump
+:
+	; check event
 	push bc
-	push hl
 	ld b, CHECK_FLAG
-	call EventFlagAction
-	pop hl
-	ld a, c
-	pop bc
-	pop de
-	and a
-	jr z, .next_row
-.run_script
 	ld a, [hli]
+	ld d, [hl]
 	ld e, a
-	ld a, [hl]
-	ld d, a
+	call EventFlagAction
+	pop bc
+	jr z, .skip_row
+
+.done_and_jump
+	ld hl, FOLLOWER_INT_SCRIPT
+	add hl, bc
+	ld a, [hli]
+	ld d, [hl]
+	ld e, a
 	ldh a, [hROMBank]
 	ld b, a
 	farcall ScriptCall
 	ret
 
-.next_row
-	push bc
-	ld c, b
-	ld b, 0
+.skip_row
+	ld hl, FOLLOWER_INT_TABLE_ROW_LENGTH
 	add hl, bc
-	pop bc
-	jp .get_row
+	ld b, h
+	ld c, l
+
+	; Do Crash checks
+	ld a, HIGH(FollowerInteractionTable.End)
+	cp b
+	jr c, .crash
+	jmp nz, .do_row
+	ld a, LOW(FollowerInteractionTable.End)
+	cp c
+	jr c, .crash
+	jmp .do_row
+
+.crash
+	db $FD
+	jr .crash
 
 StoreFollowerNickInBuffer:
 	ld a, [wFollowerPartyNum]
