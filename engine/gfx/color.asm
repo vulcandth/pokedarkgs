@@ -1289,7 +1289,7 @@ CopySpritePal::
 	push de
 	ld a, [wTimeOfDayPal]
 	maskbits NUM_DAYTIMES
-	ld bc, 8 palettes
+	ld bc, 11 palettes
 	ld hl, MapObjectPals
 	call AddNTimes
 	ld a, [wNeededPalIndex]

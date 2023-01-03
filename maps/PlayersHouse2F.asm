@@ -140,7 +140,7 @@ if DEF(_DEBUG)
 	givepokemove WATERFALL,  wPartyMon3, 3
 	; Other test pokemon
 	givepoke PIKACHU, 2
-	givepoke DITTO, 2
+	givepoke SLOWPOKE, 2
 ;for x, NUM_POKEMON
 ;	givepoke BULBASAUR + x, 50
 ;endr

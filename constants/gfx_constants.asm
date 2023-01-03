@@ -63,3 +63,5 @@ DEF SPRITE_GFX_LIST_CAPACITY EQU 32 ; see wUsedSprites
 ; wPalFlags
 	const_def
 	const NO_DYN_PAL_APPLY_F ; 0
+
+DEF NEW_PALETTE_MASK EQU $f
