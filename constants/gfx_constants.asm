@@ -59,3 +59,7 @@ DEF SPRITE_GFX_LIST_CAPACITY EQU 32 ; see wUsedSprites
 ; wMonIconFlags constants
 	const_def
 	const BILLS_PC_ICON_F ; 0
+
+; wPalFlags
+	const_def
+	const NO_DYN_PAL_APPLY_F ; 0

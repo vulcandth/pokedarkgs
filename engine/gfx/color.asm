@@ -1241,6 +1241,10 @@ LoadMapPals:
 	ldh [rSVBK], a
 
 .got_pals
+	call ClearSavedObjPals
+	ld hl, wPalFlags
+	set NO_DYN_PAL_APPLY_F, [hl]
+	call CheckForUsedObjPals
 ;	ld a, [wTimeOfDayPal]
 ;	maskbits NUM_DAYTIMES
 ;	ld bc, 8 palettes
@@ -1301,7 +1305,11 @@ CopySpritePal::
 	pop de
 	ld a, BANK(wOBPals1)
 	call FarCopyWRAM
+	ld hl, wPalFlags
+	bit NO_DYN_PAL_APPLY_F, [hl]
+	jr nz, .skip_apply
 	call ApplyPals
+.skip_apply
 	ld a, TRUE
 	ldh [hCGBPalUpdate], a
 .done

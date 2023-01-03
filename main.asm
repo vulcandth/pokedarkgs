@@ -698,7 +698,7 @@ INCLUDE "gfx/following_sprite_pointers.asm"
 INCLUDE "engine/events/follower.asm"
 
 
-SECTION "Dynamic Pals", ROMX
+SECTION "Dynamic Pals", ROM0
 
 INCLUDE "engine/overworld/dynamic_pals.asm"
 

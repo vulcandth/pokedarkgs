@@ -2,10 +2,10 @@ CheckForUsedObjPals::
 	push hl
 	push bc
 	push de
-	ldh a, [rSVBK]
-	push af
-	ld a, BANK(wObjectStructs)
-	ldh [rSVBK], a
+;	ldh a, [rSVBK]
+;	push af
+;	ld a, BANK(wObjectStructs)
+;	ldh [rSVBK], a
 
 	xor a
 	ld [wUsedObjectPals], a
@@ -37,10 +37,12 @@ CheckForUsedObjPals::
 	jr .loop
 
 .done
-;	ld a, TRUE
-;	ldh [hCGBPalUpdate], a
-	pop af
-	ld [rSVBK], a
+	ld a, TRUE
+	ldh [hCGBPalUpdate], a
+;	pop af
+;	ld [rSVBK], a
+	ld hl, wPalFlags
+	res NO_DYN_PAL_APPLY_F, [hl]
 	pop de
 	pop bc
 	pop hl
@@ -124,9 +126,3 @@ MarkUsedPal:
 	pop bc
 	pop hl
 	ret
-
-ClearSavedObjPals::
-	ld hl, wUsedObjectPals
-	ld bc, wNeededPalIndex - wUsedObjectPals
-	ld a, -1
-	jp ByteFill
