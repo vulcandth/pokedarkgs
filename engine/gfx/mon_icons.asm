@@ -496,19 +496,20 @@ GetIconStorage:
 
 	ld a, d
 	cp HIGH(EGG - 1) ; we alread decremented
-	jr nz, .not_unown_or_egg
+	jr nz, .not_egg
 	ld a, e
 	cp LOW(EGG - 1) ; we already decremented
-	jr nz, .not_unown_or_egg
+	jr nz, .not_egg
 
 	ld hl, EggFollowingSpritePointer
 	ld bc, 0
+
+.not_egg
 
 	ld a, d
 	cp HIGH(UNOWN - 1) ; we already decremented
 	jr nz, .not_unown_or_egg
 	ld a, e
-
 	cp LOW(UNOWN - 1) ; we already decremented
 	jr nz, .not_unown_or_egg
 
