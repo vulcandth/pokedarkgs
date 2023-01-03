@@ -430,7 +430,7 @@ CheckFollowerInvisOneStep:
 	bit FOLLOWER_IN_POKEBALL_F, [hl]
 	push bc
 	ld bc, wObject1Struct
-	jp nz, .spawn_pokeball
+	jr nz, .spawn_pokeball
 	res FOLLOWER_INVISIBLE_F, [hl]
 	ld hl, OBJECT_FLAGS1
 	add hl, bc
@@ -907,25 +907,25 @@ MovementFunction_FollowerObj:
 	ld a, e
 	and $3
 	or STEP_BIKE << 2
-	jp JumpStep
+	jmp JumpStep
 
 .biking
 	ld a, e
 	and %00000011
 	or %00001100 ; very big step
-	jp JumpStep
+	jmp JumpStep
 
 .TurnHead:
 ; TurnHead uses different arguments, so modify it here
 	and %00000011
 	add a
 	add a
-	jp TurnHead
+	jmp TurnHead
 
 MovementFunction_FollowNotExact:
 	call MoveFollowNotExact
 	ld d, OBJECT_ACTION_STEP
-	jp c, NormalStep
+	jmp c, NormalStep
 	ret
 
 MoveFollowNotExact:
@@ -1428,10 +1428,10 @@ StepFunction_PokeballOpening:
 	ld hl, OBJECT_STEP_DURATION
 	add hl, bc
 	dec [hl]
-	jp nz, PokeballTracking
+	jr nz, PokeballTracking
 	ld [hl], 4
 	call ObjectStep_IncAnonJumptableIndex
-	jp PokeballTracking
+	jr PokeballTracking
 
 .Opening:
 	ld hl, OBJECT_DIRECTION
@@ -1440,10 +1440,10 @@ StepFunction_PokeballOpening:
 	ld hl, OBJECT_STEP_DURATION
 	add hl, bc
 	dec [hl]
-	jp nz, PokeballTracking
+	jr nz, PokeballTracking
 	ld [hl], 4
 	call ObjectStep_IncAnonJumptableIndex
-	jp PokeballTracking
+	jr PokeballTracking
 
 .Open:
 	ld hl, OBJECT_DIRECTION
@@ -1452,7 +1452,7 @@ StepFunction_PokeballOpening:
 	ld hl, OBJECT_STEP_DURATION
 	add hl, bc
 	dec [hl]
-	jp nz, PokeballTracking
+	jr nz, PokeballTracking
 	ld hl, OBJECT_1D
 	add hl, bc
 	ld e, [hl]
@@ -1465,7 +1465,7 @@ StepFunction_PokeballOpening:
 	res FOLLOWER_INVISIBLE_F, [hl]
 	res FOLLOWER_IN_POKEBALL_F, [hl]
 	res FOLLOWER_EXITING_BALL_F, [hl]
-	jp DeleteMapObject
+	jmp DeleteMapObject
 
 StepFunction_PokeballClosing:
 	call ObjectStep_AnonJumptable
@@ -1481,10 +1481,10 @@ StepFunction_PokeballClosing:
 	ld hl, OBJECT_STEP_DURATION
 	add hl, bc
 	dec [hl]
-	jp nz, PokeballTracking
+	jmp nz, PokeballTracking
 	ld [hl], 4
 	call ObjectStep_IncAnonJumptableIndex
-	jp PokeballTracking
+	jmp PokeballTracking
 
 .Closing:
 	ld hl, OBJECT_DIRECTION
@@ -1493,10 +1493,10 @@ StepFunction_PokeballClosing:
 	ld hl, OBJECT_STEP_DURATION
 	add hl, bc
 	dec [hl]
-	jp nz, PokeballTracking
+	jmp nz, PokeballTracking
 	ld [hl], 4
 	call ObjectStep_IncAnonJumptableIndex
-	jp PokeballTracking
+	jmp PokeballTracking
 
 .Closed:
 	ld hl, OBJECT_DIRECTION
@@ -1505,11 +1505,11 @@ StepFunction_PokeballClosing:
 	ld hl, OBJECT_STEP_DURATION
 	add hl, bc
 	dec [hl]
-	jp nz, PokeballTracking
+	jmp nz, PokeballTracking
 	ld hl, wFollowerFlags
 	set FOLLOWER_IN_POKEBALL_F, [hl]
 	res FOLLOWER_ENTERING_BALL_F, [hl]
-	jp DeleteMapObject
+	jmp DeleteMapObject
 
 StepFunction_NPCJumpInPlace:
 	call ObjectStep_AnonJumptable
@@ -1530,7 +1530,7 @@ StepFunction_NPCJumpInPlace:
 	ld hl, OBJECT_STEP_DURATION
 	add hl, bc
 	ld [hl], 4
-	jp ObjectStep_IncAnonJumptableIndex
+	jmp ObjectStep_IncAnonJumptableIndex
 
 .Land:
 	ld h, 4

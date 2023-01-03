@@ -606,7 +606,7 @@ GetStorageIcon:
 	set BILLS_PC_ICON_F, [hl]
 	pop hl
 	ld a, [wCurIcon]
-	jp GetIconStorage
+	jmp GetIconStorage
 
 FreezeMonIcons:
 	ld hl, wSpriteAnimationStructs

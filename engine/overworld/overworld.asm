@@ -213,15 +213,15 @@ GetMonSprite:
 	ld h, [hl]
 	ld l, a
 	call GetPokemonIDFromIndex
-	jp GetWalkingMonSprite
+	jr GetWalkingMonSprite
 
 .BreedMon1
 	ld a, [wBreedMon1Species]
-	jp GetWalkingMonSprite
+	jr GetWalkingMonSprite
 
 .BreedMon2
 	ld a, [wBreedMon2Species]
-	jp GetWalkingMonSprite
+	jr GetWalkingMonSprite
 
 .Variable:
 	sub SPRITE_VARS

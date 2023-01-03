@@ -2460,19 +2460,19 @@ Script_getfollowerdirection:
 
 Script_followcry:
 	ld a, [wFollowerSpriteID]
-	jp PlayMonCry
+	jmp PlayMonCry
 
 Script_stowfollower:
 	farcall _StowFollower
-	jp DoScriptWait
+	jmp DoScriptWait
 
 Script_appearfollower:
 	farcall _AppearFollower
-	jp DoScriptWait
+	jmp DoScriptWait
 
 Script_appearfolloweronestep:
 	farcall _AppearFollowerOneStep
-	jp DoScriptWait
+	jmp DoScriptWait
 
 Script_savefollowercoords:
 	farcall _SaveFollowerCoords

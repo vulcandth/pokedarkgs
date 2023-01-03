@@ -295,7 +295,7 @@ StoreFollowerNickInBuffer:
 .done
 	ld de, wStringBuffer1
 	ld bc, MON_NAME_LENGTH
-	jp CopyBytes
+	jmp CopyBytes
 
 
 ; Common Text Interactions:
