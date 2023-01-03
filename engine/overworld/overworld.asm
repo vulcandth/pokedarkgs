@@ -296,6 +296,7 @@ GetWalkingMonSprite:
 	cp LOW(UNOWN - 1) ; we already decremented
 	jr nz, .not_unown
 	ld a, [wFollowerPartyNum]
+	dec a
 	ld bc, PARTYMON_STRUCT_LENGTH
 	ld hl, wPartyMon1Form
 	call AddNTimes
