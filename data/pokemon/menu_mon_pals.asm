@@ -14,10 +14,9 @@ FollowingPalLookupTable::
 	db PAL_OW_BLUE   ; PAL_MON_TEAL
 	db PAL_OW_PURPLE ; PAL_MON_PURPLE
 
+MenuMonEggPal::
 	menu_mon_pals RED,    BLUE   ; EGG is -3
-	menu_mon_pals RED,    RED    ; unused
-	menu_mon_pals RED,    RED    ; unused
-	menu_mon_pals RED,    RED    ; unused
+
 MenuMonPals::
 	table_width 1, MenuMonPals
 	;             normal, shiny

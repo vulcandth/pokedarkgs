@@ -150,6 +150,16 @@ GetMenuMonPalette_PredeterminedShininess:
 	ld c, l
 	ld hl, MenuMonPals
 	add hl, bc
+
+	ld a, HIGH(EGG - 1)
+	cp b
+	jr nz, .not_egg
+	ld a, LOW(EGG - 1)
+	cp c
+	jr nz, .not_egg
+	ld hl, MenuMonEggPal
+
+.not_egg
 	ld e, [hl]
 	pop af
 	ld a, e
@@ -477,18 +487,30 @@ GetIconStorage:
 	push af
 	call GetPokemonIndexFromID
 	dec hl
-	ld b, h
-	ld c, l
+	ld d, h
+	ld e, l
 
 	ld hl, FollowingSpritePointers
+	ld b, d
+	ld c, e
 
-	ld a, b
+	ld a, d
+	cp HIGH(EGG - 1) ; we alread decremented
+	jr nz, .not_unown_or_egg
+	ld a, e
+	cp LOW(EGG - 1) ; we already decremented
+	jr nz, .not_unown_or_egg
+
+	ld hl, EggFollowingSpritePointer
+	ld bc, 0
+
+	ld a, d
 	cp HIGH(UNOWN - 1) ; we already decremented
-	jr nz, .not_unown
-	ld a, c
+	jr nz, .not_unown_or_egg
+	ld a, e
 
 	cp LOW(UNOWN - 1) ; we already decremented
-	jr nz, .not_unown
+	jr nz, .not_unown_or_egg
 
 	ld hl, wMonIconFlags
 	bit BILLS_PC_ICON_F, [hl]
@@ -507,7 +529,7 @@ GetIconStorage:
 	ld b, 0
 	ld c, a
 
-.not_unown
+.not_unown_or_egg
 	add hl, bc
 	add hl, bc
 	add hl, bc

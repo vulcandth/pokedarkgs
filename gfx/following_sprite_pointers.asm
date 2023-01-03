@@ -1,4 +1,5 @@
 FollowingSpritePointers::
+	table_width 3, FollowingSpritePointers
 	dba BulbasaurFollowingSprite
 	dba IvysaurFollowingSprite
 	dba VenusaurFollowingSprite
@@ -250,10 +251,13 @@ FollowingSpritePointers::
 	dba LugiaFollowingSprite
 	dba Ho_ohFollowingSprite
 	dba CelebiFollowingSprite
-	db 0, 0, 0
+	assert_table_length NUM_POKEMON
+
+EggFollowingSpritePointer::
 	dba EggFollowingSprite
 
 UnownFollowingSpritePointers::
+	table_width 3, UnownFollowingSpritePointers
 	dba UNOWN_AFollowingSprite
 	dba UNOWN_BFollowingSprite
 	dba UNOWN_CFollowingSprite
@@ -280,3 +284,4 @@ UnownFollowingSpritePointers::
 	dba UNOWN_XFollowingSprite
 	dba UNOWN_YFollowingSprite
 	dba UNOWN_ZFollowingSprite
+	assert_table_length NUM_UNOWN
