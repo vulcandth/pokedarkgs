@@ -78,6 +78,7 @@ TrainerExecutivef1:
 
 RadioTower5FRocketBossScript:
 	applymovement PLAYER, RadioTower5FPlayerTwoStepsLeftMovement
+	applymovement FOLLOWER, RadioTower5FFollowerMovement
 	playmusic MUSIC_ROCKET_ENCOUNTER
 	turnobject RADIOTOWER5F_ROCKET, RIGHT
 	opentext
@@ -117,6 +118,7 @@ RadioTower5FRocketBossScript:
 	appear RADIOTOWER5F_DIRECTOR
 	applymovement RADIOTOWER5F_DIRECTOR, RadioTower5FDirectorWalksIn
 	turnobject PLAYER, RIGHT
+	turnobject FOLLOWER, RIGHT
 	opentext
 	writetext RadioTower5FDirectorThankYouText
 	promptbutton
@@ -196,6 +198,11 @@ RadioTower5FDirectorWalksOut:
 
 RadioTower5FPlayerTwoStepsLeftMovement:
 	step LEFT
+	step LEFT
+	step_end
+
+RadioTower5FFollowerMovement:
+	step DOWN
 	step LEFT
 	step_end
 

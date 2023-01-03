@@ -38,6 +38,10 @@ TrainerGruntM1:
 	closetext
 	special FadeBlackQuickly
 	special ReloadSpritesNoPalettes
+	disappear FOLLOWER
+	moveobject FOLLOWER, 5, 4
+	appear FOLLOWER
+	turnobject FOLLOWER, UP
 	disappear SLOWPOKEWELLB1F_ROCKET1
 	disappear SLOWPOKEWELLB1F_ROCKET2
 	disappear SLOWPOKEWELLB1F_ROCKET3
@@ -123,6 +127,12 @@ SlowpokeWellB1FBoulder:
 
 SlowpokeWellB1FSuperPotion:
 	itemball SUPER_POTION
+
+SlowpokeWellFollowerMoveQuick:
+	big_step DOWN
+	big_step LEFT
+	turn_head UP
+	step_end
 
 KurtSlowpokeWellVictoryMovementData:
 	step LEFT

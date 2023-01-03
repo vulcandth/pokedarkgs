@@ -201,6 +201,7 @@ VermilionPortEnterFastShipMovement:
 
 VermilionPortLeaveFastShipMovement:
 	step UP
+	step UP
 	step_end
 
 VermilionPortCannotEnterFastShipMovement:

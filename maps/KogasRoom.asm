@@ -76,6 +76,7 @@ KogasRoom_EnterMovement:
 	step UP
 	step UP
 	step UP
+	step UP
 	step_end
 
 KogaScript_KogaBeforeText:

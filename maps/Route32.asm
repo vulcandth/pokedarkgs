@@ -91,12 +91,16 @@ Route32CooltrainerMStopsYouScene:
 	writetext Route32CooltrainerMText_WhatsTheHurry
 	waitbutton
 	closetext
+	applymovement FOLLOWER, Movement_Route32StepRight
+	turnobject FOLLOWER, LEFT
+	freezefollower
 	follow PLAYER, ROUTE32_COOLTRAINER_M
 	applymovement PLAYER, Movement_Route32CooltrainerMPushesYouBackToViolet
 	stopfollow
+	unfreezefollower
 	turnobject PLAYER, DOWN
+	turnobject ROUTE32_COOLTRAINER_M, UP
 	scall Route32CooltrainerMContinueScene
-	applymovement ROUTE32_COOLTRAINER_M, Movement_Route32CooltrainerMReset1
 	applymovement ROUTE32_COOLTRAINER_M, Movement_Route32CooltrainerMReset2
 	end
 
@@ -511,11 +515,10 @@ Route32HiddenSuperPotion:
 
 Movement_Route32CooltrainerMPushesYouBackToViolet:
 	step UP
-	step UP
 	step_end
 
-Movement_Route32CooltrainerMReset1:
-	step DOWN
+Movement_Route32StepRight:
+	step RIGHT
 	step_end
 
 Movement_Route32CooltrainerMReset2:

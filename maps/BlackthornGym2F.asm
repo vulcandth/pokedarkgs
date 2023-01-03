@@ -22,9 +22,9 @@ BlackthornGym2FSetUpStoneTableCallback:
 	cmdqueue CMDQUEUE_STONETABLE, .StoneTable ; check if any stones are sitting on a warp
 
 .StoneTable:
-	stonetable 5, BLACKTHORNGYM2F_BOULDER1, .Boulder1
-	stonetable 3, BLACKTHORNGYM2F_BOULDER2, .Boulder2
-	stonetable 4, BLACKTHORNGYM2F_BOULDER3, .Boulder3
+	stonetable 5, BLACKTHORNGYM2F_BOULDER1+1, .Boulder1
+	stonetable 3, BLACKTHORNGYM2F_BOULDER2+1, .Boulder2
+	stonetable 4, BLACKTHORNGYM2F_BOULDER3+1, .Boulder3
 	db -1 ; end
 
 .Boulder1:

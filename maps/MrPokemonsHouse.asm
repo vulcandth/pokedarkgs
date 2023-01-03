@@ -17,13 +17,14 @@ MrPokemonsHouseNoopScene:
 	end
 
 MrPokemonsHouseMrPokemonEventScript:
+	applymovement PLAYER, MrPokemonsHouse_PlayerWalksToMrPokemon
+	turnobject FOLLOWER, UP
 	showemote EMOTE_SHOCK, MRPOKEMONSHOUSE_GENTLEMAN, 15
 	turnobject MRPOKEMONSHOUSE_GENTLEMAN, DOWN
 	opentext
 	writetext MrPokemonIntroText1
 	waitbutton
 	closetext
-	applymovement PLAYER, MrPokemonsHouse_PlayerWalksToMrPokemon
 	opentext
 	writetext MrPokemonIntroText2
 	promptbutton
@@ -88,6 +89,13 @@ MrPokemonsHouse_OakScript:
 	opentext
 	writetext MrPokemonsHouse_OakText1
 	promptbutton
+	applymovement MRPOKEMONSHOUSE_OAK, MrPokemonsHouse_OakWalksToPokemon
+	turnobject FOLLOWER, RIGHT
+	writetext MrPokemonsHouse_OakText1_Part2
+	promptbutton
+	applymovement MRPOKEMONSHOUSE_OAK, MrPokemonsHouse_OakWalksToPlayer_2
+	writetext MrPokemonsHouse_OakText1_Part3
+	promptbutton
 	waitsfx
 	writetext MrPokemonsHouse_GetDexText
 	playsound SFX_ITEM
@@ -96,26 +104,39 @@ MrPokemonsHouse_OakScript:
 	writetext MrPokemonsHouse_OakText2
 	waitbutton
 	closetext
+	freezefollower
+	applymovement FOLLOWER, MrPokemonsHouse_FollowerMovesOutOfWay
 	turnobject PLAYER, DOWN
 	applymovement MRPOKEMONSHOUSE_OAK, MrPokemonsHouse_OakExits
+	unfreezefollower
 	playsound SFX_EXIT_BUILDING
 	disappear MRPOKEMONSHOUSE_OAK
 	waitsfx
 	special RestartMapMusic
 	pause 15
 	turnobject PLAYER, UP
+	turnobject FOLLOWER, UP
 	opentext
 	writetext MrPokemonsHouse_MrPokemonHealText
 	waitbutton
 	closetext
 	special FadeBlackQuickly
+	savefollowercoords
+	silentstowfollower
 	special ReloadSpritesNoPalettes
 	playmusic MUSIC_HEAL
 	special StubbedTrainerRankings_Healings
 	special HealParty
 	pause 60
+	faceobject PLAYER, FOLLOWER
+	faceobject FOLLOWER, PLAYER
 	special FadeInQuickly
 	special RestartMapMusic
+	loademote EMOTE_POKE_BALL
+	appearfollower
+	faceplayer MRPOKEMONSHOUSE_GENTLEMAN
+	turnobject PLAYER, UP
+	turnobject FOLLOWER, UP
 	opentext
 	writetext MrPokemonText_ImDependingOnYou
 	waitbutton
@@ -161,6 +182,22 @@ MrPokemonsHouse_OakWalksToPlayer:
 	step DOWN
 	step LEFT
 	step LEFT
+	step_end
+
+MrPokemonsHouse_OakWalksToPokemon:
+	step DOWN
+	turn_head LEFT
+	step_end
+
+MrPokemonsHouse_OakWalksToPlayer_2:
+	step UP
+	turn_head LEFT
+	step_end
+
+MrPokemonsHouse_FollowerMovesOutOfWay:
+	step LEFT
+	step UP
+	turn_head DOWN
 	step_end
 
 MrPokemonsHouse_OakExits:
@@ -255,8 +292,10 @@ MrPokemonsHouse_OakText1:
 
 	para "for PROF.ELM, so I"
 	line "waited here."
+	done
 
-	para "Oh! What's this?"
+MrPokemonsHouse_OakText1_Part2:
+	text "Oh! What's this?"
 	line "A rare #MON!"
 
 	para "Let's see…"
@@ -280,8 +319,10 @@ MrPokemonsHouse_OakText1:
 
 	para "#MON with love"
 	line "and care."
+	done
 
-	para "…Ah!"
+MrPokemonsHouse_OakText1_Part3:
+	text "…Ah!"
 
 	para "You seem to be"
 	line "dependable."

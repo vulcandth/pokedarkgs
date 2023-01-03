@@ -45,7 +45,7 @@ Kurt1:
 	special FadeOutMusic
 	setevent EVENT_AZALEA_TOWN_SLOWPOKETAIL_ROCKET
 	readvar VAR_FACING
-	ifequal UP, .RunAround
+	ifequal UP, .CheckFollower
 	turnobject PLAYER, DOWN
 	playsound SFX_FLY
 	applymovement KURTSHOUSE_KURT1, KurtsHouseKurtExitHouseMovement
@@ -55,6 +55,10 @@ Kurt1:
 	special RestartMapMusic
 	end
 
+.CheckFollower:
+	getfollowerdirection
+	ifnotequal RIGHT, .RunAround
+	applymovement FOLLOWER, KurtsHouseFollowerMove
 .RunAround:
 	turnobject PLAYER, DOWN
 	playsound SFX_FLY
@@ -446,6 +450,12 @@ KurtsHouseKurtGoAroundPlayerThenExitHouseMovement:
 	big_step DOWN
 	big_step DOWN
 	big_step DOWN
+	step_end
+
+KurtsHouseFollowerMove:
+	step DOWN
+	step LEFT
+	turn_head UP
 	step_end
 
 KurtsHouseKurtMakingBallsMustWaitText:

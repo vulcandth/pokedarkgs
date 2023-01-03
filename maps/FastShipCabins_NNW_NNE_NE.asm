@@ -106,11 +106,23 @@ FastShipLazySailorScript:
 	end
 
 .Movement2:
+	getfollowerdirection
+	ifequal LEFT, .Movement2_Follower_Left
+	ifequal DOWN, .Movement2_Follower_Down
+.Movement2_Join
 	applymovement FASTSHIPCABINS_NNW_NNE_NE_SAILOR, FastShipLazySailorLeavesMovement2
 	playsound SFX_EXIT_BUILDING
 	disappear FASTSHIPCABINS_NNW_NNE_NE_SAILOR
 	waitsfx
 	end
+
+.Movement2_Follower_Left:
+	applymovement FOLLOWER, FastShipFollowerMoveForSailor1
+	sjump .Movement2_Join
+
+.Movement2_Follower_Down:
+	applymovement FOLLOWER, FastShipFollowerMoveForSailor2
+	sjump .Movement2_Join
 
 FastShipCabins_NNW_NNE_NETrashcan:
 	jumpstd TrashCanScript
@@ -129,6 +141,14 @@ FastShipLazySailorLeavesMovement2:
 	step UP
 	step UP
 	step UP
+	step_end
+
+FastShipFollowerMoveForSailor2:
+	step LEFT
+	step UP
+FastShipFollowerMoveForSailor1:
+	step UP
+	step RIGHT
 	step_end
 
 CooltrainermSeanSeenText:

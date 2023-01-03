@@ -171,7 +171,6 @@ CyndaquilPokeBallScript:
 	writetext TakeCyndaquilText
 	yesorno
 	iffalse DidntChooseStarterScript
-	disappear ELMSLAB_POKE_BALL1
 	setevent EVENT_GOT_CYNDAQUIL_FROM_ELM
 	writetext ChoseStarterText
 	promptbutton
@@ -181,8 +180,12 @@ CyndaquilPokeBallScript:
 	playsound SFX_CAUGHT_MON
 	waitsfx
 	promptbutton
-	givepoke CYNDAQUIL, PLAIN_FORM, 5, BERRY
+	givepoke CYNDAQUIL, 5, BERRY
+	moveobject FOLLOWER, 6, 3
 	closetext
+	scall AddFollowing
+	cry CYNDAQUIL
+	disappear ELMSLAB_POKE_BALL1
 	readvar VAR_FACING
 	ifequal RIGHT, ElmDirectionsScript
 	applymovement PLAYER, AfterCyndaquilMovement
@@ -201,7 +204,6 @@ TotodilePokeBallScript:
 	writetext TakeTotodileText
 	yesorno
 	iffalse DidntChooseStarterScript
-	disappear ELMSLAB_POKE_BALL2
 	setevent EVENT_GOT_TOTODILE_FROM_ELM
 	writetext ChoseStarterText
 	promptbutton
@@ -211,8 +213,12 @@ TotodilePokeBallScript:
 	playsound SFX_CAUGHT_MON
 	waitsfx
 	promptbutton
-	givepoke TOTODILE, PLAIN_FORM, 5, BERRY
+	givepoke TOTODILE, 5, BERRY
+	moveobject FOLLOWER, 7, 3
 	closetext
+	scall AddFollowing
+	cry TOTODILE
+	disappear ELMSLAB_POKE_BALL2
 	applymovement PLAYER, AfterTotodileMovement
 	sjump ElmDirectionsScript
 
@@ -229,7 +235,6 @@ ChikoritaPokeBallScript:
 	writetext TakeChikoritaText
 	yesorno
 	iffalse DidntChooseStarterScript
-	disappear ELMSLAB_POKE_BALL3
 	setevent EVENT_GOT_CHIKORITA_FROM_ELM
 	writetext ChoseStarterText
 	promptbutton
@@ -239,8 +244,12 @@ ChikoritaPokeBallScript:
 	playsound SFX_CAUGHT_MON
 	waitsfx
 	promptbutton
-	givepoke CHIKORITA, PLAIN_FORM, 5, BERRY
+	givepoke CHIKORITA, 5, BERRY
+	moveobject FOLLOWER, 8, 3
 	closetext
+	scall AddFollowing
+	cry CHIKORITA
+	disappear ELMSLAB_POKE_BALL3
 	applymovement PLAYER, AfterChikoritaMovement
 	sjump ElmDirectionsScript
 
@@ -252,6 +261,7 @@ DidntChooseStarterScript:
 
 ElmDirectionsScript:
 	turnobject PLAYER, UP
+	turnobject FOLLOWER, UP
 if !DEF(_DEBUG)
 	opentext
 	writetext ElmDirectionsText1
@@ -279,6 +289,13 @@ endc
 	setevent EVENT_RIVAL_CHERRYGROVE_CITY
 	setscene SCENE_ELMSLAB_AIDE_GIVES_POTION
 	setmapscene NEW_BARK_TOWN, SCENE_NEWBARKTOWN_NOOP
+	end
+
+AddFollowing:
+	loademote EMOTE_POKE_BALL
+	appearfollower
+	callasm RefreshFollowingCoords
+	closetext
 	end
 
 ElmDescribesMrPokemonScript:

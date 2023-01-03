@@ -36,8 +36,11 @@ OlivineCityRivalSceneTop:
 	writetext OlivineCityRivalText
 	waitbutton
 	closetext
+	freezefollower
 	applymovement PLAYER, OlivineCityPlayerStepsAsideTopMovement
-	turnobject PLAYER, RIGHT
+	unfreezefollower
+	applymovement OLIVINECITY_OLIVINE_RIVAL, OlivineCityRivalStepRight
+	applymovement FOLLOWER, OlivineCityPlayerStepsAsideTopMovement
 	applymovement OLIVINECITY_OLIVINE_RIVAL, OlivineCityRivalLeavesTopMovement
 	setscene SCENE_OLIVINECITY_NOOP
 	disappear OLIVINECITY_OLIVINE_RIVAL
@@ -60,8 +63,11 @@ OlivineCityRivalSceneBottom:
 	writetext OlivineCityRivalText
 	waitbutton
 	closetext
+	freezefollower
 	applymovement PLAYER, OlivineCityPlayerStepsAsideBottomMovement
-	turnobject PLAYER, RIGHT
+	unfreezefollower
+	applymovement OLIVINECITY_OLIVINE_RIVAL, OlivineCityRivalStepRight
+	applymovement FOLLOWER, OlivineCityPlayerStepsAsideBottomMovement
 	applymovement OLIVINECITY_OLIVINE_RIVAL, OlivineCityRivalLeavesBottomMovement
 	disappear OLIVINECITY_OLIVINE_RIVAL
 	setscene SCENE_OLIVINECITY_NOOP
@@ -126,8 +132,11 @@ OlivineCityRivalApproachesBottomMovement:
 	step RIGHT
 	step_end
 
-OlivineCityRivalLeavesTopMovement:
+OlivineCityRivalStepRight:
 	step RIGHT
+	step_end
+
+OlivineCityRivalLeavesTopMovement:
 	step RIGHT
 	step RIGHT
 	step RIGHT
@@ -142,7 +151,6 @@ OlivineCityRivalLeavesTopMovement:
 	step_end
 
 OlivineCityRivalLeavesBottomMovement:
-	step RIGHT
 	step RIGHT
 	step RIGHT
 	step RIGHT

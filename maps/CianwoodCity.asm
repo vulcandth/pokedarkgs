@@ -52,6 +52,11 @@ CianwoodCitySuicuneAndEusine:
 	setmapscene ROUTE_42, SCENE_ROUTE42_SUICUNE
 	checkevent EVENT_FOUGHT_EUSINE
 	iftrue .Done
+	getfollowerdirection
+	ifnotequal DOWN, .SkipFollower
+	applymovement FOLLOWER, CianwoodMoveFollower
+.SkipFollower
+	turnobject FOLLOWER, DOWN
 	setevent EVENT_FOUGHT_EUSINE
 	playmusic MUSIC_MYSTICALMAN_ENCOUNTER
 	appear CIANWOODCITY_EUSINE
@@ -177,6 +182,11 @@ CianwoodCityEusineDepartMovement:
 	step DOWN
 	step DOWN
 	step DOWN
+	step_end
+
+CianwoodMoveFollower:
+	step RIGHT
+	step UP
 	step_end
 
 ChucksWifeEasierToFlyText:

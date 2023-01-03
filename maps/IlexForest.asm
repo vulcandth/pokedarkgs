@@ -458,8 +458,10 @@ IlexForestShrineScript:
 	showemote EMOTE_SHOCK, PLAYER, 20
 	special FadeOutMusic
 	applymovement PLAYER, IlexForestPlayerStepsDownMovement
+	applymovement FOLLOWER, IlexForestFollowerMoves
 	pause 30
 	turnobject PLAYER, DOWN
+	turnobject FOLLOWER, DOWN
 	pause 20
 	clearflag ENGINE_FOREST_IS_RESTLESS
 	special CelebiShrineEvent
@@ -733,6 +735,12 @@ IlexForestPlayerStepsDownMovement:
 	fix_facing
 	slow_step DOWN
 	remove_fixed_facing
+	step_end
+
+IlexForestFollowerMoves:
+	step RIGHT
+	step DOWN
+	turn_head UP
 	step_end
 
 IlexForestApprenticeIntroText:

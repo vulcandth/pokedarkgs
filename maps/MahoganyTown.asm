@@ -27,9 +27,12 @@ MahoganyTownFlypointCallback:
 MahoganyTownTryARageCandyBarScript:
 	showemote EMOTE_SHOCK, MAHOGANYTOWN_POKEFAN_M, 15
 	applymovement MAHOGANYTOWN_POKEFAN_M, MahoganyTownRageCandyBarMerchantBlocksYouMovement
+	applymovement FOLLOWER, MahoganyFollowerMoveUp
+	freezefollower
 	follow PLAYER, MAHOGANYTOWN_POKEFAN_M
 	applymovement PLAYER, MahoganyTownPlayerStepLeftMovement
 	stopfollow
+	unfreezefollower
 	turnobject PLAYER, RIGHT
 	scall RageCandyBarMerchantScript
 	applymovement MAHOGANYTOWN_POKEFAN_M, MahoganyTownRageCandyBarMerchantReturnsMovement
@@ -136,6 +139,7 @@ MahoganyTownRageCandyBarMerchantBlocksYouMovement:
 	step_end
 
 MahoganyTownRageCandyBarMerchantReturnsMovement:
+MahoganyFollowerMoveUp:
 	step UP
 	turn_head DOWN
 	step_end
@@ -255,7 +259,7 @@ MahoganyTown_MapEvents:
 	warp_event  9,  1, ROUTE_43_MAHOGANY_GATE, 3
 
 	def_coord_events
-	coord_event 19,  8, SCENE_MAHOGANYTOWN_TRY_RAGECANDYBAR, MahoganyTownTryARageCandyBarScript
+;	coord_event 19,  8, SCENE_MAHOGANYTOWN_TRY_RAGECANDYBAR, MahoganyTownTryARageCandyBarScript
 	coord_event 19,  9, SCENE_MAHOGANYTOWN_TRY_RAGECANDYBAR, MahoganyTownTryARageCandyBarScript
 
 	def_bg_events

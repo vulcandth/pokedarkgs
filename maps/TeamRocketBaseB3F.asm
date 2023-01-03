@@ -67,14 +67,24 @@ RocketBaseRival:
 	special FadeOutMusic
 	appear TEAMROCKETBASEB3F_RIVAL
 	applymovement TEAMROCKETBASEB3F_RIVAL, RocketBaseRivalEnterMovement
-	turnobject PLAYER, LEFT
+	follow FOLLOWER, TEAMROCKETBASEB3F_RIVAL
+	applymovement FOLLOWER, RocketBaseFollowerMoveForRival
+	stopfollow
+	applymovement FOLLOWER, RocketBaseFollowerMoveForRival
+	turnobject FOLLOWER, LEFT
 	playmusic MUSIC_RIVAL_ENCOUNTER
 	opentext
 	writetext RocketBaseRivalText
 	waitbutton
 	closetext
 	playsound SFX_TACKLE
-	applymovement PLAYER, RocketBaseRivalShovesPlayerMovement
+	freezefollower
+	applymovement PLAYER, RocketBaseFixPlayerFacing
+	follow FOLLOWER, PLAYER
+	applymovement FOLLOWER, RocketBaseRivalShovesPlayerMovement
+	applymovement PLAYER, RocketBaseUnfixPlayerFacing
+	stopfollow
+	unfreezefollower
 	applymovement TEAMROCKETBASEB3F_RIVAL, RocketBaseRivalLeavesMovement
 	disappear TEAMROCKETBASEB3F_RIVAL
 	setscene SCENE_TEAMROCKETBASEB3F_ROCKET_BOSS
@@ -265,10 +275,10 @@ RocketBaseBossLeavesMovement:
 	step_sleep 8
 	step_sleep 8
 	slow_step RIGHT
-	big_step DOWN
-	big_step DOWN
-	big_step DOWN
 	big_step RIGHT
+	big_step DOWN
+	big_step DOWN
+	big_step DOWN
 	big_step DOWN
 	big_step DOWN
 	big_step DOWN
@@ -297,6 +307,9 @@ RocketBaseRivalEnterMovement:
 	step DOWN
 	step RIGHT
 	step RIGHT
+	step_end
+
+RocketBaseFollowerMoveForRival:
 	step RIGHT
 	step_end
 
@@ -313,6 +326,14 @@ RocketBaseRivalLeavesMovement:
 RocketBaseRivalShovesPlayerMovement:
 	fix_facing
 	big_step RIGHT
+	remove_fixed_facing
+	step_end
+
+RocketBaseFixPlayerFacing:
+	fix_facing
+	step_end
+
+RocketBaseUnfixPlayerFacing:
 	remove_fixed_facing
 	step_end
 

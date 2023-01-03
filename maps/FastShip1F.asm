@@ -124,7 +124,9 @@ WorriedGrandpaSceneLeft:
 	appear FASTSHIP1F_GENTLEMAN
 	applymovement FASTSHIP1F_GENTLEMAN, FastShip1F_GrandpaRunsInMovement
 	playsound SFX_TACKLE
+	freezefollower
 	applymovement PLAYER, FastShip1F_PlayerHitByGrandpaMovement
+	unfreezefollower
 	applymovement FASTSHIP1F_GENTLEMAN, FastShip1F_GrandpaApproachesPlayerMovement
 	opentext
 	writetext FastShip1FGrandpaText
@@ -133,6 +135,7 @@ WorriedGrandpaSceneLeft:
 	turnobject PLAYER, RIGHT
 	applymovement FASTSHIP1F_GENTLEMAN, FastShip1F_GrandpaRunsOutMovement
 	disappear FASTSHIP1F_GENTLEMAN
+	applymovement FOLLOWER, FastShip1F_StepDownMovement
 	setscene SCENE_FASTSHIP1F_NOOP
 	end
 
@@ -152,6 +155,7 @@ FastShip1F_SailorStepAsideDownMovement:
 	step_end
 
 FastShip1F_PlayerEntersShipMovement:
+	step DOWN
 	step DOWN
 	step DOWN
 	turn_head DOWN
@@ -191,7 +195,7 @@ FastShip1F_StepUpMovement: ; unreferenced
 	step UP
 	step_end
 
-FastShip1F_StepDownMovement: ; unreferenced
+FastShip1F_StepDownMovement:
 	step DOWN
 	step_end
 

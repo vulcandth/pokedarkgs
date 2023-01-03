@@ -240,6 +240,7 @@ OlivinePortEnterFastShipMovement:
 
 OlivinePortLeaveFastShipMovement:
 	step UP
+	step UP
 	step_end
 
 OlivinePortCannotEnterFastShipMovement:

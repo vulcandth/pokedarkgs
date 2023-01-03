@@ -31,6 +31,8 @@ NewBarkTown_TeacherStopsYouScene1:
 	closetext
 	turnobject PLAYER, RIGHT
 	applymovement NEWBARKTOWN_TEACHER, NewBarkTown_TeacherRunsToYouMovement1
+	applymovement FOLLOWER, NewBarkTown_FollowerMovesOutOfTheWay
+	applymovement NEWBARKTOWN_TEACHER, NewBarkTown_TeacherRunsToYouMovement1_2
 	opentext
 	writetext Text_WhatDoYouThinkYoureDoing
 	waitbutton
@@ -114,6 +116,7 @@ NewBarkTownRivalScript:
 	writetext NewBarkTownRivalText2
 	waitbutton
 	closetext
+	freezefollower
 	follow PLAYER, NEWBARKTOWN_RIVAL
 	applymovement PLAYER, NewBarkTown_RivalPushesYouAwayMovement
 	stopfollow
@@ -123,7 +126,16 @@ NewBarkTownRivalScript:
 	playsound SFX_TACKLE
 	applymovement PLAYER, NewBarkTown_RivalShovesYouOutMovement
 	applymovement NEWBARKTOWN_RIVAL, NewBarkTown_RivalReturnsToTheShadowsMovement
+	unfreezefollower
+	applymovement FOLLOWER, NewBarkTown_FollowerMoveDown
+	callasm .follower_movement_fix
 	end
+
+.follower_movement_fix:
+	; hacky fix
+	xor a
+	ld [wFollowerNextMovement], a
+	ret
 
 NewBarkTownSign:
 	jumptext NewBarkTownSignText
@@ -137,10 +149,19 @@ NewBarkTownElmsLabSign:
 NewBarkTownElmsHouseSign:
 	jumptext NewBarkTownElmsHouseSignText
 
+NewBarkTown_FollowerMovesOutOfTheWay:
+	step DOWN
+	step LEFT
+	turn_head UP
+	step_end
+
 NewBarkTown_TeacherRunsToYouMovement1:
 	step LEFT
 	step LEFT
 	step LEFT
+	step_end
+
+NewBarkTown_TeacherRunsToYouMovement1_2:
 	step LEFT
 	step_end
 
@@ -168,6 +189,10 @@ NewBarkTown_TeacherBringsYouBackMovement2:
 	step RIGHT
 	step RIGHT
 	turn_head LEFT
+	step_end
+
+NewBarkTown_FollowerMoveDown:
+	step DOWN
 	step_end
 
 NewBarkTown_RivalPushesYouAwayMovement:

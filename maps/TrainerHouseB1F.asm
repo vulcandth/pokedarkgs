@@ -36,6 +36,7 @@ TrainerHouseReceptionistScript:
 	waitbutton
 	closetext
 	applymovement PLAYER, Movement_EnterTrainerHouseBattleRoom
+	turnobject FOLLOWER, DOWN
 	opentext
 	writetext TrainerHouseB1FCalBeforeText
 	waitbutton
@@ -83,8 +84,8 @@ Movement_EnterTrainerHouseBattleRoom:
 	step DOWN
 	step DOWN
 	step DOWN
-	step DOWN
 	step LEFT
+	step DOWN
 	turn_head RIGHT
 	step_end
 

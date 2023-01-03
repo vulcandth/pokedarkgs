@@ -61,6 +61,7 @@ SaffronMagnetTrainStationOfficerScript:
 Script_ArriveFromGoldenrod:
 	applymovement SAFFRONMAGNETTRAINSTATION_OFFICER, SaffronMagnetTrainStationOfficerApproachTrainDoorMovement
 	applymovement PLAYER, SaffronMagnetTrainStationPlayerLeaveTrainAndEnterStationMovement
+	applymovement FOLLOWER, SaffronMagnetTrainFollower
 	applymovement SAFFRONMAGNETTRAINSTATION_OFFICER, SaffronMagnetTrainStationOfficerReturnToBoardingGateMovement
 	opentext
 	writetext SaffronMagnetTrainStationOfficerArrivedInSaffronText
@@ -122,6 +123,12 @@ SaffronMagnetTrainStationPlayerLeaveTrainAndEnterStationMovement:
 	step DOWN
 	step DOWN
 	turn_head UP
+	step_end
+
+SaffronMagnetTrainFollower:
+	step DOWN
+	step LEFT
+	turn_head RIGHT
 	step_end
 
 SaffronMagnetTrainStationOfficerTrainIsntOperatingText:

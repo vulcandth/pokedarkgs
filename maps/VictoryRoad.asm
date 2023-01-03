@@ -20,6 +20,7 @@ VictoryRoadNoop2Scene:
 	end
 
 VictoryRoadRivalLeft:
+	applymovement FOLLOWER, VictoryRoadFollowerMovement1
 	moveobject VICTORYROAD_RIVAL, 18, 11
 	turnobject PLAYER, DOWN
 	showemote EMOTE_SHOCK, PLAYER, 15
@@ -35,6 +36,7 @@ VictoryRoadRivalLeft:
 	end
 
 VictoryRoadRivalRight:
+	applymovement FOLLOWER, VictoryRoadFollowerMovement2
 	turnobject PLAYER, DOWN
 	showemote EMOTE_SHOCK, PLAYER, 15
 	special FadeOutMusic
@@ -114,6 +116,18 @@ VictoryRoadHiddenMaxPotion:
 
 VictoryRoadHiddenFullHeal:
 	hiddenitem FULL_HEAL, EVENT_VICTORY_ROAD_HIDDEN_FULL_HEAL
+
+VictoryRoadFollowerMovement1:
+	step RIGHT
+	step UP
+	turn_head DOWN
+	step_end
+
+VictoryRoadFollowerMovement2:
+	step LEFT
+	step UP
+	turn_head DOWN
+	step_end
 
 VictoryRoadRivalBattleApproachMovement1:
 	step LEFT

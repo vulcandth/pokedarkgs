@@ -29,9 +29,17 @@ Route34IlexForestGateCelebiEvent:
 	showemote EMOTE_SHOCK, ROUTE34ILEXFORESTGATE_TEACHER2, 20
 	turnobject ROUTE34ILEXFORESTGATE_TEACHER2, LEFT
 	turnobject PLAYER, RIGHT
+	applymovement FOLLOWER, Route34IlexForestGateTeacherBlocksPlayerMovement
+	freezefollower
+	applymovement FOLLOWER, Route34IlexForestGateTeacherBlocksPlayerMovement
+	freezefollower
 	follow PLAYER, ROUTE34ILEXFORESTGATE_TEACHER2
 	applymovement PLAYER, Route34IlexForestGateTeacherBlocksPlayerMovement
 	stopfollow
+	turnobject ROUTE34ILEXFORESTGATE_TEACHER2, UP
+	unfreezefollower
+	turnobject ROUTE34ILEXFORESTGATE_TEACHER2, UP
+	unfreezefollower
 	turnobject PLAYER, DOWN
 	opentext
 	writetext Route34IlexForestGateTeacher_ForestIsRestless
@@ -79,11 +87,9 @@ Route34IlexForestGateLassScript:
 
 Route34IlexForestGateTeacherBlocksPlayerMovement:
 	step UP
-	step UP
 	step_end
 
 Route34IlexForestGateTeacherReturnsMovement:
-	step DOWN
 	step RIGHT
 	step_end
 

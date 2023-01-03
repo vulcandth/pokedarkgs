@@ -183,10 +183,10 @@ BurnedTowerB1FEusineMovement2:
 
 BurnedTowerB1FEusineMovement1:
 	step DOWN
-	step LEFT
-	step LEFT
-	step LEFT
 	step DOWN
+	step LEFT
+	step LEFT
+	step LEFT
 	step DOWN
 	step_end
 

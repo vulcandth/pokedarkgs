@@ -50,6 +50,7 @@ Script_ApproachLanceFromRight:
 	special FadeOutMusic
 	applymovement PLAYER, MovementData_ApproachLanceFromRight
 LancesRoomLanceScript:
+	applymovement FOLLOWER, MovementData_FollowerInLanceRoom
 	turnobject LANCESROOM_LANCE, LEFT
 	opentext
 	writetext LanceBattleIntroText
@@ -94,6 +95,7 @@ LancesRoomLanceScript:
 	writetext LancesRoomOakCongratulationsText
 	waitbutton
 	closetext
+	applymovement FOLLOWER, LancesRoomFollowerMovesForMary
 	applymovement LANCESROOM_MARY, LancesRoomMovementData_MaryInterviewChampion
 	turnobject PLAYER, LEFT
 	opentext
@@ -106,16 +108,21 @@ LancesRoomLanceScript:
 	writetext LancesRoomNoisyText
 	waitbutton
 	closetext
+	freezefollower
 	follow LANCESROOM_LANCE, PLAYER
 	turnobject LANCESROOM_MARY, UP
 	turnobject LANCESROOM_OAK, UP
 	applymovement LANCESROOM_LANCE, LancesRoomMovementData_LanceLeadsPlayerToHallOfFame
 	stopfollow
+	unfreezefollower
 	playsound SFX_EXIT_BUILDING
 	disappear LANCESROOM_LANCE
 	applymovement PLAYER, LancesRoomMovementData_PlayerExits
 	playsound SFX_EXIT_BUILDING
 	disappear PLAYER
+	applymovement FOLLOWER, LancesRoomMovementData_PlayerExits
+	playsound SFX_EXIT_BUILDING
+	disappear FOLLOWER
 	applymovement LANCESROOM_MARY, LancesRoomMovementData_MaryTriesToFollow
 	showemote EMOTE_SHOCK, LANCESROOM_MARY, 15
 	opentext
@@ -148,6 +155,12 @@ MovementData_ApproachLanceFromRight:
 	turn_head RIGHT
 	step_end
 
+MovementData_FollowerInLanceRoom:
+	step LEFT
+	step UP
+	turn_head RIGHT
+	step_end
+
 LancesRoomMovementData_MaryRushesIn:
 	big_step UP
 	big_step UP
@@ -163,6 +176,13 @@ LancesRoomMovementData_OakWalksIn:
 LancesRoomMovementData_MaryYieldsToOak:
 	step LEFT
 	turn_head RIGHT
+	step_end
+
+LancesRoomFollowerMovesForMary:
+	turn_head DOWN
+	fix_facing
+	big_step UP
+	remove_fixed_facing
 	step_end
 
 LancesRoomMovementData_MaryInterviewChampion:

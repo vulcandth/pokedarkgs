@@ -50,6 +50,7 @@ SSAquaGranddaughterBefore:
 	special ReloadSpritesNoPalettes
 	disappear FASTSHIPCABINS_SE_SSE_CAPTAINSCABIN_TWIN2
 	applymovement PLAYER, SSAquaCaptainsCabinWarpsToGrandpasCabinMovement
+	applymovement FOLLOWER, SSAquaCaptainsCabinWarpFollower
 	moveobject FASTSHIPCABINS_SE_SSE_CAPTAINSCABIN_TWIN1, 3, 19
 	appear FASTSHIPCABINS_SE_SSE_CAPTAINSCABIN_TWIN1
 	turnobject PLAYER, UP
@@ -225,6 +226,10 @@ SSAquaCaptainsCabinWarpsToGrandpasCabinMovement:
 	big_step UP
 	big_step UP
 	big_step UP
+	big_step UP
+	step_end
+
+SSAquaCaptainsCabinWarpFollower:
 	big_step UP
 	step_end
 

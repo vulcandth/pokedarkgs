@@ -26,6 +26,7 @@ HallOfFameEnterScript:
 	closetext
 	turnobject HALLOFFAME_LANCE, UP
 	applymovement PLAYER, HallOfFame_SlowlyApproachMachine
+	applymovement FOLLOWER, HallOfFame_FollowerApproachMachine
 	setscene SCENE_HALLOFFAME_NOOP
 	pause 15
 	setval HEALMACHINE_HALL_OF_FAME
@@ -60,6 +61,12 @@ HallOfFame_WalkUpWithLance:
 
 HallOfFame_SlowlyApproachMachine:
 	slow_step UP
+	step_end
+
+HallOfFame_FollowerApproachMachine:
+	slow_step UP
+	slow_step RIGHT
+	turn_head UP
 	step_end
 
 HallOfFame_LanceText:

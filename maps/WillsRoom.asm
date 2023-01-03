@@ -76,6 +76,7 @@ WillsRoom_EnterMovement:
 	step UP
 	step UP
 	step UP
+	step UP
 	step_end
 
 WillScript_WillBeforeText:

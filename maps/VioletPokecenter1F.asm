@@ -15,6 +15,9 @@ VioletPokecenterNurse:
 
 VioletPokecenter1F_ElmsAideScript:
 	faceplayer
+	getfollowerdirection
+	ifequal LEFT, .MoveFollowerAround
+.Return
 	opentext
 	checkevent EVENT_REFUSED_TO_TAKE_EGG_FROM_ELMS_AIDE
 	iftrue .SecondTimeAsking
@@ -76,6 +79,12 @@ VioletPokecenter1F_ElmsAideScript:
 	writetext VioletPokecenterElmsAideAskEggText
 	sjump .AskTakeEgg
 
+.MoveFollowerAround:
+	readvar VAR_FACING
+	ifnotequal UP, .Return
+	applymovement FOLLOWER, MovementData_VioletPMCFollowerMovesAround
+	sjump .Return
+
 VioletPokecenter1FGameboyKidScript:
 	jumptextfaceplayer VioletPokecenter1FGameboyKidText
 
@@ -84,6 +93,12 @@ VioletPokecenter1FGentlemanScript:
 
 VioletPokecenter1FYoungsterScript:
 	jumptextfaceplayer VioletPokecenter1FYoungsterText
+
+MovementData_VioletPMCFollowerMovesAround:
+	step DOWN
+	step RIGHT
+	turn_head UP
+	step_end
 
 MovementData_AideWalksStraightOutOfPokecenter:
 	step DOWN
