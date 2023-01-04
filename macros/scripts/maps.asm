@@ -122,9 +122,10 @@ MACRO object_event
 	db \3, \2 + 4, \1 + 4, \4
 	dn \6, \5
 	db \7, \8
-	dn \9, \<10>
+	db \9
 	db \<11>
 	dw \<12>, \<13>
+	db \<10>
 	; the dummy PlayerObjectTemplate object_event has no def_object_events
 	if DEF(_NUM_OBJECT_EVENTS)
 		DEF {_NUM_OBJECT_EVENTS} += 1

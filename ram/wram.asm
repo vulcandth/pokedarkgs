@@ -172,7 +172,7 @@ wObjectPriorities:: ds NUM_OBJECT_STRUCTS
 
 NEXTU
 wMovementPointer:: dw
-	ds 3
+	ds 2
 wTempObjectCopyMapObjectIndex:: db
 wTempObjectCopySprite:: db
 wTempObjectCopySpriteVTile:: db
@@ -182,6 +182,7 @@ wTempObjectCopyRange:: db
 wTempObjectCopyX:: db
 wTempObjectCopyY:: db
 wTempObjectCopyRadius:: db
+wTempObjectCopyType:: db
 ENDU
 
 	ds 1

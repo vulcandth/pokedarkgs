@@ -1289,7 +1289,7 @@ CopySpritePal::
 	push de
 	ld a, [wTimeOfDayPal]
 	maskbits NUM_DAYTIMES
-	ld bc, 11 palettes
+	ld bc, NUM_OW_PALS palettes
 	ld hl, MapObjectPals
 	call AddNTimes
 	ld a, [wNeededPalIndex]
@@ -1343,7 +1343,9 @@ TilesetBGPalette:
 INCLUDE "gfx/tilesets/bg_tiles.pal"
 
 MapObjectPals::
+	table_width PAL_COLOR_SIZE * 2 * 2, MapObjectPals
 INCLUDE "gfx/overworld/npc_sprites.pal"
+	assert_table_length NUM_OW_PALS * NUM_DAYTIMES
 
 RoofPals:
 	table_width PAL_COLOR_SIZE * 2 * 2, RoofPals

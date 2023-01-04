@@ -862,7 +862,6 @@ CheckTrainerRun:
 	ld hl, MAPOBJECT_TYPE
 	add hl, de
 	ld a, [hl]
-	and MAPOBJECT_TYPE_MASK
 	cp OBJECTTYPE_TRAINER
 	jr nz, .next
 ; Is visible on the map
