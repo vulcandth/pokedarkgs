@@ -608,6 +608,7 @@ FlyFunction:
 	silentstowfollower
 	reloadmappart
 	callasm HideSprites
+	callasm CopyTreePal
 	special UpdateTimePals
 	callasm FlyFromAnim
 	farscall Script_AbortBugContest
@@ -621,12 +622,16 @@ FlyFunction:
 	end
 
 .ReturnFromFly:
-	ld e, PAL_OW_RED
-	farcall SetFirstOBJPalette
 	farcall RespawnPlayer
+	call ClearSavedObjPals
+	call CheckForUsedObjPals
 	call DelayFrame
 	call UpdatePlayerSprite
 	farcall LoadOverworldFont
+	ret
+
+CopyTreePal:
+	farcall _CopyTreePal
 	ret
 
 WaterfallFunction:

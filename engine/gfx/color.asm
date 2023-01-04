@@ -1282,6 +1282,10 @@ endr
 	ld a, BANK(wBGPals1)
 	jmp FarCopyWRAM
 
+_CopyTreePal:
+	ld de, wOBPals1 + 6 palettes
+	ld a, PAL_OW_TREE
+	ld [wNeededPalIndex], a
 CopySpritePal::
 	push af
 	push bc
