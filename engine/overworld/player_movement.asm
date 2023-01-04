@@ -852,11 +852,11 @@ CheckTrainerRun:
 	jr z, .next
 
 ; Is a trainer
-	ld hl, MAPOBJECT_COLOR
+	ld hl, MAPOBJECT_TYPE
 	add hl, de
 	ld a, [hl]
-	and $f
-	cp $2
+	and MAPOBJECT_TYPE_MASK
+	cp OBJECTTYPE_TRAINER
 	jr nz, .next
 ; Is visible on the map
 	ld hl, MAPOBJECT_OBJECT_STRUCT_ID
@@ -886,7 +886,7 @@ CheckTrainerRun:
 	ld a, [hl]
 	call GetObjectStruct
 	call AnyFacingPlayerDistance_bc
-	ld hl, MAPOBJECT_RANGE
+	ld hl, MAPOBJECT_SIGHT_RANGE
 	add hl, de
 	ld a, [hl]
 	cp c
