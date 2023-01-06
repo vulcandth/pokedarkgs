@@ -7,23 +7,30 @@ CheckForUsedObjPals::
 ;	ld a, BANK(wObjectStructs)
 ;	ldh [rSVBK], a
 
+	; reset all wUsedObjectPals bits
 	xor a
 	ld [wUsedObjectPals], a
 
 	ld de, wObjectStructs
 	ld b, NUM_OBJECT_STRUCTS
-
 .loop
+	; Check if the object has a sprite
 	ld hl, OBJECT_SPRITE
 	add hl, de
 	ld a, [hl]
 	and a
 	jr z, .no_sprite_skip
+
+	; Look up the objects requested color palette
 	ld hl, OBJECT_PAL_INDEX
 	add hl, de
 	ld a, [hl]
 	ld [wNeededPalIndex], a
+
+	; Mark the palette in use and/or load the palette
 	call MarkUsedPal
+	; Then load the return into OBJECT_PALETTE. Which corresponds
+	; to OBJ 0 - OBJ 7.
 	ld hl, OBJECT_PALETTE
 	add hl, de
 	ld [hl], a
@@ -37,10 +44,12 @@ CheckForUsedObjPals::
 	jr .loop
 
 .done
+	; Let VBlank know that it can update the pals.
 	ld a, TRUE
 	ldh [hCGBPalUpdate], a
 ;	pop af
 ;	ld [rSVBK], a
+	; If this flag was set, its time to reset it.
 	ld hl, wPalFlags
 	res NO_DYN_PAL_APPLY_F, [hl]
 	pop de
@@ -54,8 +63,7 @@ MarkUsedPal:
 	push de
 
 	; Check if pal is already loaded
-	ld b, 8
-	ld c, 0
+	lb bc, 8, 0
 	ld hl, wLoadedObjPal0
 .loop
 	cp [hl]
@@ -69,8 +77,7 @@ MarkUsedPal:
 	push bc
 
 	; Pal is not already loaded, find a empty pal slot.
-	ld b, 0
-	ld c, 8
+	lb bc, 0, 8
 	ld hl, wUsedObjectPals
 	ld a, 1
 	ld d, a
@@ -88,6 +95,7 @@ MarkUsedPal:
 	ld a, b
 	pop bc
 
+	; Save and remember what pal is loaded where
 	ld c, a
 	ld a, b
 	ld b, 0
@@ -95,6 +103,7 @@ MarkUsedPal:
 	add hl, bc
 	ld [hl], a
 
+	; Copy the needed pal
 	push bc
 	ld a, c
 	ld bc, 1 palettes
@@ -105,6 +114,8 @@ MarkUsedPal:
 	farcall CopySpritePal
 	pop bc
 
+	; Set the corresponding bit in wUsedObjectPals
+	; A set bit corresponds to a used OBJ Pal slot.
 .mark_in_use
 	push bc
 	ld hl, wUsedObjectPals

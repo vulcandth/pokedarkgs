@@ -1245,15 +1245,6 @@ LoadMapPals:
 	ld hl, wPalFlags
 	set NO_DYN_PAL_APPLY_F, [hl]
 	call CheckForUsedObjPals
-;	ld a, [wTimeOfDayPal]
-;	maskbits NUM_DAYTIMES
-;	ld bc, 8 palettes
-;	ld hl, MapObjectPals
-;	call AddNTimes
-;	ld de, wOBPals1
-;	ld bc, 8 palettes
-;	ld a, BANK(wOBPals1)
-;	call FarCopyWRAM
 
 	ld a, [wEnvironment]
 	cp TOWN
@@ -1297,14 +1288,9 @@ CopySpritePal::
 	ld hl, MapObjectPals
 	call AddNTimes
 	ld a, [wNeededPalIndex]
-;	dec a
 	ld c, a
-;	push hl
-;	farcall _GetSpritePalette
-;	pop hl
 	ld bc, 1 palettes
 	call AddNTimes
-;	ld de, wOBPals2
 	ld bc, 1 palettes
 	pop de
 	ld a, BANK(wOBPals1)
