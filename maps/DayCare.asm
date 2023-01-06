@@ -50,6 +50,9 @@ DayCareManScript_Inside:
 
 .AlreadyHaveOddEgg:
 	special DayCareMan
+	savefollowercoords
+	disappear FOLLOWER
+	appear FOLLOWER
 	waitbutton
 	closetext
 	end
@@ -60,6 +63,9 @@ DayCareLadyScript:
 	checkflag ENGINE_DAY_CARE_MAN_HAS_EGG
 	iftrue .HusbandWasLookingForYou
 	special DayCareLady
+	savefollowercoords
+	disappear FOLLOWER
+	appear FOLLOWER
 	waitbutton
 	closetext
 	end
